@@ -1,0 +1,63 @@
+\documentclass[12pt,twoside]{report}
+\setlength{\headheight}{14.49998pt}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{graphicx}
+\graphicspath{ {images/} }
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[a4paper,width=150mm,top=25mm,bottom=25mm,bindingoffset=6mm]{geometry}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[RO,LE]{Transformation d'un outil local en solution nationale}
+\fancyfoot{}
+\fancyfoot[LE,RO]{\thepage}
+\fancyfoot[LO,CE]{Chapitre \thechapter}
+\fancyfoot[CO,RE]{Farès SIONI}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\usepackage{tikz}
+\usetikzlibrary{fit, positioning}
+\usepackage{lipsum}
+\usepackage{hyperref}
+\usepackage{biblatex}
+\addbibresource{main.bib}
+
+\begin{document}
+    \input{title}
+    \input{chapters/acknowledgements}
+    \tableofcontents
+
+    \chapter*{Introduction}
+    \addcontentsline{toc}{chapter}{Introduction}
+    \input{chapters/introduction}
+
+    \chapter{Présentation de l'entreprise et environnement de travail}
+    \input{chapters/entreprise}
+
+    \chapter{Synthèse du travail effectué}
+    \input{chapters/synthese}
+
+    \chapter{Focus sur la problématique}
+    \input{chapters/problematique}
+
+    \chapter{Retour d'expérience}
+    \input{chapters/rex}
+
+    \chapter*{Conclusion}
+    \addcontentsline{toc}{chapter}{Conclusion}
+    \input{chapters/conclusion}
+
+%TC:ignore
+    \appendix
+    \chapter{Glossaire des termes techniques et métier}
+    \input{annexes/glossaire}
+
+    \chapter{Captures d'écran de l'application}
+    \input{annexes/screenshots}
+
+    \printbibliography
+%TC:endignore
+\end{document}
