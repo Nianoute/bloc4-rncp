@@ -25,6 +25,16 @@
 \usepackage{biblatex}
 \addbibresource{main.bib}
 
+\usepackage{tocloft}
+
+% Réduire l'espace entre les entrées de la table des matières
+\setlength{\cftbeforechapskip}{3pt}
+\setlength{\cftbeforesecskip}{2pt}
+\setlength{\cftbeforesubsecskip}{1pt}
+
+\setlength{\parskip}{0.5em}
+\newcommand{\smallgap}{\vspace{0.3em}}
+
 \begin{document}
     \input{title}
     \input{chapters/acknowledgements}
