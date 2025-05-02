@@ -1,51 +1,308 @@
 \section{Analyse approfondie de l'existant}
 \subsection{État initial de l'outil local}
-% Description détaillée de la solution existante
-% Architecture technique et fonctionnelle
-% Limites et problèmes identifiés
-\lipsum[21]
+Au sein de la Direction Régionale Sillon Rhodanien, nous disposions d'une application web développée par un prestataire externe plusieurs années auparavant. Cette solution, bien qu'opérationnelle, présentait de nombreuses limitations techniques et fonctionnelles qui compromettaient son efficacité et sa pérennité.
 
-\subsection{Diagnostic des processus régionaux}
-% Analyse des différents processus utilisés dans les directions régionales
-% Disparités et points communs
-% Besoins spécifiques vs besoins communs
-\lipsum[22]
+L'architecture de cette application reposait sur des technologies vieillissantes, ce qui rendait le code source complexe à maintenir, et la conception initiale n'avait pas anticipé des évolutions fonctionnelles majeures.
 
-\section{Stratégie d'unification et d'évolution}
-\subsection{Définition du périmètre fonctionnel}
-% Choix des fonctionnalités à intégrer dans la solution nationale
-% Priorisation des besoins
-% Méthodologie d'identification des exigences
-\lipsum[23]
+L'un des principaux problèmes identifiés concernait le processus de réconciliation mensuelle des données. Cette tâche critique nécessitait l'extraction de données vers Excel, de multiples manipulations manuelles, puis une réimportation suivie de validations dans l'application. Ce processus, particulièrement chronophage, était source d'erreurs potentielles et mobilisait inutilement des ressources humaines qualifiées pour des tâches à faible valeur ajoutée.
 
-\subsection{Contraintes réglementaires et techniques}
-% Gestion des données sensibles et conformité RGPD
-% Contraintes d'interopérabilité avec le SI existant
-% Sécurité et authentification (SSO)
-\lipsum[24]
+L'interface utilisateur, conçue selon des standards désormais obsolètes, offrait une expérience peu intuitive et ne répondait plus aux attentes des utilisateurs en termes d'ergonomie et de réactivité.
+
+\subsection {Approche pragmatique de modernisation}
+Face à ces constats, nous avons opté pour une approche pragmatique : moderniser la solution existante de notre Direction Régionale en l'enrichissant des fonctionnalités requises au niveau national. Cette décision s'est appuyée sur plusieurs facteurs :
+
+\begin{itemize}
+\item La solution de notre DR couvrait déjà une grande partie des besoins fondamentaux
+\item L'expertise et la connaissance métier approfondie de l'outil existant au sein de notre entité
+\item La nécessité de livrer rapidement une première version fonctionnelle
+\end{itemize}
+Plutôt que de conduire une analyse exhaustive des besoins de toutes les DR en amont du projet, nous avons privilégié une refonte technique complète associée à l'ajout des fonctionnalités nationales identifiées comme prioritaires.
+
+\subsection {Découverte progressive des spécificités régionales}
+La compréhension des besoins et des spécificités des autres Directions Régionales s'est construite progressivement, principalement lors de la phase de conduite du changement. Cette approche séquentielle nous a permis de :
+
+\begin{itemize}
+\item Concentrer nos efforts initiaux sur la qualité technique et fonctionnelle du socle de l'application
+\item Découvrir les particularités régionales au moment opportun, lorsque la solution était suffisamment mature pour envisager des adaptations
+\item Établir un dialogue constructif avec les futurs utilisateurs sur la base d'une solution concrète plutôt que de concepts abstraits
+\item Ajuster la solution de manière itérative en fonction des retours utilisateurs
+\end{itemize}
+
+Au cours des sessions de présentation et de formation, nous avons recueilli les besoins spécifiques des différentes DR. Cette méthode a confirmé que, malgré des différences dans les processus, un socle commun important existait et que notre solution modernisée répondait déjà à une grande partie des attentes.
+
+\section {Stratégie d'unification et d'évolution}
+\subsection {Définition pragmatique du périmètre fonctionnel}
+
+Notre approche de modernisation s'est articulée autour de trois axes principaux :
+
+1.
+Refonte technique complète
+
+Nous avons entrepris une refonte intégrale de l'architecture technique pour garantir la pérennité, la maintenabilité et la scalabilité de la solution. Cette modernisation technique constituait le socle indispensable pour supporter les ambitions nationales du projet.
+
+
+2.
+Intégration des exigences nationales prioritaires
+
+
+En parallèle de la refonte technique, nous avons intégré les fonctionnalités identifiées comme prioritaires par la direction nationale, notamment :
+
+\begin{itemize}
+\item La standardisation des processus de gestion des objectifs
+\item L'uniformisation des tableaux de bord et des indicateurs de suivi
+\item La mise en place d'un système de droits adapté à une utilisation multi-DR
+\end{itemize}
+
+3.
+Automatisation du processus critique d'import mensuel
+
+
+Identifié comme le principal point de friction dans l'ensemble des DR, le processus de réconciliation mensuelle des données a fait l'objet d'une attention particulière. Son automatisation complète représentait un gain immédiat et significatif pour l'ensemble des utilisateurs.
+
+Les fonctionnalités spécifiques découvertes lors de la phase de conduite du changement ont été évaluées selon leur pertinence globale et leur complexité d'implémentation. Celles apportant une valeur ajoutée significative ont été intégrées au plan d'évolution de l'application, avec une mise en œuvre progressive priorisée selon leur importance.
+
+\subsection {Contraintes réglementaires et techniques}
+Le développement d'une solution nationale pour la gestion des objectifs RH impliquait de prendre en compte plusieurs contraintes réglementaires et techniques importantes.
+
+Protection des données personnelles et conformité RGPD
+
+Les données manipulées par l'application contenaient des informations personnelles sensibles relatives aux objectifs et aux performances des collaborateurs. Conformément au RGPD, nous avons mis en œuvre plusieurs mesures :
+
+\begin{itemize}
+\item Cartographie précise des données personnelles traitées
+\item Implémentation du principe de minimisation des données
+\item Mise en place de mécanismes de traçabilité des accès
+\item Définition de durées de conservation adaptées
+\item Élaboration d'une politique de droits d'accès stricte
+\end{itemize}
+
+Intégration au Système d'Information Enedis
+
+L'application devait s'intégrer harmonieusement dans l'écosystème technique d'Enedis, avec plusieurs contraintes :
+
+\begin{itemize}
+\item Authentification et gestion des identités et accès via le SSO d'entreprise
+\item Respect des standards de sécurité informatique internes
+\item Compatibilité avec l'infrastructure technique existante
+\end{itemize}
+
+Gestion des flux de données inter-applications
+
+Un défi technique majeur concernait l'automatisation des échanges de données avec les systèmes sources nationaux. Ces flux devaient être conçus pour garantir :
+
+\begin{itemize}
+\item La fiabilité et l'intégrité des données transmises
+\item La robustesse face aux éventuelles indisponibilités temporaires
+\item La traçabilité des opérations d'import/export
+\item La possibilité de reprendre un traitement en cas d'échec
+\end{itemize}
+
+Contraintes de performance et de scalabilité
+
+Le passage d'une échelle régionale à nationale impliquait une augmentation significative du volume de données et du nombre d'utilisateurs simultanés. L'architecture devait anticiper cette montée en charge pour garantir :
+
+\begin{itemize}
+\item Des temps de réponse satisfaisants même en période de forte sollicitation
+\item Une capacité à traiter efficacement des volumes de données importants
+\item Une évolutivité technique permettant d'absorber la croissance future
+\end{itemize}
+
 
 \section{Choix d'architecture et de conception}
 \subsection{Architecture technique retenue}
-% Justification de la stack technique (NestJS, Angular, Prisma)
-% Patterns de conception utilisés
-% Stratégie pour la maintenabilité et l'évolutivité
-\lipsum[25-27]
+
+Pour répondre aux enjeux identifiés, nous avons opté pour une architecture moderne, basée sur des technologies éprouvées mais évolutives. La stack technique, déjà sélectionnée avant mon arrivée, s'est révélée parfaitement adaptée aux besoins du projet :
+
+\textbf{Frontend : Angular} \\
+Le choix d'Angular comme framework frontend offrait plusieurs avantages décisifs :
+\begin{itemize}
+    \item Architecture orientée composants facilitant la réutilisation et la maintenance
+    \item Système de détection des changements optimisé pour les performances
+    \item Écosystème riche et mature avec de nombreuses bibliothèques disponibles
+    \item Robustesse et stabilité adaptées aux applications d'entreprise
+    \item TypeScript natif garantissant type-safety et détection précoce des erreurs
+\end{itemize}
+
+Ce choix s'alignait également avec la politique de formation technique des alternants, leur permettant d'acquérir une expertise sur une technologie fortement valorisée sur le marché du travail.
+
+\textbf{Backend : NestJS} \\
+Pour la couche serveur, NestJS représentait une solution idéale :
+\begin{itemize}
+    \item Architecture inspirée d'Angular facilitant la cohérence entre frontend et backend
+    \item Support natif de TypeScript pour une meilleure maintenabilité
+    \item Structure modulaire encourageant les bonnes pratiques de développement
+    \item Intégration simplifiée avec divers systèmes de base de données et services
+    \item Décorateurs puissants pour définir les routes, middlewares et intercepteurs
+\end{itemize}
+
+\textbf{ORM : Prisma} \\
+L'utilisation de Prisma comme ORM constituait un choix stratégique pour plusieurs raisons :
+\begin{itemize}
+    \item Schéma déclaratif facilitant la modélisation et l'évolution de la base de données
+    \item Client TypeScript fortement typé réduisant les risques d'erreurs
+    \item Migrations automatisées simplifiant la gestion des évolutions du schéma
+    \item Performances optimisées par rapport aux ORM traditionnels
+    \item Documentation claire et communauté active
+\end{itemize}
+
+\textbf{Architecture globale} \\
+L'architecture globale du système a été conçue selon un modèle en couches clairement séparées :
+\begin{itemize}
+    \item Couche présentation : composants Angular et services dédiés
+    \item Couche API : contrôleurs NestJS exposant des endpoints REST
+    \item Couche service : logique métier encapsulée dans des services NestJS
+    \item Couche persistance : Prisma et repositories spécialisés
+    \item Couche intégration : services dédiés à l'interaction avec les systèmes externes
+\end{itemize}
+
+Cette séparation stricte garantissait une évolution indépendante de chaque couche et facilitait la testabilité de l'application.
+
+\textbf{Patterns de conception clés} \\
+Plusieurs patterns de conception ont été implémentés pour renforcer la qualité du code :
+\begin{itemize}
+    \item Repository Pattern pour l'abstraction de la couche de données
+    \item Service Pattern pour l'encapsulation de la logique métier
+    \item Factory Pattern pour la création d'objets complexes
+    \item Strategy Pattern pour les comportements variables selon le contexte
+    \item Observer Pattern (via RxJS) pour la gestion réactive des événements
+\end{itemize}
+
+\textbf{Stratégie de maintenabilité} \\
+La maintenabilité à long terme constituait un enjeu critique pour une application destinée à devenir un outil national. Plusieurs mesures ont été prises pour l'assurer :
+\begin{itemize}
+    \item Documentation exhaustive du code via JSDoc et Compodoc
+    \item Tests unitaires systématiques avec Jest pour le backend et Jasmine pour le frontend
+    \item Tests d'intégration automatisés pour les flux critiques
+    \item Convention de nommage stricte et cohérente
+    \item Système de logging avancé pour faciliter le diagnostic des problèmes
+    \item CI/CD via GitLab pour garantir la qualité du code et automatiser les déploiements
+\end{itemize}
 
 \subsection{Automatisation des processus critiques}
-% Conception du système d'import automatisé
-% Gestion des erreurs et des cas limites
-% Mécanismes de validation des données
-\lipsum[26-27]
+
+L'automatisation du processus de réconciliation mensuelle des données, identifié comme particulièrement chronophage dans l'analyse de l'existant, a constitué un axe majeur de la refonte. Nous avons conçu un système robuste permettant de transformer un processus manuel complexe en un flux automatisé fiable.
+
+\textbf{Architecture du système d'import} \\
+Le système d'import a été conçu selon une architecture en plusieurs étapes distinctes :
+\begin{itemize}
+    \item Extraction des données depuis les systèmes sources via des connecteurs spécialisés
+    \item Transformation et normalisation des données dans un format intermédiaire standard
+    \item Validation technique et métier des données avant intégration
+    \item Chargement dans la base de données avec gestion des dépendances
+    \item Génération de rapports détaillés sur les opérations effectuées
+\end{itemize}
+
+Cette approche ETL (Extract, Transform, Load) modulaire permettait d'isoler chaque étape du processus et de simplifier la maintenance et l'évolution future.
+
+\textbf{Gestion des erreurs et des cas limites} \\
+Un point d'attention particulier a été porté à la robustesse du système face aux situations exceptionnelles :
+\begin{itemize}
+    \item Détection et signalement précis des erreurs de format ou d'intégrité
+    \item Mécanismes de reprise sur erreur permettant de relancer uniquement les étapes en échec
+    \item Transactions atomiques garantissant la cohérence des données
+    \item Circuit breaker pour gérer les défaillances des systèmes externes
+    \item Logs détaillés pour faciliter le diagnostic des problèmes
+\end{itemize}
+
+\textbf{Validation des données} \\
+La qualité des données étant critique pour la fiabilité du système, nous avons implémenté un processus de validation à plusieurs niveaux :
+\begin{itemize}
+    \item Validation syntaxique : conformité aux formats attendus
+    \item Validation sémantique : cohérence interne des données
+    \item Validation métier : respect des règles fonctionnelles
+    \item Validation relationnelle : cohérence avec les données existantes
+\end{itemize}
+
+Chaque règle de validation était clairement identifiée et documentée, facilitant ainsi la maintenance et l'évolution du système de validation.
+
+\textbf{Interface utilisateur pour le suivi et la gestion} \\
+Bien qu'automatisé, le processus n'excluait pas totalement l'intervention humaine. Une interface dédiée a été développée pour permettre aux administrateurs de :
+\begin{itemize}
+    \item Déclencher manuellement un import si nécessaire
+    \item Suivre l'avancement des opérations en temps réel
+    \item Consulter les rapports d'exécution détaillés
+    \item Gérer les exceptions nécessitant une intervention manuelle
+    \item Configurer les paramètres d'import selon l'évolution des besoins
+\end{itemize}
 
 \section{Stratégie de déploiement national}
 \subsection{Plan de déploiement progressif}
-% Approche par phases pour le déploiement
-% Gestion de la coexistence avec l'ancien système
-% Stratégie de migration des données
-\lipsum[27-28]
+
+% Note pour moi-même : À compléter lorsque le déploiement national sera plus avancé
+
+La stratégie de déploiement national a été conçue selon une approche progressive, permettant de minimiser les risques tout en accélérant l'adoption de la solution. Nous avons élaboré un plan en trois phases principales :
+
+\textbf{Phase 1 : Pilote sur la Direction Régionale Sillon Rhodanien} \\
+Le déploiement initial dans notre DR d'origine permettait de :
+\begin{itemize}
+    \item Valider le fonctionnement de l'application en conditions réelles
+    \item Identifier et corriger les éventuels problèmes dans un environnement maîtrisé
+    \item Recueillir des retours utilisateurs détaillés pour affiner l'expérience
+    \item Affiner les procédures de déploiement avant généralisation
+\end{itemize}
+
+\textbf{Phase 2 : Extension à un groupe de DR pilotes} \\
+La seconde phase prévoit l'intégration de 3 à 5 DR supplémentaires, sélectionnées pour leur représentativité :
+\begin{itemize}
+    \item Diversité des tailles et organisations internes
+    \item Variété des solutions actuellement utilisées
+    \item Répartition géographique équilibrée
+    \item Niveau d'engagement variable dans le projet
+\end{itemize}
+
+\textbf{Phase 3 : Généralisation nationale} \\
+La dernière phase consistera au déploiement dans l'ensemble des directions régionales restantes, selon un calendrier échelonné pour optimiser l'accompagnement.
+
+\textbf{Gestion de la coexistence et migration des données} \\
+Durant la période transitoire, nous avons prévu des mécanismes permettant :
+\begin{itemize}
+    \item La coexistence temporaire des anciens et nouveaux systèmes si nécessaire
+    \item La migration progressive des données historiques selon leur pertinence
+    \item Des interfaces temporaires entre les systèmes pour maintenir la cohérence globale
+\end{itemize}
 
 \subsection{Accompagnement du changement}
-% Formation et documentation pour les utilisateurs
-% Gestion des retours utilisateurs et itérations
-% Mesures d'adoption et d'impact
-\lipsum[28-29]
+
+% Note pour moi-même : À enrichir avec l'expérience concrète du déploiement national
+
+L'accompagnement au changement constitue un facteur critique de succès pour un projet de cette envergure. Notre stratégie s'articule autour de quatre axes complémentaires :
+
+\textbf{Communication et sensibilisation} \\
+Nous avons élaboré un plan de communication structuré pour :
+\begin{itemize}
+    \item Présenter la vision et les bénéfices de la solution nationale
+    \item Expliquer le calendrier et les modalités de déploiement
+    \item Répondre aux inquiétudes potentielles des utilisateurs
+    \item Valoriser les premiers succès pour encourager l'adoption
+\end{itemize}
+
+Les premières présentations en visioconférence aux DR ont suscité un accueil positif, avec un intérêt marqué pour les gains de productivité promis par l'automatisation des imports.
+
+\textbf{Formation des utilisateurs} \\
+Notre approche de formation distingue plusieurs catégories d'utilisateurs avec des besoins spécifiques :
+\begin{itemize}
+    \item Administrateurs locaux : formation approfondie sur l'ensemble des fonctionnalités
+    \item Managers : focus sur le pilotage et le suivi des objectifs
+    \item Utilisateurs finaux : prise en main des fonctionnalités quotidiennes
+    \item Équipes support : troubleshooting et résolution des problèmes courants
+\end{itemize}
+
+\textbf{Documentation et support} \\
+Un écosystème documentaire complet est en cours d'élaboration :
+\begin{itemize}
+    \item Guide utilisateur interactif intégré à l'application
+    \item Documentation technique pour les administrateurs
+    \item Base de connaissances des problèmes fréquents et leurs solutions
+    \item Vidéos tutorielles pour les fonctionnalités complexes
+\end{itemize}
+
+\textbf{Mesure de l'adoption et ajustements} \\
+Pour suivre l'adoption effective et identifier rapidement les points d'amélioration, nous avons prévu :
+\begin{itemize}
+    \item Des métriques d'utilisation intégrées à l'application
+    \item Des enquêtes de satisfaction régulières
+    \item Des entretiens ciblés avec des utilisateurs représentatifs
+    \item Un canal de remontée des suggestions d'amélioration
+\end{itemize}
+
+% À compléter avec les retours réels après déploiement
