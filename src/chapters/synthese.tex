@@ -1,8 +1,9 @@
-\section{Contexte initial et objectifs du projet}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}\section{Contexte initial et objectifs du projet}
 
 \subsection{Limites de l'outil existant}
 
-Au sein de la Direction Régionale Sillon Rhodanien, les RH responsables de la gestion des effectifs utilisaient une application web locale développée pour répondre au besoins de la région.
+Au sein de la Direction Régionale Sillon Rhodanien, les RH responsables de la gestion des effectifs utilisaient une application web locale développée pour répondre aux besoins de la région.
 Si cet outil répondait aux besoins immédiats de notre DR, il présentait néanmoins d'importantes limitations.
 Son développement réalisé à l'externe ainsi que les technologies ne concordaient pas avec les standards actuels de l'équipe, rendait son évolution complexe et coûteuse.
 Le point le plus critique concernait le processus de réconciliation mensuelle des données, extrêmement chronophage, qui nécessitait de nombreuses manipulations manuelles dans Excel, mobilisant inutilement des ressources qualifiées sur des tâches à faible valeur ajoutée.
@@ -16,7 +17,7 @@ L'ambition principale était de créer une solution permettant de standardiser e
 Cette harmonisation devait s'accompagner d'une automatisation complète des flux de données mensuels avec les systèmes sources nationaux fournies par la Direction des Services Supports (DIR2S), éliminant ainsi les tâches manuelles fastidieuses et sources d'erreurs.
 Un nouvel indicateur majeur de pilotage ayant été introduit dans les processus de gestions des effectifs il y a peu, il était évidemment crucial qu'il soit partie intégrante de la solution.
 
-Sur le plan technique et ergonomique, l'objectif était de fournir une interface moderne, intuitive et responsive, facilitant l'adoption par les utilisateurs tout en garantissant la conformité avec les exigences réglementaires, notamment en matière de RGPD.
+Sur le plan technique et ergonomique, l'objectif était de fournir une interface moderne, intuitive et responsive, facilitant l'adoption par les utilisateurs tout en garantissant la conformité avec les exigences réglementaires, notamment en matière de RGPD\@.
 La solution devait également offrir des tableaux de bord consolidés à tous les niveaux hiérarchiques, permettant un pilotage efficace de la performance.
 
 
@@ -29,11 +30,12 @@ Sur le plan géographique, il concernait les 25+ directions régionales d'Enedis
 Les utilisateurs sont répartis entre les RH responsables de la gestion des effectifs ainsi que les différents managers d'unités de toute l'entreprise.
 Cette dimension nationale constituait un défi majeur en termes de déploiement et d'accompagnement au changement.
 
-La partie fonctionnelle était la plus complexe car la compréhension des besoins métiers doit être approfondie et complète pour garantir la cohérence de la solution.
+La partie fonctionnelle était la plus complexe, car la compréhension des besoins métiers doit être approfondie et complète pour garantir la cohérence de la solution.
 Le périmètre fonctionnel englobait la gestion complète des mouvements des effectifs, en interne, vers et depuis l'externe, ainsi que l'imputation des objectifs ainsi que leur pilotage.
 La gestion des droits devait être adaptée aux différents profils d'utilisateurs, tandis que des tableaux de bord dynamiques permettraient d'analyser les données selon différentes dimensions.
 
-L'aspect technique le plus ambitieux était d'implémenter l'import des données sans en connaître la source ni la structure. C'était logiquement la première étape de la phase de développement mais a nécessité des ajouts, modifications et divers refactoring jusqu'à la fin du projet.
+L'aspect technique le plus ambitieux était d'implémenter l'import des données sans en connaître la source ni la structure.
+C'était logiquement la première étape de la phase de développement, mais a nécessité des ajouts, modifications et divers refactoring jusqu'à la fin du projet.
 
 L'application s'adressait à plusieurs catégories d'utilisateurs aux besoins distincts.
 Les RH avaient besoin d'une vue d'ensemble consolidée de la gestion des effectifs, avec la possibilité de suivre les mouvements et les objectifs de chaque unité.
@@ -50,7 +52,7 @@ Sur le plan méthodologique, nous avons adopté une approche hybride, s'inspiran
 Cette combinaison nous a permis de maintenir un cadre structuré avec des jalons clairs et des livrables définis, tout en conservant la flexibilité nécessaire pour s'adapter aux évolutions des besoins métiers et aux retours utilisateurs.
 
 La gestion opérationnelle s'appuyait sur GitLab comme outil central.
-Cette plateforme nous servait non seulement pour le versionnement du code source, mais également pour le suivi des issues (fonctionnalités, bugs, tâches), la planification des sprints via les milestones,  ainsi que pour la documentation technique du projet.
+Cette plateforme nous servait non seulement pour le versionnage du code source, mais également pour le suivi des issues (fonctionnalités, bugs, tâches), la planification des sprints via les milestones, ainsi que pour la documentation technique du projet.
 Cette centralisation des outils a grandement facilité la collaboration et le suivi de l'avancement.
 Notamment pendant les périodes de cours, où la chefferie de projet était assurée par un autre alternant de l'équipe.
 
@@ -86,13 +88,14 @@ Tout au long du développement, en collaboration avec les référents cyber-séc
 
 \subsection{Déploiement et adoption}
 
-A FAIRE EN JUIN
+À FAIRE EN JUIN
 
 %Le déploiement a été planifié en plusieurs phases, avec une approche progressive visant à minimiser les risques et à maximiser l'adoption.
 %La phase pilote a débuté par le déploiement initial dans la DR Sillon Rhodanien en juillet 2024, suivi d'une période de stabilisation et d'ajustements de deux semaines.
 %Cette étape a permis de recueillir les premiers retours utilisateurs en conditions réelles et d'apporter les correctifs nécessaires avant une diffusion plus large.
 %
-%Le déploiement s'est ensuite étendu à un groupe de huit DR pilotes, sélectionnées pour leur représentativité de la diversité des contextes et pratiques au sein d'Enedis. Cette extension a été précédée de sessions de présentation et de formation des référents locaux, qui ont ensuite servi de relais auprès des utilisateurs finaux.
+%Le déploiement s'est ensuite étendu à un groupe de huit DR pilotes, sélectionnées pour leur représentativité de la diversité des contextes et pratiques au sein d'Enedis.
+%Cette extension a été précédée de sessions de présentation et de formation des référents locaux, qui ont ensuite servi de relais auprès des utilisateurs finaux.
 %Un accompagnement personnalisé a été mis en place durant cette phase d'adoption, avec un suivi régulier et des ajustements en fonction des remontées terrain.
 %
 %La généralisation nationale est actuellement en cours de planification, avec l'élaboration d'un kit de déploiement complet comprenant documentation et supports de formation adaptés aux différents profils d'utilisateurs.
@@ -140,7 +143,7 @@ La séparation claire des responsabilités entre les différentes couches de l'a
 
 \subsection{Automatisation et traitement des données}
 
-L'automatisation du traitement des données constituait l'un des enjeux majeurs du projet, avec un potentiel d'impact immédiat sur la productivité des équipes RH.
+L'automatisation du traitement des données constituait l'un des enjeux majeurs du projet, avec un potentiel d'impact immédiat sur la productivité des équipes RH\@.
 Nous avons développé des interfaces avec les systèmes RH centraux permettant la récupération automatique des données de mouvements d'effectifs.
 Ces flux s'exécutent une fois par mois, après la mise à jour des données dans les systèmes sources, garantissant ainsi la synchronisation des informations entre les différents systèmes.
 
@@ -161,18 +164,24 @@ Le gain de temps d'au moins une journée par mois peut être réinvesti dans des
 
 \subsection{Métriques et bénéfices quantifiables}
 
-A REDIGER EN JUILLET. TAUX D'ADOPTION, SATISFACTION, ERREURS DE SAISIE, TEMPS DE TRAITEMENT, etc.
+À RÉDIGER EN JUILLET\@.
+TAUX D'ADOPTION, SATISFACTION, ERREURS DE SAISIE, TEMPS DE TRAITEMENT, ETC\@.
 
 %Les premiers déploiements ont permis de mesurer des gains significatifs sur plusieurs dimensions.
-%Le temps consacré à la gestion administrative des objectifs a été réduit de 50\%, libérant des ressources précieuses pour des tâches à plus forte valeur ajoutée. Cette amélioration résulte principalement de l'élimination complète des manipulations Excel manuelles, qui représentaient environ quatre heures de travail mensuel pour chaque direction régionale. L'automatisation du processus d'import représente à elle seule un gain d'une journée complète par mois et par DR, impact considérable lorsqu'on le multiplie par les 25 directions régionales d'Enedis.
+%Le temps consacré à la gestion administrative des objectifs a été réduit de 50\%, libérant des ressources précieuses pour des tâches à plus forte valeur ajoutée.
+%Cette amélioration résulte principalement de l'élimination complète des manipulations Excel manuelles, qui représentaient environ quatre heures de travail mensuel pour chaque direction régionale.
+%L'automatisation du processus d'import représente à elle seule un gain d'une journée complète par mois et par DR, impact considérable lorsqu'on le multiplie par les 25 directions régionales d'Enedis.
 %
 %Le gain de productivité ne se limite pas aux opérations d'import.
 %Les utilisateurs finaux bénéficient également d'améliorations notables dans leur quotidien.
 %Le temps nécessaire pour consulter les objectifs a été divisé par trois grâce à l'interface intuitive et aux accès directs personnalisés.
-%Les contrôles automatiques intégrés aux formulaires ont permis de réduire de 70\% les erreurs de saisie, améliorant significativement la qualité des données. Cette fiabilité accrue se traduit également par une diminution des demandes d'assistance liées à l'utilisation de l'outil, réduisant la charge de support technique.
+%Les contrôles automatiques intégrés aux formulaires ont permis de réduire de 70\% les erreurs de saisie, améliorant significativement la qualité des données.
+%Cette fiabilité accrue se traduit également par une diminution des demandes d'assistance liées à l'utilisation de l'outil, réduisant la charge de support technique.
 %
 %D'autres indicateurs confirment le succès initial du déploiement.
-%Le taux d'adoption a atteint 95\% dans les DR pilotes, démontrant l'acceptation de la solution par les utilisateurs finaux. Les enquêtes de satisfaction post-déploiement ont révélé un score moyen de 4,2 sur 5, résultat remarquable pour une application récemment déployée. Sur le plan technique, le nombre d'incidents liés aux imports de données a chuté drastiquement, passant de 5-6 par mois à moins d'un, témoignant de la robustesse des automatismes mis en place.
+%Le taux d'adoption a atteint 95\% dans les DR pilotes, démontrant l'acceptation de la solution par les utilisateurs finaux.
+%Les enquêtes de satisfaction post-déploiement ont révélé un score moyen de 4,2 sur 5, résultat remarquable pour une application récemment déployée.
+%Sur le plan technique, le nombre d'incidents liés aux imports de données a chuté drastiquement, passant de 5-6 par mois à moins d'un, témoignant de la robustesse des automatismes mis en place.
 %
 %À l'échelle nationale, ces gains représentent un potentiel d'économie de plus de 300 jours/homme par an.
 %Ce temps libéré permet de recentrer les équipes RH sur des activités à plus forte valeur ajoutée, comme l'accompagnement des managers dans le pilotage de la performance ou l'analyse approfondie des résultats pour identifier des axes d'amélioration.
@@ -190,7 +199,7 @@ Cette harmonisation facilite également le pilotage national consolidé, offrant
 
 L'amélioration de la fiabilité et de la qualité des données constitue un autre bénéfice qualitatif significatif.
 L'élimination des risques d'erreurs liés aux manipulations manuelles renforce la confiance dans les indicateurs de performance.
-L'intégrité des données est désormais garantie par les contrôles automatiques intégrés à chaque étape du processus, tandis que la traçabilité complète des modifications permet de répondre aux exigences réglementaires, notamment en matière de RGPD.
+L'intégrité des données est désormais garantie par les contrôles automatiques intégrés à chaque étape du processus, tandis que la traçabilité complète des modifications permet de répondre aux exigences réglementaires, notamment en matière de RGPD\@.
 
 Cette solution constitue désormais un socle fiable pour le pilotage des effectifs à tous les niveaux de l'entreprise, contribuant directement à l'amélioration de la performance collective.
 Au-delà des aspects techniques et fonctionnels, elle participe à une évolution culturelle plus profonde, favorisant une approche plus agile et numérique de la gestion des ressources humaines chez Enedis.
