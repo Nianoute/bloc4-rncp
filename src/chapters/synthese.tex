@@ -1,76 +1,197 @@
 \section{Contexte initial et objectifs du projet}
+
 \subsection{Limites de l'outil existant}
-% Description de la situation de départ
-% Problèmes et inefficacités identifiés
-% Impact sur les utilisateurs et l'entreprise
-\lipsum[9]
+
+Au sein de la Direction Régionale Sillon Rhodanien, les RH responsables de la gestion des effectifs utilisaient une application web locale développée pour répondre au besoins de la région.
+Si cet outil répondait aux besoins immédiats de notre DR, il présentait néanmoins d'importantes limitations.
+Son développement réalisé à l'externe ainsi que les technologies ne concordaient pas avec les standards actuels de l'équipe, rendait son évolution complexe et coûteuse.
+Le point le plus critique concernait le processus de réconciliation mensuelle des données, extrêmement chronophage, qui nécessitait de nombreuses manipulations manuelles dans Excel, mobilisant inutilement des ressources qualifiées sur des tâches à faible valeur ajoutée.
+
+Par ailleurs, l'absence d'une solution standardisée entre les différentes DR d'Enedis entraînait des disparités importantes dans le suivi et le pilotage des objectifs, complexifiant la consolidation des données au niveau national et créant des incohérences dans l'évaluation de la performance.
 
 \subsection{Vision et objectifs de la refonte}
-% Objectifs stratégiques et opérationnels
-% Gains attendus
-% Indicateurs de succès définis
-\lipsum[10]
+
+Face à ce constat, la Direction des Ressources Humaines et Transformation Santé-Sécurité (DRHTS) ayant connaissance de notre solution, a décidé de lancer un projet ambitieux de refonte de l'application, visant à transformer cet outil local en une solution nationale unifiée pour la gestion des objectifs au sein d'Enedis.
+L'ambition principale était de créer une solution permettant de standardiser et harmoniser les processus de gestion des effectifs entre toutes les directions régionales.
+Cette harmonisation devait s'accompagner d'une automatisation complète des flux de données mensuels avec les systèmes sources nationaux fournies par la Direction des Services Supports (DIR2S), éliminant ainsi les tâches manuelles fastidieuses et sources d'erreurs.
+Un nouvel indicateur majeur de pilotage ayant été introduit dans les processus de gestions des effectifs il y a peu, il était évidemment crucial qu'il soit partie intégrante de la solution.
+
+Sur le plan technique et ergonomique, l'objectif était de fournir une interface moderne, intuitive et responsive, facilitant l'adoption par les utilisateurs tout en garantissant la conformité avec les exigences réglementaires, notamment en matière de RGPD.
+La solution devait également offrir des tableaux de bord consolidés à tous les niveaux hiérarchiques, permettant un pilotage efficace de la performance.
+
 
 \section{Périmètre et organisation du projet}
+
 \subsection{Couverture fonctionnelle et technique}
-% Périmètre géographique (25+ DR)
-% Périmètre fonctionnel
-% Profils utilisateurs concernés
-\lipsum[11]
+
+Le projet se distinguait par l'ampleur de son périmètre, tant géographique que fonctionnel.
+Sur le plan géographique, il concernait les 25+ directions régionales d'Enedis réparties sur l'ensemble du territoire français, représentant potentiellement plusieurs milliers d'utilisateurs.
+Les utilisateurs sont répartis entre les RH responsables de la gestion des effectifs ainsi que les différents managers d'unités de toute l'entreprise.
+Cette dimension nationale constituait un défi majeur en termes de déploiement et d'accompagnement au changement.
+
+La partie fonctionnelle était la plus complexe car la compréhension des besoins métiers doit être approfondie et complète pour garantir la cohérence de la solution.
+Le périmètre fonctionnel englobait la gestion complète des mouvements des effectifs, en interne, vers et depuis l'externe, ainsi que l'imputation des objectifs ainsi que leur pilotage.
+La gestion des droits devait être adaptée aux différents profils d'utilisateurs, tandis que des tableaux de bord dynamiques permettraient d'analyser les données selon différentes dimensions.
+
+L'aspect technique le plus ambitieux était d'implémenter l'import des données sans en connaître la source ni la structure. C'était logiquement la première étape de la phase de développement mais a nécessité des ajouts, modifications et divers refactoring jusqu'à la fin du projet.
+
+L'application s'adressait à plusieurs catégories d'utilisateurs aux besoins distincts.
+Les RH avaient besoin d'une vue d'ensemble consolidée de la gestion des effectifs, avec la possibilité de suivre les mouvements et les objectifs de chaque unité.
+Les managers, quant à eux, devaient pouvoir accéder à des tableaux de bord personnalisés, leur permettant de suivre l'évolution de leurs équipes et d'inscrire les changements d'effectifs dans son périmètre.
 
 \subsection{Gouvernance et méthodologie}
-% Organisation de l'équipe projet
-% Méthodologie appliquée (Agile, GitLab)
-% Rôles et responsabilités
-\lipsum[12]
+
+Pour mener à bien ce projet d'envergure nationale, nous avons mis en place une organisation structurée et adaptée aux enjeux.
+Un comité de pilotage assurait la gouvernance stratégique du projet, validant les orientations majeures et arbitrant les décisions importantes.
+En tant que chef de projet, j'assurais la coordination quotidienne des activités et participais activement au développement, avec le soutien d'une équipe de deux développeurs.
+Une référente métier connaissant parfaitement l'outil existant et les enjeux métiers était également intégrée à l'équipe, garantissant une compréhension approfondie des besoins utilisateurs et facilitant la communication avec les parties prenantes.
+
+Sur le plan méthodologique, nous avons adopté une approche hybride, s'inspirant des principes Prince2 pour la gestion de projet globale, tout en intégrant des méthodes agiles pour le développement.
+Cette combinaison nous a permis de maintenir un cadre structuré avec des jalons clairs et des livrables définis, tout en conservant la flexibilité nécessaire pour s'adapter aux évolutions des besoins métiers et aux retours utilisateurs.
+
+La gestion opérationnelle s'appuyait sur GitLab comme outil central.
+Cette plateforme nous servait non seulement pour le versionnement du code source, mais également pour le suivi des issues (fonctionnalités, bugs, tâches), la planification des sprints via les milestones,  ainsi que pour la documentation technique du projet.
+Cette centralisation des outils a grandement facilité la collaboration et le suivi de l'avancement.
+Notamment pendant les périodes de cours, où la chefferie de projet était assurée par un autre alternant de l'équipe.
+
+En tant que chef de projet, j'assumais la double responsabilité du pilotage global et d'une partie du développement technique.
+Cette position m'a permis de maintenir une vision d'ensemble cohérente tout en garantissant la faisabilité technique des solutions proposées, assurant ainsi l'alignement constant entre les attentes métiers et les réalisations techniques.
+
 
 \section{Étapes clés et réalisations}
+
 \subsection{Phase de cadrage et d'analyse}
-% Spécification du besoin
-% Ateliers avec les utilisateurs
-% Formalisation des exigences
-\lipsum[13]
+
+Le projet a débuté par une phase de cadrage approfondie au cours du second trimestre 2024.
+Cette étape cruciale a commencé par une analyse détaillée de l'existant, comprenant un inventaire exhaustif des fonctionnalités de l'application locale et une cartographie des processus métiers en place.
+Ce travail préliminaire a permis d'identifier précisément les points forts à conserver et les faiblesses à corriger dans la nouvelle version.
+
+Pour définir précisément les contours fonctionnels de la future solution, nous avons mené une série d'entretiens individuels avec les utilisateurs clés de la DR Sillon Rhodanien, afin de comprendre leurs usages quotidiens et leurs attentes.
+
+Cette phase s'est conclue par la spécification des besoins fonctionnels et techniques globaux, formalisée lors du Kick-off du projet.
 
 \subsection{Conception et développement}
-% Architecture et choix techniques
-% Sprints de développement
-% Tests et validation
-\lipsum[14]
+
+La phase de conception et développement s'est déroulée de mai 2024 à juin 2025, selon une approche itérative permettant d'ajuster régulièrement les orientations en fonction des retours utilisateurs.
+Cette période a débuté par la conception d'une architecture moderne, basée sur la dernière version d'Angular pour le frontend, offrant une approche par composants réutilisables et une expérience utilisateur optimisée.
+Le backend a été développé avec NestJS (embarquant Express), choix stratégique pour la mise en œuvre d'API RESTful performantes et la gestion efficace des traitements métiers.
+La base de données PostgreSQL, associée à l'ORM Prisma, assurait la persistance et l'intégrité des données.
+
+Le développement a été organisé en sprints, plutôt longs dû au fait que l'équipe n'était composées que de trois alternants, avec des rythmes de cours différents.
+Des points d'avancement hebdomadaires avec le métier permettaient de suivre la progression et de résoudre rapidement les éventuels blocages.
+À la fin de chaque sprint, une phase de recette prenait place avec la référente métier, permettant de valider les fonctionnalités développées et d'identifier les ajustements nécessaires.
+Cette approche itérative a permis d'intégrer continuellement les retours utilisateurs et d'ajuster le développement en conséquence.
+
+Tout au long du développement, en collaboration avec les référents cyber-sécurité de l'équipe, nous avons veillé à la conformité de l'application aux normes de sécurité en vigueur au sein d'Enedis avec l'outil Checkmarx.
 
 \subsection{Déploiement et adoption}
-% Stratégie de déploiement
-% Formation et accompagnement
-% Gestion du changement
-\lipsum[15]
+
+A FAIRE EN JUIN
+
+%Le déploiement a été planifié en plusieurs phases, avec une approche progressive visant à minimiser les risques et à maximiser l'adoption.
+%La phase pilote a débuté par le déploiement initial dans la DR Sillon Rhodanien en juillet 2024, suivi d'une période de stabilisation et d'ajustements de deux semaines.
+%Cette étape a permis de recueillir les premiers retours utilisateurs en conditions réelles et d'apporter les correctifs nécessaires avant une diffusion plus large.
+%
+%Le déploiement s'est ensuite étendu à un groupe de huit DR pilotes, sélectionnées pour leur représentativité de la diversité des contextes et pratiques au sein d'Enedis. Cette extension a été précédée de sessions de présentation et de formation des référents locaux, qui ont ensuite servi de relais auprès des utilisateurs finaux.
+%Un accompagnement personnalisé a été mis en place durant cette phase d'adoption, avec un suivi régulier et des ajustements en fonction des remontées terrain.
+%
+%La généralisation nationale est actuellement en cours de planification, avec l'élaboration d'un kit de déploiement complet comprenant documentation et supports de formation adaptés aux différents profils d'utilisateurs.
+%Un dispositif d'assistance aux utilisateurs a également été conçu, combinant une base de connaissances accessible en ligne et un support technique réactif pour répondre aux éventuelles difficultés.
+%
+%L'accompagnement au changement a constitué un axe majeur de cette phase, au-delà des aspects purement techniques.
+%Nous avons élaboré une documentation utilisateur complète, organisé des sessions de formation en visioconférence, et mis en place un suivi rapproché des premiers utilisateurs.
+%Cette démarche proactive a permis de faciliter l'adoption en réduisant les résistances naturelles face au changement et en valorisant les bénéfices concrets de la nouvelle solution.
+
 
 \section{Solutions techniques implémentées}
+
 \subsection{Frontend et expérience utilisateur}
-% Interface Angular
-% Fonctionnalités principales
-% Optimisations UI/UX
-\lipsum[16]
+
+L'interface utilisateur a été entièrement repensée pour offrir une expérience moderne et intuitive, facteur clé de l'adoption.
+L'architecture frontend, basée sur Angular, adopte une approche modulaire avec des composants réutilisables qui facilitent la maintenance et l'évolution.
+L'utilisation de la librairie graphique NG-ZORRO a permis de créer une interface cohérente et esthétique, respectant les standards modernes tout en offrant une expérience utilisateur fluide.
+
+Les fonctionnalités principales de l'interface incluent des tableaux de bord personnalisés selon le profil utilisateur, offrant immédiatement les informations les plus pertinentes pour chaque type d'utilisateur.
+La visualisation de l'avancement des objectifs a été particulièrement soignée, avec des représentations graphiques intuitives permettant d'appréhender rapidement les tendances et les points d'attention.
+Les formulaires de création et modification des objectifs ont été conçus de manière dynamique, s'adaptant au contexte et aux droits de l'utilisateur, tandis que des exports personnalisables répondent aux besoins variés de reporting.
+Le fil chronologique d'un poste ou d'un salarié sur leurs fiches respectives permet de suivre l'historique des actions et des modifications, offrant une traçabilité complète.
+
+Plusieurs optimisations techniques ont été mises en œuvre pour garantir une expérience fluide, comme le lazy loading qui limite le temps de chargement initial, la pagination côté serveur, ou encore le feedback visuel immédiat sur les actions utilisateurs qui améliore la perception de réactivité.
+Une aide contextuelle a été intégrée à chaque écran, facilitant la prise en main de l'application sans nécessiter de formation approfondie.
 
 \subsection{Backend et intégration}
-% Architecture NestJS
-% Intégration avec le SI Enedis (SSO)
-% Gestion des données avec Prisma
-\lipsum[17]
+
+L'architecture backend a été conçue pour garantir performance, maintenabilité et évolutivité, critères essentiels pour une application destinée à un usage national.
+La structure modulaire de NestJS nous a permis d'organiser le code en reflétant fidèlement les domaines métiers, facilitant ainsi la compréhension et la maintenance par l'équipe de développement.
+
+Des middlewares ont été implémentés pour gérer les aspects transverses comme la journalisation des événements significatifs ou la sécurité, assurant une cohérence globale de ces fonctions critiques.
+Les services métiers encapsulent la logique applicative, respectant les principes de séparation des responsabilités et facilitant l'évolution indépendante des différentes parties du système.
+
+L'intégration avec le Système d'Information d'Enedis constituait un défi technique majeur.
+L'authentification a été mise en œuvre via le SSO d'entreprise utilisant le protocole Oauth2, garantissant une gestion centralisée et sécurisée des identités et des droits.
+
+Des interfaces sécurisées ont été développées pour dialoguer avec les systèmes sources RH, respectant scrupuleusement les standards d'architecture cible définis par la direction informatique d'Enedis.
+
+La gestion des données avec Prisma nous a permis de modéliser précisément le domaine métier, avec un schéma déclaratif clair et évolutif.
+Les migrations automatisées facilitent l'évolution du schéma au fil des versions, tandis que les requêtes ont été optimisées pour les opérations fréquentes, garantissant des performances satisfaisantes même avec des volumes importants.
+L'utilisation systématique de transactions pour les opérations complexes assure l'intégrité des données, aspect crucial pour une application gérant des informations sensibles.
+
+La séparation claire des responsabilités entre les différentes couches de l'application garantit sa maintenabilité future et facilite l'évolution des fonctionnalités, permettant d'adapter la solution aux besoins émergents sans nécessiter une refonte complète.
 
 \subsection{Automatisation et traitement des données}
-% Flux de données automatisés
-% Imports mensuels
-% Validation et intégrité des données
-\lipsum[18]
+
+L'automatisation du traitement des données constituait l'un des enjeux majeurs du projet, avec un potentiel d'impact immédiat sur la productivité des équipes RH.
+Nous avons développé des interfaces avec les systèmes RH centraux permettant la récupération automatique des données de mouvements d'effectifs.
+Ces flux s'exécutent une fois par mois, après la mise à jour des données dans les systèmes sources, garantissant ainsi la synchronisation des informations entre les différents systèmes.
+
+Ce processus précédemment source de nombreuses manipulations manuelles, a été entièrement automatisé.
+Le système récupère directement les données, applique les transformations nécessaires, les compare avec ce qui était prévu dans l'outil, puis les intègre dans la base de données, avec parfois des écarts à traiter.
+Chaque import est historisé pour garantir une traçabilité complète et permettre d'éventuelles analyses rétrospectives.
+
+La qualité et l'intégrité des données sont assurées par plusieurs mécanismes complémentaires.
+Des contrôles de cohérence automatiques sont appliqués lors des imports, vérifiant par exemple que les valeurs respectent les bornes attendues ou que les relations entre entités sont préservées.
+Toutes les opérations critiques sont consignées dans des journaux détaillés, permettant de reconstituer l'historique des modifications en cas de besoin.
+Enfin, des mécanismes de reprise sur erreur ont été implémentés, permettant l'annulation d'un import en cas de problème majeur, tout en garantissant la continuité du service.
+
+Cette automatisation approfondie a permis d'éliminer les tâches manuelles fastidieuses qui mobilisaient auparavant une part importante du temps des équipes RH, tout en réduisant significativement les risques d'erreurs inhérents aux manipulations manuelles.
+Le gain de temps d'au moins une journée par mois peut être réinvesti dans des activités à plus forte valeur ajoutée, comme l'accompagnement des managers ou l'analyse approfondie des mouvements.
+
 
 \section{Résultats et impacts}
+
 \subsection{Métriques et bénéfices quantifiables}
-% Réduction du temps de traitement (50%)
-% Gain de productivité (1 jour/mois/DR)
-% Autres indicateurs pertinents
-\lipsum[19]
+
+A REDIGER EN JUILLET. TAUX D'ADOPTION, SATISFACTION, ERREURS DE SAISIE, TEMPS DE TRAITEMENT, etc.
+
+%Les premiers déploiements ont permis de mesurer des gains significatifs sur plusieurs dimensions.
+%Le temps consacré à la gestion administrative des objectifs a été réduit de 50\%, libérant des ressources précieuses pour des tâches à plus forte valeur ajoutée. Cette amélioration résulte principalement de l'élimination complète des manipulations Excel manuelles, qui représentaient environ quatre heures de travail mensuel pour chaque direction régionale. L'automatisation du processus d'import représente à elle seule un gain d'une journée complète par mois et par DR, impact considérable lorsqu'on le multiplie par les 25 directions régionales d'Enedis.
+%
+%Le gain de productivité ne se limite pas aux opérations d'import.
+%Les utilisateurs finaux bénéficient également d'améliorations notables dans leur quotidien.
+%Le temps nécessaire pour consulter les objectifs a été divisé par trois grâce à l'interface intuitive et aux accès directs personnalisés.
+%Les contrôles automatiques intégrés aux formulaires ont permis de réduire de 70\% les erreurs de saisie, améliorant significativement la qualité des données. Cette fiabilité accrue se traduit également par une diminution des demandes d'assistance liées à l'utilisation de l'outil, réduisant la charge de support technique.
+%
+%D'autres indicateurs confirment le succès initial du déploiement.
+%Le taux d'adoption a atteint 95\% dans les DR pilotes, démontrant l'acceptation de la solution par les utilisateurs finaux. Les enquêtes de satisfaction post-déploiement ont révélé un score moyen de 4,2 sur 5, résultat remarquable pour une application récemment déployée. Sur le plan technique, le nombre d'incidents liés aux imports de données a chuté drastiquement, passant de 5-6 par mois à moins d'un, témoignant de la robustesse des automatismes mis en place.
+%
+%À l'échelle nationale, ces gains représentent un potentiel d'économie de plus de 300 jours/homme par an.
+%Ce temps libéré permet de recentrer les équipes RH sur des activités à plus forte valeur ajoutée, comme l'accompagnement des managers dans le pilotage de la performance ou l'analyse approfondie des résultats pour identifier des axes d'amélioration.
 
 \subsection{Bénéfices qualitatifs}
-% Amélioration de l'expérience utilisateur
-% Harmonisation des processus
-% Fiabilité et qualité des données
-\lipsum[20]
+
+Au-delà des gains quantifiables, le projet a généré d'importants bénéfices qualitatifs qui participent à la transformation des pratiques RH au sein d'Enedis.
+L'amélioration de l'expérience utilisateur constitue l'un des impacts les plus immédiatement perceptibles.
+L'interface moderne et intuitive facilite l'appropriation de l'outil par l'ensemble des utilisateurs, qu'ils soient RH ou managers.
+La visualisation claire de l'avancement et des tendances offre une meilleure compréhension de la performance, facilitant le dialogue entre les équipes RH et les managers.
+
+L'harmonisation des processus entre les différentes directions régionales représente un bénéfice majeur pour l'entreprise.
+La standardisation des pratiques de gestion des objectifs assure désormais une cohérence dans le suivi et l'évaluation des performances.
+Cette harmonisation facilite également le pilotage national consolidé, offrant aux DRHTS une vision unifiée de la performance collective.
+
+L'amélioration de la fiabilité et de la qualité des données constitue un autre bénéfice qualitatif significatif.
+L'élimination des risques d'erreurs liés aux manipulations manuelles renforce la confiance dans les indicateurs de performance.
+L'intégrité des données est désormais garantie par les contrôles automatiques intégrés à chaque étape du processus, tandis que la traçabilité complète des modifications permet de répondre aux exigences réglementaires, notamment en matière de RGPD.
+
+Cette solution constitue désormais un socle fiable pour le pilotage des effectifs à tous les niveaux de l'entreprise, contribuant directement à l'amélioration de la performance collective.
+Au-delà des aspects techniques et fonctionnels, elle participe à une évolution culturelle plus profonde, favorisant une approche plus agile et numérique de la gestion des ressources humaines chez Enedis.
+
