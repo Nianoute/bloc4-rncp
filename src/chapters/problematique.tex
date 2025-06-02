@@ -1,185 +1,55 @@
-\section{Analyse approfondie de l'existant}
-
-\subsection{État initial de l'outil local}
-
-L'application existante de la DR Sillon Rhodanien avait été développée par un prestataire externe plusieurs années auparavant, sans cadrage du DFSI.
-Cette solution, bien qu'opérationnelle, présentait de nombreuses limitations techniques et fonctionnelles qui compromettaient son efficacité et sa pérennité.
-L'architecture de cette application reposait sur des technologies vieillissantes (CodeIgniter 2), ce qui rendait le code source complexe à maintenir, l'application difficilement migrable vers la nouvelle architecture, et la conception initiale n'avait pas anticipé des évolutions fonctionnelles majeures.
-
-L'un des principaux problèmes identifiés concernait le processus de réconciliation mensuelle des données.
-Cette tâche critique nécessitait l'extraction de données vers Excel, de multiples manipulations manuelles, puis une réimportation suivie de validations dans l'application.
-Ce processus, particulièrement chronophage, était source d'erreurs potentielles et mobilisait inutilement des ressources humaines qualifiées pour des tâches à faible valeur ajoutée.
-
-L'interface utilisateur, conçue selon des standards désormais obsolètes, offrait une expérience peu intuitive et ne répondait plus aux attentes des utilisateurs en termes d'ergonomie et de réactivité.
+\section{Analyse approfondie de l'existant et stratégie de modernisation}
 
 \subsection{Approche pragmatique de modernisation}
+Face aux limitations de l'application existante (technologies vieillissantes, processus manuels chronophages), nous avons opté pour une approche pragmatique : moderniser la solution de notre Direction Régionale en l'enrichissant des fonctionnalités nationales.
+Cette décision s'appuyait sur plusieurs facteurs déterminants : la solution couvrait déjà une grande partie des besoins fondamentaux, nous disposions d'une expertise métier approfondie, et la nécessité de livrer rapidement une première version fonctionnelle.
 
-Face à ces constats, nous avons opté pour une approche pragmatique : moderniser la solution existante de notre Direction Régionale en l'enrichissant des fonctionnalités requises au niveau national.
-Cette décision s'est appuyée sur plusieurs facteurs déterminants.
-Tout d'abord, la solution de notre DR couvrait déjà une grande partie des besoins fondamentaux identifiés au niveau national, ce qui constituait une base solide pour notre travail.
-Nous disposions également d'une expertise et d'une connaissance métier approfondie de l'outil existant au sein de notre entité, atout considérable pour mener à bien cette transformation.
-Enfin, la nécessité de livrer rapidement une première version fonctionnelle nous incitait à capitaliser sur l'existant plutôt que de repartir de zéro.
-
-Plutôt que de conduire une analyse exhaustive des besoins de toutes les DR en amont du projet, nous avons privilégié une refonte technique complète associée à l'ajout des fonctionnalités nationales identifiées comme prioritaires.
-Cette approche nous a permis d'avancer rapidement sur les aspects techniques tout en intégrant progressivement les retours des futurs utilisateurs.
+Plutôt que de conduire une analyse exhaustive des besoins de toutes les DR en amont, nous avons privilégié une refonte technique complète associée à l'ajout des fonctionnalités prioritaires, permettant d'avancer rapidement sur les aspects techniques tout en intégrant progressivement les retours utilisateurs.
 
 \subsection{Découverte progressive des spécificités régionales}
+La compréhension des besoins des autres Directions Régionales s'est construite progressivement lors de la phase de conduite du changement.
+Cette approche séquentielle s'est révélée efficace : elle nous a permis de nous concentrer initialement sur la qualité technique du socle, de découvrir les particularités régionales au moment opportun, et d'établir un dialogue constructif avec les futurs utilisateurs sur la base d'une solution concrète plutôt que de concepts abstraits.
 
-La compréhension des besoins et des spécificités des autres Directions Régionales s'est construite progressivement, principalement lors de la phase de conduite du changement.
-Cette approche séquentielle s'est révélée particulièrement efficace pour plusieurs raisons.
-Elle nous a permis de concentrer nos efforts initiaux sur la qualité technique et fonctionnelle du socle de l'application, élément fondamental de sa pérennité.
-Nous avons ainsi pu découvrir les particularités régionales au moment opportun, lorsque la solution était suffisamment mature pour envisager des adaptations sans remettre en cause l'architecture globale.
-
-Cette méthode a également favorisé l'établissement d'un dialogue constructif avec les futurs utilisateurs sur la base d'une solution concrète plutôt que de concepts abstraits.
-Les démonstrations de fonctionnalités réelles ont suscité des retours plus pertinents que des discussions théoriques sur les besoins.
-Enfin, cette approche itérative nous a permis d'ajuster la solution en fonction des retours utilisateurs de manière progressive et maîtrisée.
-
-Au cours des sessions de présentation et de formation, nous avons recueilli les besoins spécifiques des différentes DR\@.
-Cette méthode a confirmé que, malgré des différences dans les processus, un socle commun important existait et que notre solution modernisée répondait déjà à une grande partie des attentes exprimées par les utilisateurs des autres régions.
+Les sessions de présentation ont confirmé que, malgré des différences dans les processus, un socle commun important existait et que notre solution modernisée répondait déjà à une grande partie des attentes exprimées.
 
 
-\section{Stratégie d'unification et d'évolution}
+\section{Défis techniques et solutions apportées}
 
-\subsection{Définition pragmatique du périmètre fonctionnel}
+\subsection{Contraintes réglementaires et d'intégration}
+Le développement d'une solution nationale impliquait de prendre en compte plusieurs contraintes majeures.
+Sur le plan RGPD, nous avons réalisé une cartographie précise des données personnelles traitées, implémenté le principe de minimisation des données, et mis en place des mécanismes de traçabilité des accès avec une politique de droits stricte.
 
-Notre approche de modernisation s'est articulée autour de trois axes principaux.
-Le premier axe consistait en une refonte technique complète de l'application.
-Nous avons entrepris une refonte intégrale de l'architecture technique pour garantir la pérennité, la maintenabilité et la scalabilité de la solution.
-Cette modernisation technique constituait le socle indispensable pour supporter les ambitions nationales du projet et assurer son évolution future.
+L'intégration au Système d'Information d'Enedis constituait un autre défi technique majeur.
+L'application devait s'insérer harmonieusement dans l'écosystème existant, nécessitant la mise en œuvre de l'authentification SSO via OAuth2.
+Notre projet était pilote dans l'équipe sur cette nouvelle architecture, permettant de définir les bonnes pratiques pour les projets suivants.
 
-Le deuxième axe concernait l'intégration des exigences nationales prioritaires.
-En parallèle de la refonte technique, nous avons intégré les fonctionnalités identifiées comme prioritaires par la direction nationale.
-Le point central de ce projet est le nouvel indicateur EMP -pour Effectif Moyen Payé- qui remplace l'ancien indicateur EFA -pour Effectif Fin d'Année-, bien que ce dernier soit encore utilisé dans la plupart des DR\@.
-Les fonctionnalités comprenaient également la standardisation des processus de gestion des effectifs, l'uniformisation des tableaux de bord et des indicateurs de suivi, ainsi que la mise en place d'un système de droits adapté à une utilisation multi-DR\@.
-Ces évolutions fonctionnelles répondaient aux besoins stratégiques exprimés par la DRHTS pour harmoniser les pratiques au niveau national.
+\subsection{Automatisation des processus critiques}
+L'automatisation du processus mensuel d'import constituait le défi le plus complexe.
+La première difficulté résidait dans l'analyse des sources de données externes, nécessitant l'élaboration d'un document de spécification détaillé partagé avec les équipes des systèmes sources.
 
-Le troisième axe, particulièrement important, concernait l'automatisation du processus critique d'import mensuel.
-Identifié comme le principal point de friction dans l'ensemble des DR, le processus de réconciliation mensuelle des données a fait l'objet d'une attention particulière.
-Son automatisation complète représentait un gain immédiat et significatif pour l'ensemble des utilisateurs, éliminant des tâches manuelles fastidieuses et sources d'erreurs.
-
-Les fonctionnalités spécifiques découvertes lors de la phase de conduite du changement ont été évaluées selon leur pertinence globale et leur complexité d'implémentation.
-Celles apportant une valeur ajoutée significative ont été intégrées au plan d'évolution de l'application, avec une mise en œuvre progressive priorisée selon leur importance et leur impact sur les processus métier.
-
-\subsection{Contraintes réglementaires et techniques}
-
-Le développement d'une solution nationale pour la gestion des effectifs impliquait de prendre en compte plusieurs contraintes réglementaires et techniques importantes.
-Sur le plan de la protection des données personnelles et de la conformité au RGPD, nous avons dû mettre en place des mesures adaptées à la sensibilité des informations traitées.
-Les données manipulées par l'application contenaient en effet des informations personnelles sensibles relatives aux mouvements des collaborateurs, telles que les changements de poste, les mutations, la position dans la grille de salaire, etc.
-
-Pour garantir la conformité au RGPD, nous avons réalisé une cartographie précise des données personnelles traitées, permettant d'identifier les zones de risque.
-Nous avons ensuite implémenté le principe de minimisation des données, en ne collectant et ne conservant que les informations strictement nécessaires aux finalités de l'application.
-Des mécanismes de traçabilité des accès ont été mis en place pour suivre l'utilisation des données sensibles, complétés par une définition rigoureuse des durées de conservation adaptées à chaque type de donnée.
-Enfin, l'élaboration d'une politique de droits d'accès stricte a permis de limiter l'accès aux informations selon le rôle et les responsabilités des utilisateurs, garantissant ainsi la confidentialité des données.
-
-L'intégration au Système d'Information d'Enedis représentait une autre contrainte technique majeure.
-L'application devait s'insérer harmonieusement dans l'écosystème technique existant, ce qui nécessitait la mise en œuvre de l'authentification et de la gestion des identités via le SSO d'entreprise utilisant le protocole OAuth2.
-Nous devions également respecter les standards de sécurité informatique internes d'Enedis et assurer la compatibilité avec l'infrastructure technique existante pour faciliter le déploiement et la maintenance.
-
-La gestion des flux de données entre applications constituait un troisième défi technique considérable.
-L'automatisation des échanges de données avec les systèmes sources nationaux devait être conçue pour garantir plusieurs qualités essentielles.
-Nous devions assurer la fiabilité et l'intégrité des données transmises, avec des mécanismes de validation rigoureux.Le système devait également faire preuve de robustesse face aux éventuelles indisponibilités temporaires des systèmes sources, en implémentant des stratégies de nouvelle tentative.
-La traçabilité complète des opérations d'import était nécessaire pour permettre l'audit et la résolution des problèmes.
-Enfin, la possibilité d'annuler une opération d'import en cas de besoin devait être intégrée, garantissant ainsi la sécurité des données.
-
-
-\section{Choix d'architecture et de conception}
-
-\subsection{Architecture technique retenue}
-
-Pour répondre aux enjeux identifiés, nous avons opté pour une architecture moderne, basée sur des technologies éprouvées mais évolutives.
-Le choix du framework Angular pour le frontend s'est imposé pour plusieurs raisons stratégiques.
-Son architecture orientée composants facilite grandement la réutilisation et la maintenance du code, favorisant un développement modulaire et cohérent.
-Le système de détection des changements d'Angular, optimisé pour les performances, permet d'offrir une expérience utilisateur fluide même lors de la manipulation de volumes importants de données.
-La robustesse et la stabilité de ce framework, largement adoptées dans les applications d'entreprise, garantissent la fiabilité nécessaire pour une solution critique.
-Enfin, l'utilisation native de TypeScript apporte une sécurité supplémentaire grâce au typage statique, permettant la détection précoce des erreurs avant même l'exécution du code.
-
-L'utilisation de la librairie graphique NG-ZORRO a complété notre stack frontend en nous permettant de créer une interface cohérente et esthétique, respectant les standards modernes tout en offrant une expérience utilisateur fluide.
-Cette bibliothèque de composants nous a permis d'accélérer le développement de l'interface tout en maintenant une qualité visuelle et ergonomique élevée.
-
-Pour la couche serveur, NestJS s'est révélé être une solution particulièrement adaptée à nos besoins.
-Son architecture inspirée d'Angular a facilité la cohérence entre le frontend et le backend, permettant aux développeurs de naviguer plus aisément entre les deux parties de l'application.
-Le support natif de TypeScript améliore considérablement la maintenabilité du code backend en apportant les mêmes avantages de typage fort que côté client.
-La structure modulaire encouragée par NestJS favorise naturellement les bonnes pratiques de développement, avec une séparation claire des responsabilités et une organisation du code plus intuitive.
-
-L'utilisation de Prisma comme ORM (Object-Relational Mapping) constituait un choix stratégique pour la gestion des données.
-Son schéma déclaratif facilite grandement la modélisation et l'évolution de la base de données, avec une syntaxe claire et expressive.
-Le client TypeScript fortement typé généré automatiquement par Prisma réduit considérablement les risques d'erreurs lors de l'accès aux données, en fournissant une intelligence de code avancée et une validation à la transpilation.
-Les migrations automatisées simplifient quant à elles la gestion des évolutions du schéma, permettant des mises à jour de la structure de la base de données de manière contrôlée et réversible.
-
-
-\section{Automatisation des processus critiques}
-
-\subsection{Conception du système d'import automatisé}
-
-L'automatisation du processus mensuel d'import des données constituait l'un des défis majeurs du projet, avec un potentiel d'impact immédiat sur la productivité des équipes RH\@.
-La première difficulté résidait dans l'analyse et la compréhension des sources de données externes.
-Nous avons élaboré un document de spécification détaillé, partagé avec les équipes de développement des systèmes sources, afin d'établir un contrat d'échange clair et précis.
-
-Pour répondre à ces contraintes, nous avons conçu un système d'import en plusieurs étapes successives et complémentaires.
-La première étape consiste en la récupération automatisée des fichiers sources depuis les systèmes centraux, éliminant les manipulations manuelles précédemment nécessaires.
-Les données sont ensuite soumises à un processus de transformation et de normalisation pour correspondre à notre modèle interne, avec application de règles métier spécifiques.
-
-Une fois normalisées, ces données sont comparées avec les informations existantes dans notre système pour identifier précisément les écarts et changements.
-L'étape suivante applique ces modifications en base de données tout en conservant une traçabilité complète des changements effectués.
-Enfin, le système génère des alertes pour les anomalies nécessitant une intervention humaine, permettant aux utilisateurs de se concentrer uniquement sur les cas problématiques plutôt que sur l'ensemble des données.
+Nous avons conçu un système d'import en plusieurs étapes : récupération automatisée des fichiers sources, transformation et normalisation selon notre modèle interne, comparaison avec les données existantes pour identifier les écarts, application des modifications avec traçabilité complète, et génération d'alertes pour les anomalies nécessitant une intervention humaine.
 
 \subsection{Gestion intelligente des écarts}
+Un défi particulier concernait la gestion des écarts entre les mouvements prévus et les données réelles des systèmes sources.
+Ces écarts pouvaient résulter de reports de dates, changements de périmètre, annulations, ou modifications non enregistrées.
 
-Un défi particulier concernait la gestion des écarts entre les mouvements d'effectifs prévus dans l'application et les données réelles provenant des systèmes sources.
-Ces écarts pouvaient résulter de diverses situations : reports de dates, changements de périmètre, annulations, ou modifications non enregistrées dans l'un des systèmes.
-
-Notre solution permet une détection automatique des différents types d'écarts, en les catégorisant selon leur nature et leur impact.
-Les utilisateurs bénéficient d'une visualisation claire des divergences qui facilite grandement leur analyse et leur compréhension.
-Le système propose un traitement semi-automatisé avec validation utilisateur, combinant l'efficacité de l'automatisation avec le jugement humain pour les décisions critiques.
-Chaque ajustement effectué est intégralement tracé, conservant l'historique complet des modifications et des décisions prises.
-
-Cette approche a permis de transformer un processus manuel fastidieux en une opération largement automatisée, réduisant considérablement le temps consacré à la réconciliation des données tout en améliorant leur fiabilité.
-Le gain de productivité est particulièrement significatif, permettant aux équipes RH de rediriger leur temps vers des activités plus stratégiques.
+Notre solution permet une détection automatique des différents types d'écarts en les catégorisant selon leur nature et leur impact.
+Les utilisateurs bénéficient d'une visualisation claire des divergences et d'un traitement semi-automatisé avec validation utilisateur, combinant l'efficacité de l'automatisation avec le jugement humain pour les décisions critiques
+Chaque ajustement est intégralement tracé, conservant l'historique des modifications.
 
 
-\section{Stratégie de déploiement national}
+\section{Stratégie de déploiement et accompagnement}
 
 \subsection{Plan de déploiement progressif}
+La stratégie de déploiement a été conçue selon une approche progressive en trois phases.
+La première phase consiste en un déploiement pilote sur notre DR pendant la phase de développement, permettant de valider le fonctionnement en conditions réelles et d'affiner les procédures avant généralisation.
 
-La stratégie de déploiement national a été conçue selon une approche progressive, permettant de minimiser les risques tout en accélérant l'adoption de la solution.
-Nous avons élaboré un plan en trois phases principales, chacune avec des objectifs spécifiques.
-
-La première phase consiste en un déploiement pilote sur la Direction Régionale Sillon Rhodanien, tout au long de la phase de développement.
-Ce choix initial nous permet de valider le fonctionnement de l'application en conditions réelles d'utilisation, avec des utilisateurs déjà familiers du domaine métier.
-Cette phase nous donne l'opportunité d'identifier et de corriger les éventuels problèmes dans un environnement maîtrisé, où la proximité avec les équipes facilite les ajustements rapides.
-Nous pouvons également recueillir des retours utilisateurs détaillés pour affiner l'expérience avant un déploiement plus large.
-Enfin, cette étape nous permet d'affiner les procédures de déploiement techniques et organisationnelles avant la généralisation.
-
-À REREDIGER EN JUIN :
-La seconde phase prévoit l'extension à un groupe de huit DR pilotes, sélectionnées pour leur intérêt manifeste pour la solution et leur diversité en termes de taille, d'organisation et de pratiques métier.
-Cette extension contrôlée nous permettra de valider l'adaptabilité de la solution à différents contextes régionaux tout en maintenant un niveau de support élevé pour accompagner les nouveaux utilisateurs.
-
-La dernière phase consistera au déploiement général de la solution à l'ensemble des DR d'Enedis.
-Cette généralisation s'appuiera sur l'expérience accumulée lors des phases précédentes pour proposer un processus d'onboarding optimisé et des outils d'accompagnement éprouvés.
+La seconde phase prévoit l'extension à un groupe de DR pilotes sélectionnées pour leur diversité en termes de taille et d'organisation, validant l'adaptabilité de la solution à différents contextes régionaux.
+La dernière phase consistera au déploiement général, s'appuyant sur l'expérience accumulée pour proposer un processus d'onboarding optimisé.
 
 \subsection{Accompagnement du changement}
+L'accompagnement constitue un facteur critique de succès.
+Notre stratégie s'articule autour de la communication et sensibilisation (présentation claire de la vision et des bénéfices, calendrier transparent, identification et traitement des inquiétudes, prise en compte des demandes d'évolution), et de la documentation et support (interface intuitive avec aides contextuelles, base de connaissances en ligne, vidéos de démonstration, et mécanisme de remontée des retours utilisateurs).
 
-L'accompagnement au changement constitue un facteur critique de succès pour un projet de cette envergure.
-Notre stratégie s'articule autour de plusieurs axes complémentaires pour maximiser l'adoption et minimiser les résistances.
-
-Sur le plan de la communication et de la sensibilisation, nous avons élaboré un plan structuré avec plusieurs objectifs.
-Nous nous attachons d'abord à présenter clairement la vision et les bénéfices de la solution nationale, en mettant l'accent sur les gains concrets pour chaque catégorie d'utilisateurs.
-Nous expliquons de manière transparente le calendrier et les modalités de déploiement, afin que chaque direction régionale puisse s'y préparer efficacement.
-Une attention particulière est portée aux inquiétudes potentielles des utilisateurs, que nous identifions en amont pour y apporter des réponses adaptées.
-Enfin, nous valorisons systématiquement les premiers succès pour encourager l'adoption dans les DR suivantes, en partageant les retours d'expérience positifs et les bonnes pratiques identifiées.
-
-Les premières présentations en visioconférence aux DR ont suscité un accueil positif, avec un intérêt marqué pour les gains de productivité, notamment pour les DR utilisant encore des outils Excel.
-Ce retour encourageant confirme la pertinence de notre approche et la réponse apportée aux besoins réels des utilisateurs.
-
-Concernant la documentation et le support, nous avons conçu un écosystème complet pour faciliter l'appropriation de la solution par les utilisateurs.
-L'application elle-même intègre une interface intuitive avec des aides contextuelles accessibles à chaque étape des processus clés.
-
-A FAIRE PUIS A VÉRIFIER EN JUILLET + PARLER DE COSMOS
-Une base de connaissances en ligne, enrichie progressivement, centralise les informations pratiques et les réponses aux questions fréquentes.
-Des vidéos de démonstration illustrent les principales fonctionnalités et scénarios d'utilisation.
-Une FAQ dynamique répond aux interrogations les plus courantes.
-Enfin, un mécanisme de remontée des retours utilisateurs permet d'identifier rapidement les points d'amélioration potentiels. (Cosmos)
-
-Cette approche globale d'accompagnement vise à garantir une transition fluide vers la nouvelle solution nationale, en minimisant les résistances et en maximisant l'appropriation par les utilisateurs finaux.
-Elle tient compte des différents profils d'apprentissage et des contraintes organisationnelles pour proposer un parcours adapté à chaque utilisateur.
+Les premières présentations aux DR ont suscité un accueil positif, avec un intérêt marqué pour les gains de productivité, confirmant la pertinence de notre approche et la réponse apportée aux besoins réels des utilisateurs.
 

@@ -1,43 +1,36 @@
-\section{Présentation d'Enedis}
+\section{Enedis et son organisation}
 
-\subsection{Missions et activités principales}
 Enedis, gestionnaire du réseau de distribution d'électricité français, dessert 37,5 millions de clients sur 95\% du territoire métropolitain.
-En tant qu'opérateur de service public, l'entreprise assure trois missions fondamentales : l'exploitation et la maintenance de plus de 1,4 million de kilomètres de lignes électriques, le raccordement des nouveaux clients et producteurs au réseau, et le comptage des consommations énergétiques, notamment via le déploiement des compteurs Linky.
+En tant qu'opérateur de service public, l'entreprise assure trois missions fondamentales : l'exploitation et la maintenance de plus de 1,4 million de kilomètres de lignes électriques, le raccordement des nouveaux clients et producteurs au réseau, et le comptage des consommations énergétiques.
 
-\subsection{Organisation générale}
-Enedis s'organise autour d'une structure décentralisée avec plus de 25 Directions Régionales (DR) réparties sur l'ensemble du territoire.
-Cette organisation territoriale permet d'adapter les solutions aux spécificités locales tout en maintenant une cohérence nationale.
-La Direction des Systèmes d'Information (DSI) coordonne la stratégie informatique de l'entreprise et pilote les projets d'envergure nationale.
+L'entreprise s'organise autour d'une structure décentralisée avec plus de 25 Directions Régionales (DR) réparties sur l'ensemble du territoire.
+Cette organisation territoriale permet d'adapter les solutions aux spécificités locales tout en maintenant une cohérence nationale sous la coordination de la Direction des Systèmes d'Information (DSI).
 
 
-\section{Le Centre De Service : la cellule d'innovation informatique}
+\section{Le Centre de Services : cellule d'innovation}
 
-\subsection{Rôle et missions}
-Le Centre de Services (CDS) de la DR Sillon Rhodanien a été créé en 2016 par Fabrice Gascoin et Xavier Beguin pour répondre aux besoins spécifiques d'accompagnement des métiers dans leurs projets de transformation numérique.
-Face à l'impossibilité pour la DSI nationale de subvenir aux besoins multiples de chaque direction régionale, le CDS développe des Proof of Concept (POC) adaptés aux exigences locales et assure la Tierce Maintenance Applicative (TMA) des outils existants.
+Le Centre de Services (CDS) de la DR Sillon Rhodanien a été créé en 2016 par Fabrice Gascoin et Xavier Beguin pour accompagner les métiers dans leurs projets de transformation numérique.
+Face aux limites de la DSI nationale pour répondre aux besoins spécifiques de chaque direction régionale, le CDS développe des Proof of Concept (POC) adaptés aux exigences locales et assure la Tierce Maintenance Applicative (TMA) des outils existants.
+
+\textbf{Organisation de l'équipe :} L'équipe se compose de 9 personnes : Fabrice Gascoin (responsable et DFSI), Jordan Babel (référent cybersécurité), Xavier Beguin (référent technique prestataire), Loïc Cardon (product owner prestataire), et 5 alternants développeurs.
+Cette structure hybride favorise le transfert de compétences, et les alternants bénéficient d'une double casquette en ayant l'opportunité d'être chef de projet sur une période.
 
 Après 9 ans d'existence, le CDS s'est imposé comme une équipe incontournable, développant des outils à portée nationale utilisés par plusieurs DR d'Enedis.
 
-\subsection{Organisation de l'équipe}
-L'équipe du CDS se compose de 9 personnes : Fabrice Gascoin (responsable et DFSI), Jordan Babel (référent cybersécurité), Xavier Beguin (référent technique prestataire), Loïc Cardon (product owner prestataire), et 5 alternants développeurs.
-Cette structure hybride associant permanents et alternants favorise le transfert de compétences et l'innovation.
 
-Les alternants développeurs bénéficient d'une double casquette en ayant l'opportunité d'être chef de projet sur une période, permettant de découvrir toutes les facettes du métier, du kickoff au comité de clôture.
+\section{Environnement technique et contraintes}
 
+\textbf{Stack technologique :} Le CDS a adopté une stratégie d'harmonisation autour d'une stack moderne : Angular pour le frontend, NestJS pour le backend, et Prisma comme ORM.
+Cette standardisation facilite l'entraide entre développeurs et simplifie la maintenance.
+L'environnement de développement s'appuie sur GitLab pour le versioning, le suivi des tickets, et l'application de méthodologies Agiles.
 
-\section{Environnement technique}
+\textbf{Contraintes réglementaires :} Le développement s'inscrit dans un cadre strict avec plusieurs exigences majeures :
 
-\subsection{Écosystème technologique}
-Le CDS a adopté une stratégie d'harmonisation technologique autour d'une stack moderne : Angular pour le frontend, NestJS pour le backend, et Prisma comme ORM.
-Cette standardisation facilite l'entraide entre développeurs et simplifie la maintenance des applications.
+\begin{itemize}
+    \item \textbf{Sécurité :} Authentification SSO obligatoire via l'équipe Gardian, analyse hebdomadaire du code par CheckMarx (tolérance zéro faille haute), et audit de sécurité avant mise en production.
+    \item \item \textbf{RGPD :} Rédaction de passeports DCP pour toute manipulation de données personnelles, avec conservation limitée à 5 ans.
+    \item \item \textbf{Infrastructure :} Déploiement sur le cloud AWS via la plateforme MyConsoleCloud (MC2) d'Enedis, avec séparation des environnements de développement et de production.
+\end{itemize}
 
-L'environnement de développement s'appuie sur GitLab pour le versioning et le suivi des tickets, avec des méthodologies Agiles (daily meetings, sprints mensuels, revues de code bimensuelles).
+Ces contraintes, bien qu'exigeantes, garantissent la robustesse et la conformité des solutions développées pour une entreprise de service public de cette envergure.
 
-\subsection{Contraintes et spécificités}
-Le développement s'inscrit dans un cadre réglementaire strict avec plusieurs contraintes majeures :
-
-Sécurité : Authentification SSO obligatoire via l'équipe Gardian, analyse hebdomadaire du code par CheckMarx (tolérance zéro faille haute), et audit de sécurité (Pen Test) avant mise en production.
-
-RGPD : Rédaction de passeports DCP (Document de Conformité au RGPD) pour toute manipulation de données personnelles, avec conservation limitée à 5 ans.
-
-Infrastructure : Déploiement sur le cloud AWS via la plateforme MyConsoleCloud (MC2) d'Enedis, avec séparation des environnements de développement et de production.
