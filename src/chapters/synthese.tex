@@ -1,20 +1,20 @@
 \section{Contexte initial et objectifs du projet}
 
-\subsection{Limites de l'outil existant}
+\subsection{La solution déjà en place}
 
 Au sein de la Direction Régionale Sillon Rhodanien, les RH responsables de la gestion des effectifs utilisaient une application web locale développée pour répondre aux besoins de la région.
 Si cet outil répondait aux besoins immédiats de notre DR, il présentait néanmoins d'importantes limitations.
-Son développement ayant été réalisé à l'externe, ainsi, les technologies et et la technique ne concordaient pas avec les standards actuels de l'équipe, rendait son évolution complexe et coûteuse.
+Son développement ayant été réalisé à l'externe, les technologies et la technique ne concordaient pas avec les standards actuels de l'équipe, rendant son évolution complexe et coûteuse.
 Le point le plus critique concernait le processus de réconciliation mensuelle des données, extrêmement chronophage, qui nécessitait de nombreuses manipulations manuelles dans Excel, mobilisant inutilement des ressources qualifiées sur des tâches à faible valeur ajoutée.
 
 Par ailleurs, l'absence d'une solution standardisée entre les différentes DR d'Enedis entraînait des disparités importantes dans le suivi et le pilotage des objectifs, complexifiant la consolidation des données au niveau national et créant des incohérences dans l'évaluation de la performance.
 
 \subsection{Vision et objectifs de la refonte}
 
-Face à ce constat, la Direction des Ressources Humaines et Transformation Santé-Sécurité (DRHTS) ayant connaissance de notre solution, a décidé de lancer un projet ambitieux de refonte de l'application, visant à transformer cet outil local en une solution nationale unifiée pour la gestion des objectifs au sein d'Enedis.
+Face à ce constat, la Direction des Ressources Humaines et Transformation Santé-Sécurité (DRHTS, qui est une direction nationale), ayant connaissance de notre solution, a décidé de lancer un projet ambitieux de refonte de l'application, visant à transformer cet outil local en une solution nationale unifiée pour la gestion des objectifs au sein d'Enedis.
 L'ambition principale était de créer une solution permettant de standardiser et harmoniser les processus de gestion des effectifs entre toutes les directions régionales.
 Cette harmonisation devait s'accompagner d'une automatisation complète des flux de données mensuels avec les systèmes sources nationaux fournies par la Direction des Services Supports (DIR2S), éliminant ainsi les tâches manuelles fastidieuses et sources d'erreurs.
-Un nouvel indicateur majeur de pilotage ayant été introduit dans les processus de gestions des effectifs il y a peu, il était évidemment crucial qu'il soit partie intégrante de la solution.
+Le nouvel indicateur majeur de pilotage, EMP, ayant été introduit dans les processus de gestions des effectifs il y a peu, il était évidemment crucial qu'il soit partie intégrante de la solution.
 
 Sur le plan technique et ergonomique, l'objectif était de fournir une interface moderne, intuitive et responsive, facilitant l'adoption par les utilisateurs tout en garantissant la conformité avec les exigences réglementaires, notamment en matière de RGPD\@.
 La solution devait également offrir des tableaux de bord consolidés à tous les niveaux hiérarchiques, permettant un pilotage efficace de la performance.
@@ -33,7 +33,7 @@ La partie fonctionnelle était la plus complexe, car la compréhension des besoi
 Le périmètre fonctionnel englobait la gestion complète des mouvements des effectifs, en interne, vers et depuis l'externe, ainsi que l'imputation des objectifs ainsi que leur pilotage.
 La gestion des droits devait être adaptée aux différents profils d'utilisateurs, tandis que des tableaux de bord dynamiques permettraient d'analyser les données selon différentes dimensions.
 
-L'aspect technique le plus ambitieux était d'implémenter l'import des données sans en connaître la source ni la structure.
+L'aspect technique le plus ambitieux était d'implémenter l'import mensuel automatique des données sans en connaître la source ni la structure.
 C'était logiquement la première étape de la phase de développement, mais a nécessité des ajouts, modifications et divers refactoring jusqu'à la fin du projet.
 
 L'application s'adressait à plusieurs catégories d'utilisateurs aux besoins distincts.
@@ -43,6 +43,7 @@ Les managers, quant à eux, devaient pouvoir accéder à des tableaux de bord pe
 \subsection{Gouvernance et méthodologie}
 
 Pour mener à bien ce projet d'envergure nationale, nous avons mis en place une organisation structurée et adaptée aux enjeux.
+Le kick-off a permis de formaliser les objectifs, le périmètre et les attentes de la DRHTS, ainsi que de présenter l'équipe projet et la méthodologie retenue.
 Un comité de pilotage assurait la gouvernance stratégique du projet, validant les orientations majeures et arbitrant les décisions importantes.
 En tant que chef de projet, j'assurais la coordination quotidienne des activités et participais activement au développement, avec le soutien d'une équipe de deux développeurs.
 Une référente métier connaissant parfaitement l'outil existant et les enjeux métiers était également intégrée à l'équipe, garantissant une compréhension approfondie des besoins utilisateurs et facilitant la communication avec les parties prenantes.
@@ -57,24 +58,26 @@ Notamment pendant les périodes de cours, où la chefferie de projet était assu
 
 En tant que chef de projet, j'assumais la double responsabilité du pilotage global et d'une partie du développement technique.
 Cette position m'a permis de maintenir une vision d'ensemble cohérente tout en garantissant la faisabilité technique des solutions proposées, assurant ainsi l'alignement constant entre les attentes métiers et les réalisations techniques.
-
+J'ai été épaulé par le référent technique de l'équipe, qui a assuré la cohérence technique et la qualité du code produit, notamment en matière de sécurité et de performance.
 
 \section{Étapes clés et réalisations}
 
 \subsection{Phase de cadrage et d'analyse}
 
-Le projet a débuté par une phase de cadrage approfondie au cours du second trimestre 2024.
+Le projet a débuté par une phase de cadrage approfondie au cours du deuxième trimestre 2024.
 Cette étape cruciale a commencé par une analyse détaillée de l'existant, comprenant un inventaire exhaustif des fonctionnalités de l'application locale et une cartographie des processus métiers en place.
 Ce travail préliminaire a permis d'identifier précisément les points forts à conserver et les faiblesses à corriger dans la nouvelle version.
 
 Pour définir précisément les contours fonctionnels de la future solution, nous avons mené une série d'entretiens individuels avec les utilisateurs clés de la DR Sillon Rhodanien, afin de comprendre leurs usages quotidiens et leurs attentes.
+Ces échanges ont permis de recueillir des retours précieux sur les fonctionnalités existantes, mais aussi d'identifier de nouvelles opportunités d'amélioration.
+Nous avons profité de ces échanges pour réaliser des users stories ainsi que des maquettes fonctionnelles, facilitant la visualisation des besoins et des attentes des utilisateurs.
 
 Cette phase s'est conclue par la spécification des besoins fonctionnels et techniques globaux, formalisée lors du Kick-off du projet.
 
 \subsection{Conception et développement}
 
 La phase de conception et développement s'est déroulée de mai 2024 à juin 2025, selon une approche itérative permettant d'ajuster régulièrement les orientations en fonction des retours utilisateurs.
-Cette période a débuté par la conception d'une architecture moderne, basée sur la dernière version d'Angular pour le frontend, offrant une approche par composants réutilisables et une expérience utilisateur optimisée.
+Cette période a débuté par la conception d'une architecture moderne à l'aide de notre stack technique basée sur la dernière version d'Angular pour le frontend, offrant une approche par composants réutilisables et une expérience utilisateur optimisée.
 Le backend a été développé avec NestJS (embarquant Express), choix stratégique pour la mise en œuvre d'API RESTful performantes et la gestion efficace des traitements métiers.
 La base de données PostgreSQL, associée à l'ORM Prisma, assurait la persistance et l'intégrité des données.
 
@@ -119,7 +122,7 @@ Les formulaires de création et modification des objectifs ont été conçus de 
 Le fil chronologique d'un poste ou d'un salarié sur leurs fiches respectives permet de suivre l'historique des actions et des modifications, offrant une traçabilité complète.
 
 Plusieurs optimisations techniques ont été mises en œuvre pour garantir une expérience fluide, comme le lazy loading qui limite le temps de chargement initial, la pagination côté serveur, ou encore le feedback visuel immédiat sur les actions utilisateurs qui améliore la perception de réactivité.
-Une aide contextuelle a été intégrée à chaque écran, facilitant la prise en main de l'application sans nécessiter de formation approfondie.
+Une aide contextuelle a été intégrée à chaque écran, facilitant la prise en main de l'application sans nécessiter de formation approfondie, sans pour autant s'affranchir de la nécessité d'une documentation complète.
 
 \subsection{Backend et intégration}
 
@@ -131,6 +134,7 @@ Les services métiers encapsulent la logique applicative, respectant les princip
 
 L'intégration avec le Système d'Information d'Enedis constituait un défi technique majeur.
 L'authentification a été mise en œuvre via le SSO d'entreprise utilisant le protocole OAuth2, garantissant une gestion centralisée et sécurisée des identités et des droits.
+Notre projet était pilote dans l'équipe sur la mise en place de cette authentification sur la nouvelle architecture, et a permis de définir les bonnes pratiques à suivre pour le projet en parallèle et les suivants.
 
 Des interfaces sécurisées ont été développées pour dialoguer avec les systèmes sources RH, respectant scrupuleusement les standards d'architecture cible définis par la direction informatique d'Enedis.
 
@@ -156,7 +160,7 @@ Toutes les opérations critiques sont consignées dans des journaux détaillés,
 Enfin, des mécanismes de reprise sur erreur ont été implémentés, permettant l'annulation d'un import en cas de problème majeur, tout en garantissant la continuité du service.
 
 Cette automatisation approfondie a permis d'éliminer les tâches manuelles fastidieuses qui mobilisaient auparavant une part importante du temps des équipes RH, tout en réduisant significativement les risques d'erreurs inhérents aux manipulations manuelles.
-Le gain de temps d'au moins une journée par mois peut être réinvesti dans des activités à plus forte valeur ajoutée, comme l'accompagnement des managers ou l'analyse approfondie des mouvements.
+Le gain de temps d'au moins une journée par mois, par DR utilisatrice peut être réinvesti dans des activités à plus forte valeur ajoutée, comme l'accompagnement des managers ou l'analyse approfondie des mouvements.
 
 
 \section{Résultats et impacts}
