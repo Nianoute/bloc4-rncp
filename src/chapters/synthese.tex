@@ -13,12 +13,12 @@ Le nouvel indicateur majeur de pilotage EMP (Effectif Moyen Payé), récemment i
 \section{Périmètre et organisation du projet}
 
 \subsection{Couverture fonctionnelle et technique}
-Le projet concernait les 25+ directions régionales d'Enedis, et est actuellement déployé sur 8 d'entre elles, représentant plusieurs dizaines d'utilisateurs actifs répartis entre les RH responsables de la gestion des effectifs et les managers d'unités. Le périmètre fonctionnel englobait la gestion complète des mouvements des effectifs (interne, vers et depuis l'externe), l'imputation des objectifs et leur pilotage, avec une gestion des droits adaptée aux différents profils utilisateurs.
+Le projet concernait les 25+ directions régionales d'Enedis, et est actuellement déployé sur 8 d'entre elles, représentant environ 80 utilisateurs actifs (une dizaine par DR) répartis entre les RH responsables de la gestion des effectifs et les managers d'unités. Le périmètre fonctionnel englobait la gestion complète des mouvements des effectifs (interne, vers et depuis l'externe), l'imputation des objectifs et leur pilotage, avec une gestion des droits adaptée aux différents profils utilisateurs.
 
 L'aspect technique le plus ambitieux était l'implémentation de l'import mensuel automatique des données sans en connaître initialement la source ni la structure, nécessitant des ajustements continus tout au long du projet.
 
 \subsection{Gouvernance et méthodologie}
-Le Kick-off a formalisé les objectifs, le périmètre et les attentes de la DRHTS. Un comité de pilotage assurait la gouvernance stratégique, tandis qu'en tant que chef de projet, j'assurais la coordination quotidienne des activités et participais au développement, avec le soutien d'une équipe de deux développeurs et d'une référente métier.
+Le Kick-off a formalisé les objectifs, le périmètre et les attentes de la DRHTS. Un comité de pilotage assurait la gouvernance stratégique, tandis qu'en tant que chef de projet, j'assurais la coordination quotidienne des activités et participais au développement, avec le soutien d'une équipe de trois développeurs en moyenne et d'une référente métier.
 
 Nous avons adopté une approche hybride s'inspirant des principes Prince2 pour la gestion globale, intégrée aux méthodes agiles pour le développement. GitLab servait d'outil central pour le versionnage, le suivi des issues, la planification des sprints et la documentation technique.
 
@@ -28,7 +28,7 @@ Nous avons adopté une approche hybride s'inspirant des principes Prince2 pour l
 Le projet a débuté par une analyse détaillée de l'existant (inventaire des fonctionnalités, cartographie des processus métiers) et une série d'entretiens avec les utilisateurs clés de la DR Sillon Rhodanien pour comprendre leurs usages et attentes. Ces échanges ont permis de réaliser des user stories et des maquettes fonctionnelles, culminant avec la spécification des besoins lors du Kick-off.
 
 \subsection{Conception et développement}
-La phase de développement (mai 2024 à juin 2025) s'est organisée en sprints avec des points d'avancement hebdomadaires et des phases de recette avec la référente métier à chaque fin de sprint. Cette approche itérative a permis d'intégrer continuellement les retours utilisateurs et d'ajuster le développement en conséquence, tout en maintenant la conformité aux normes de sécurité via l'outil Checkmarx.
+La phase de développement (mai 2024 à août 2025) s'est organisée en sprints avec des points d'avancement hebdomadaires et des phases de recette avec la référente métier à chaque fin de sprint. Cette approche itérative a permis d'intégrer continuellement les retours utilisateurs et d'ajuster le développement en conséquence, tout en maintenant la conformité aux normes de sécurité via l'outil Checkmarx.
 
 \section{Solutions techniques implémentées}
 
@@ -40,12 +40,12 @@ Des optimisations techniques garantissent une expérience fluide : lazy loading,
 \subsection{Automatisation et traitement des données}
 L'automatisation constituait l'enjeu majeur avec un impact immédiat sur la productivité. Le système récupère automatiquement les données mensuelles depuis les systèmes RH centraux, applique les transformations nécessaires, compare avec les prévisions et intègre en base avec traçabilité complète.
 
-Des contrôles de cohérence automatiques et des mécanismes de reprise sur erreur assurent la qualité et l'intégrité des données. Cette automatisation a éliminé les tâches manuelles fastidieuses, libérant au moins une journée par mois par DR utilisatrice pour des activités à plus forte valeur ajoutée.
+Des contrôles de cohérence automatiques et des mécanismes de reprise sur erreur assurent la qualité et l'intégrité des données. Cette automatisation a éliminé les tâches manuelles fastidieuses, libérant entre 8 et 10 heures de travail mensuel par DR utilisatrice (soit 1 à 1,5 jour de travail) pour des activités à plus forte valeur ajoutée.
 
 \section{Résultats et impacts}
 
 \subsection{Bénéfices quantifiables}
-Après plusieurs semaines de production, l'outil est désormais utilisé par 8 directions régionales avec des retours très positifs. Les résultats confirment une réduction significative du temps de traitement des données mensuelles, avec un gain d'au moins une journée de travail mensuelle pour chaque DR utilisatrice. L'élimination des manipulations manuelles a considérablement réduit les risques d'erreurs, et nous disposons maintenant des vraies données nationales depuis 2023.
+Après plusieurs mois de production, l'outil est désormais utilisé par 8 directions régionales avec des retours très positifs. Les résultats confirment une réduction significative du temps de traitement des données mensuelles, avec un gain mesuré de 8 à 10 heures de travail mensuel pour chaque DR utilisatrice (soit environ 1,5 jour de travail). L'élimination des manipulations manuelles a considérablement réduit les risques d'erreurs, et nous disposons maintenant des vraies données nationales depuis début 2023.
 
 \subsection{Bénéfices qualitatifs}
 L'amélioration de l'expérience utilisateur facilite l'appropriation par l'ensemble des utilisateurs, qu'ils soient RH ou managers. L'harmonisation des processus entre directions régionales assure une cohérence dans le suivi et l'évaluation des performances, facilitant le pilotage national consolidé.

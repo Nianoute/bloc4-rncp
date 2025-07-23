@@ -21,7 +21,8 @@ Sur le plan RGPD, nous avons réalisé une cartographie précise des données pe
 
 L'intégration au Système d'Information d'Enedis constituait un autre défi technique majeur.
 L'application devait s'insérer harmonieusement dans l'écosystème existant, nécessitant la mise en œuvre de l'authentification SSO via OAuth2.
-Notre projet était pilote dans l'équipe sur cette nouvelle architecture, permettant de définir les bonnes pratiques pour les projets suivants.
+Cette intégration impliquait de configurer les flux d'autorisation avec les serveurs d'identité Enedis, gérer les tokens d'accès et leur renouvellement automatique, et implémenter les mécanismes de déconnexion sécurisée.
+Notre projet était pilote dans l'équipe sur cette nouvelle architecture, permettant de définir les bonnes pratiques pour les projets suivants : encapsulation des appels OAuth2 dans des services dédiés, gestion centralisée des erreurs d'authentification, et mise en place d'un système de cache sécurisé pour les informations utilisateur.
 
 \subsection{Automatisation des processus critiques}
 L'automatisation du processus mensuel d'import constituait le défi le plus complexe.
