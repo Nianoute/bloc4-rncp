@@ -4,11 +4,11 @@
 Face aux limitations de l'application existante (technologies vieillissantes, processus manuels chronophages), nous avons opté pour une approche pragmatique : moderniser la solution de notre Direction Régionale en l'enrichissant des fonctionnalités nationales.
 Cette décision s'appuyait sur plusieurs facteurs déterminants : la solution couvrait déjà une grande partie des besoins fondamentaux, nous disposions d'une expertise métier approfondie, et la nécessité de livrer rapidement une première version fonctionnelle.
 
-Plutôt que de conduire une analyse exhaustive des besoins de toutes les DR en amont, nous avons privilégié une refonte technique complète associée à l'ajout des fonctionnalités prioritaires, permettant d'avancer rapidement sur les aspects techniques tout en intégrant progressivement les retours utilisateurs.
+Plutôt que de conduire une analyse exhaustive des besoins de toutes les DR en amont, nous avons privilégié une refonte technique complète associée à l'ajout des fonctionnalités prioritaires, tout en capitalisant sur l'expérience de l'outil déjà en place dans notre région. Cela a permis d'avancer rapidement sur les aspects techniques tout en intégrant progressivement les retours utilisateurs.
 
 \subsection{Découverte progressive des spécificités régionales}
 La compréhension des besoins des autres Directions Régionales s'est construite progressivement lors de la phase de conduite du changement.
-Cette approche séquentielle s'est révélée efficace : elle nous a permis de nous concentrer initialement sur la qualité technique du socle, de découvrir les particularités régionales au moment opportun, et d'établir un dialogue constructif avec les futurs utilisateurs sur la base d'une solution concrète plutôt que de concepts abstraits.
+Cette approche séquentielle s'est révélée efficace : elle nous a permis de nous concentrer initialement sur la qualité technique et métier du socle, de découvrir les particularités régionales au moment opportun, et d'établir un dialogue constructif avec les futurs utilisateurs sur la base d'une solution concrète plutôt que de concepts abstraits.
 
 Les sessions de présentation ont confirmé que, malgré des différences dans les processus, un socle commun important existait et que notre solution modernisée répondait déjà à une grande partie des attentes exprimées.
 
@@ -22,17 +22,17 @@ Sur le plan RGPD, nous avons réalisé une cartographie précise des données pe
 L'intégration au Système d'Information d'Enedis constituait un autre défi technique majeur.
 L'application devait s'insérer harmonieusement dans l'écosystème existant, nécessitant la mise en œuvre de l'authentification SSO via OAuth2.
 Cette intégration impliquait de configurer les flux d'autorisation avec les serveurs d'identité Enedis, gérer les tokens d'accès et leur renouvellement automatique, et implémenter les mécanismes de déconnexion sécurisée.
-Notre projet était pilote dans l'équipe sur cette nouvelle architecture, permettant de définir les bonnes pratiques pour les projets suivants : encapsulation des appels OAuth2 dans des services dédiés, gestion centralisée des erreurs d'authentification, et mise en place d'un système de cache sécurisé pour les informations utilisateur.
+Notre projet était pilote dans l'équipe sur cette nouvelle architecture, permettant de définir les bonnes pratiques pour les projets suivants : encapsulation des appels OAuth2 dans des services dédiés, utilisation d'un cookie sécurisé, gestion centralisée des erreurs d'authentification, et mise en place d'un système de cache pour les informations utilisateur.
 
 \subsection{Automatisation des processus critiques}
 L'automatisation du processus mensuel d'import constituait le défi le plus complexe.
-La première difficulté résidait dans l'analyse des sources de données externes, nécessitant l'élaboration d'un document de spécification détaillé partagé avec les équipes des systèmes sources.
+La première difficulté résidait dans l'analyse des sources de données externes. Nous n'avions pas connaissance de la source finale du projet. Cela a nécessité une souplesse de la configuration dans notre code. Plus tard dans le projet, nous avons pu en tirer parti par l'élaboration d'un document de spécification détaillé partagé avec les équipes des systèmes sources afin de permettre l'interconnexion de nos applications.
 
 Nous avons conçu un système d'import en plusieurs étapes : récupération automatisée des fichiers sources, transformation et normalisation selon notre modèle interne, comparaison avec les données existantes pour identifier les écarts, application des modifications avec traçabilité complète, et génération d'alertes pour les anomalies nécessitant une intervention humaine.
 
 \subsection{Gestion intelligente des écarts}
-Un défi particulier concernait la gestion des écarts entre les mouvements prévus et les données réelles des systèmes sources.
-Ces écarts pouvaient résulter de reports de dates, changements de périmètre, annulations, ou modifications non enregistrées.
+Un défi particulier concernait la gestion des écarts entre les mouvements prévus par les utilisateurs dans l'application et les données réelles des systèmes sources.
+Ces écarts pouvaient résulter de reports de dates, changements de périmètre, annulations, ou modifications.
 
 Notre solution permet une détection automatique des différents types d'écarts en les catégorisant selon leur nature et leur impact.
 Les utilisateurs bénéficient d'une visualisation claire des divergences et d'un traitement semi-automatisé avec validation utilisateur, combinant l'efficacité de l'automatisation avec le jugement humain pour les décisions critiques
@@ -45,8 +45,8 @@ Chaque ajustement est intégralement tracé, conservant l'historique des modific
 La stratégie de déploiement a été conçue selon une approche progressive en trois phases.
 La première phase, réalisée avec succès sur notre DR pendant la phase de développement, a permis de valider le fonctionnement en conditions réelles et d'affiner les procédures avant généralisation.
 
-La seconde phase est actuellement en cours avec neuf directions régionales utilisatrices, validant concrètement l'adaptabilité de la solution à différents contextes régionaux et confirmant les bénéfices attendus.
-La dernière phase de déploiement général s'appuiera sur cette expérience réussie pour proposer un processus d'onboarding optimisé aux DR restantes.
+La seconde phase s'est déroulée avec neuf directions régionales utilisatrices, validant concrètement l'adaptabilité de la solution à différents contextes régionaux et confirmant les bénéfices attendus.
+La dernière phase de déploiement général est en cours et s'appuie sur cette expérience réussie pour proposer notre outil aux DR restantes.
 
 \subsection{Accompagnement du changement}
 L'accompagnement constitue un facteur critique de succès.

@@ -1,14 +1,14 @@
 \section{Contexte initial et objectifs du projet}
 
 \subsection{La solution déjà en place}
-Au sein de la Direction Régionale Sillon Rhodanien, les RH utilisaient une application web locale développée à l'externe pour la gestion des effectifs. Si cet outil répondait aux besoins immédiats de notre DR, il présentait d'importantes limitations : technologies vieillissantes (CodeIgniter 2) incompatibles avec les standards actuels de l'équipe, et processus de réconciliation mensuelle des données extrêmement chronophage nécessitant de nombreuses manipulations manuelles dans Excel.
+Au sein de la Direction Régionale Sillon Rhodanien, les RH utilisaient une application web locale (e-Project) développée à l'externe pour la gestion des effectifs. Si cet outil répondait aux besoins immédiats de notre DR, il présentait d'importantes limitations : technologies vieillissantes (CodeIgniter 2) incompatibles avec les standards actuels de l'équipe, et processus de réconciliation mensuelle des données extrêmement chronophage nécessitant de nombreuses manipulations manuelles dans Excel.
 
 L'absence d'une solution standardisée entre les différentes DR d'Enedis entraînait des disparités importantes dans le suivi et le pilotage des objectifs, complexifiant la consolidation des données au niveau national.
 
 \subsection{Vision et objectifs de la refonte}
 La Direction des Ressources Humaines et Transformation Santé-Sécurité (DRHTS), ayant connaissance de notre solution, a décidé de lancer un projet ambitieux visant à transformer cet outil local en une solution nationale unifiée. L'ambition principale était de standardiser et harmoniser les processus de gestion des effectifs entre toutes les directions régionales, avec une automatisation complète des flux de données mensuels depuis les systèmes sources nationaux (DIR2S).
 
-Le nouvel indicateur majeur de pilotage EMP (Effectif Moyen Payé), récemment introduit, devait être partie intégrante de la solution. Sur le plan technique et ergonomique, l'objectif était de fournir une interface moderne et responsive, garantissant la conformité RGPD avec des tableaux de bord consolidés à tous les niveaux hiérarchiques.
+Le nouvel indicateur majeur de pilotage EMP (Effectif Moyen Payé), récemment introduit, devait être partie intégrante de la solution. Sur le plan technique et ergonomique, l'objectif était de fournir une interface moderne et intuitive, garantissant la conformité RGPD avec des actions et visualisations des données en accord avec les assignations hiérarchique RH de l'utilisateur.
 
 \section{Périmètre et organisation du projet}
 
@@ -18,34 +18,36 @@ Le projet concernait les plus de 25 Directions Régionales d'Enedis, et est actu
 L'aspect technique le plus ambitieux était l'implémentation de l'import mensuel automatique des données sans en connaître initialement la source ni la structure, nécessitant des ajustements continus tout au long du projet.
 
 \subsection{Gouvernance et méthodologie}
-Le Kick-off a formalisé les objectifs, le périmètre et les attentes de la DRHTS. Un comité de pilotage assurait la gouvernance stratégique, tandis qu'en tant que chef de projet, j'assurais la coordination quotidienne des activités et participais au développement, avec le soutien d'une équipe de trois développeurs en moyenne et d'une référente métier.
+Le Kick-off a formalisé les objectifs, le périmètre et les attentes de la DRHTS et du métier en local. Un comité de pilotage assurait la gouvernance stratégique. tandis qu'en tant que chef de projet, j'assurais la coordination quotidienne des activités et participais au développement, avec le soutien d'une équipe de deux autres développeurs en moyenne et d'une référente métier.
 
-Nous avons adopté une approche hybride s'inspirant des principes Prince2 pour la gestion globale, intégrée aux méthodes agiles pour le développement. GitLab servait d'outil central pour le versionnage, le suivi des issues, la planification des sprints et la documentation technique.
+Nous avons adopté une approche hybride s'inspirant des principes Prince2 pour la gestion globale. Cela se traduit sur les différentes cérémonies (Kick-off, comités de pilotage, boucle courte hebdomadaire avec le métier), la gouvernance et la gestion des risques (s'apparentant à EBIOS).
+Mais nous avons aussi intégré les méthodes agiles pour le développement, avec des daily meetings (en anglais), plannings poker pour l'estimation des user stories, et des sprints. Cette approche itérative a permis d'ajuster le développement en continu en fonction des retours utilisateurs.
+GitLab servait d'outil central pour le versionnage, le suivi des issues, la planification des sprints et la documentation technique.
 
 \section{Étapes clés et réalisations}
 
 \subsection{Phase de cadrage et d'analyse}
-Le projet a débuté par une analyse détaillée de l'existant (inventaire des fonctionnalités, cartographie des processus métiers) et une série d'entretiens avec les utilisateurs clés de la DR Sillon Rhodanien pour comprendre leurs usages et attentes. Ces échanges ont permis de réaliser des user stories et des maquettes fonctionnelles, culminant avec la spécification des besoins lors du Kick-off.
+Le projet a débuté par une analyse détaillée de l'existant (inventaire des fonctionnalités, cartographie des processus métiers) et une série d'entretiens avec les utilisateurs clés de la DR Sillon Rhodanien pour comprendre leurs usages et attentes. Ces échanges ont permis de réaliser des user stories et des maquettes fonctionnelles, facilitant la validation des besoins et la priorisation des fonctionnalités à développer.
 
 \subsection{Conception et développement}
-La phase de développement (mai 2024 à août 2025) s'est organisée en sprints avec des points d'avancement hebdomadaires et des phases de recette avec la référente métier à chaque fin de sprint. Cette approche itérative a permis d'intégrer continuellement les retours utilisateurs et d'ajuster le développement en conséquence, tout en maintenant la conformité aux normes de sécurité via l'outil Checkmarx.
+La phase de développement (mai 2024 à juillet 2025) s'est organisée en sprints avec des points d'avancement hebdomadaires et des phases de recette avec la référente métier à chaque fin de sprint. Cette approche itérative a permis d'intégrer continuellement les retours utilisateurs et d'ajuster le développement en conséquence, tout en maintenant la conformité aux normes de sécurité via l'outil Checkmarx.
 
 \section{Solutions techniques implémentées}
 
 \subsection{Frontend et expérience utilisateur}
-L'interface a été repensée avec Angular et la librairie NG-ZORRO pour offrir une expérience moderne et intuitive. Les fonctionnalités principales incluent des tableaux de bord personnalisés selon le profil utilisateur, une visualisation graphique de l'avancement des objectifs, des formulaires dynamiques s'adaptant au contexte, et des exports personnalisables. Le fil chronologique des postes/salariés offre une traçabilité complète.
+L'interface a été repensée avec Angular et la librairie NG-ZORRO pour offrir une expérience correspondant aux normes du web moderne. Les fonctionnalités principales incluent des tableaux de bord personnalisés selon le profil utilisateur, une visualisation graphique de l'avancement des objectifs, des formulaires dynamiques s'adaptant au contexte, et des exports personnalisables. Le fil chronologique des postes/salariés offre une traçabilité complète.
 
 Des optimisations techniques garantissent une expérience fluide : lazy loading, pagination côté serveur, feedback visuel immédiat et aide contextuelle intégrée à chaque écran.
 
 \subsection{Automatisation et traitement des données}
-L'automatisation constituait l'enjeu majeur avec un impact immédiat sur la productivité. Le système récupère automatiquement les données mensuelles depuis les systèmes RH centraux, applique les transformations nécessaires, compare avec les prévisions et intègre en base avec traçabilité complète.
+L'automatisation constituait l'enjeu majeur avec un impact immédiat sur la productivité. Le système récupère automatiquement les données mensuelles depuis les systèmes RH centraux, applique les transformations nécessaires, compare avec les prévisions, génère des alertes pour les anomalies, et met à jour la base de données avec traçabilité complète.
 
 Des contrôles de cohérence automatiques et des mécanismes de reprise sur erreur assurent la qualité et l'intégrité des données. Cette automatisation a éliminé les tâches manuelles fastidieuses, libérant entre 8 et 10 heures de travail mensuel par DR utilisatrice (soit 1 à 1,5 jour de travail) pour des activités à plus forte valeur ajoutée.
 
 \section{Résultats et impacts}
 
 \subsection{Bénéfices quantifiables}
-Après plusieurs mois de production, l'outil est désormais utilisé par neuf directions régionales avec des retours très positifs. Les résultats confirment une réduction significative du temps de traitement des données mensuelles, avec un gain mesuré de 8 à 10 heures de travail mensuel pour chaque DR utilisatrice (soit environ 1,5 jour de travail). L'élimination des manipulations manuelles a considérablement réduit les risques d'erreurs, et nous disposons maintenant des vraies données nationales depuis début 2023.
+Après plusieurs mois de recette,, l'outil est désormais en production, utilisé par neuf directions régionales avec des retours très positifs. Les résultats confirment une réduction significative du temps de traitement des données mensuelles. L'élimination des manipulations manuelles a considérablement réduit les risques d'erreurs, et nous disposons des données complètes allant jusqu'à début 2023.
 
 \subsection{Bénéfices qualitatifs}
 L'amélioration de l'expérience utilisateur facilite l'appropriation par l'ensemble des utilisateurs, qu'ils soient RH ou managers. L'harmonisation des processus entre directions régionales assure une cohérence dans le suivi et l'évaluation des performances, facilitant le pilotage national consolidé.
