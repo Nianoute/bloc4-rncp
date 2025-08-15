@@ -38,6 +38,26 @@ Notre solution permet une détection automatique des différents types d'écarts
 Les utilisateurs bénéficient d'une visualisation claire des divergences et d'un traitement semi-automatisé avec validation utilisateur, combinant l'efficacité de l'automatisation avec le jugement humain pour les décisions critiques
 Chaque ajustement est intégralement tracé, conservant l'historique des modifications.
 
+\subsection{Solution de déploiement par script bash}
+Face à l'absence de runners GitLab disponibles pour l'équipe, nous avons développé une solution de déploiement par script bash exécuté directement sur les serveurs de développement et production.
+
+Le processus automatise les étapes critiques et gère les environnements : git clone du repository backend, exécution des migrations de base de données et génération des types TypeScript via Prisma, build de l'application NestJS, récupération et build du frontend Angular avec optimisations de production.
+
+Cette approche, bien qu'étant une solution de secours, présentait l'avantage de permettre un déploiement rapide sans attendre les runners CI/CD. Elle était aussi une amélioration par rapport aux précédents projets pour lesquels ces étapes étaient réalisées à la main. Cependant, elle introduit des inconvénients significatifs : downtime pendant le redéploiement (absence de mécanisme de bascule), intervention manuelle sur l'environnement de production, et absence de processus de rollback automatisé.
+
+Maintenant que l'équipe dispose d'une nouvelle instance GitLab avec runners disponibles, la migration vers une pipeline CI/CD classique constitue un axe d'amélioration prioritaire. La structure en script bash facilite néanmoins cette transition, les étapes étant déjà clairement définies et automatisées.
+
+\subsection{Choix architectural : séparation en repositories multiples}
+La décision de séparer le backend (NestJS) et le frontend (Angular) en deux repositories distincts résultait davantage d'un manque d'expérience avec les outils de mono-repository que d'un choix architectural réfléchi.
+
+Initialement, l'équipe souhaitait éviter la structure simple "dossier backend/dossier frontend" observée dans d'autres projets, perçue comme moins propre. Cependant, la méconnaissance des outils comme TurboRepo ou NX nous a orientés vers une séparation complète, sans mesurer les implications techniques.
+
+Cette architecture a généré plusieurs contraintes : duplication manuelle des types TypeScript entre les deux repositories, configuration séparée des outils de linting et formatting, et surtout difficulté de synchronisation des versions. À chaque retour sur un commit précis, il fallait identifier manuellement les commits correspondants dans chaque repository, complexifiant le debugging et la maintenance.
+
+Le déploiement illustre parfaitement cette problématique : notre script bash doit gérer la coordination entre deux repositories indépendants, sans garantie que les versions soient compatibles. Un mono-repository aurait permis un déploiement atomique, où chaque commit représente un état cohérent de l'ensemble de l'application. De plus, les outils modernes comme TurboRepo optimisent les builds en ne reconstruisant que les parties modifiées, et facilitent le partage de configuration (TypeScript, ESLint, Prettier) entre tous les packages.
+
+L'utilisation d'un mono-repository aurait également simplifié la gestion des dépendances, tout en conservant la séparation logique des responsabilités.
+
 
 \section{Stratégie de déploiement et accompagnement}
 

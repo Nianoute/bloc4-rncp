@@ -60,6 +60,17 @@ Par exemple, nous avions anticipé les difficultés potentielles d'intégration 
 
 La gestion des contraintes de sécurité (CheckMarx, audit de sécurité) m'a sensibilisé à l'importance d'intégrer ces aspects dès la conception plutôt qu'en fin de projet.
 
+\subsection{Approche pragmatique de la couverture de tests}
+La stratégie adoptée concernant les tests reflète les défis d'un projet où la complexité métier se révèle progressivement.
+
+L'équipe a initialement privilégié le développement rapide de fonctionnalités, repoussant la mise en place d'une couverture de tests exhaustive. Cette décision était motivée par la découverte progressive de la complexité du métier RH : notre compréhension des processus évoluait constamment suite aux échanges avec la référente métier régionale. Les règles de gestion, initialement perçues comme simples, se révélaient en réalité très nuancées avec de nombreux cas d'usage particuliers non anticipés.
+
+Cette évolution continue de la compréhension métier entraînait des refactorisations fréquentes et des ajustements d'architecture, rendant difficile la maintenance d'une suite de tests exhaustive sur du code en mouvement permanent.
+
+Dans ce contexte, une approche opportuniste s'est mise en place après plusieurs sprints : lorsque je développais une fonctionnalité complète de zéro, je prenais le temps d'implémenter des tests unitaires. Cette approche, bien qu'irrégulière, permettait de sécuriser progressivement certaines parties du code sans ralentir l'adaptation aux découvertes métier.
+
+Cette expérience illustre le dilemme classique entre rapidité d'apprentissage métier et robustesse logicielle dans un contexte de découverte progressive des besoins réels.
+
 \subsection{Respect des délais et du budget}
 Le respect des délais dans un contexte d'alternance avec des rythmes d'école différents pour chaque membre de l'équipe a nécessité une planification particulièrement fine.
 J'ai appris à anticiper les périodes de faible effectif et à adapter la charge de travail en conséquence.
