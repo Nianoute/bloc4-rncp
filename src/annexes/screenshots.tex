@@ -1,0 +1,31 @@
+\section{Captures d'écran de l'application}
+
+Cette annexe présente des captures d'écran de l'application développée, illustrant l'interface utilisateur et les principales fonctionnalités implémentées.
+
+\subsection{Dashboard RH - Interface principale}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth,keepaspectratio]{images/Screenshot 1.png}
+    \caption{Dashboard principal - Vue RH avec indicateurs et mouvements d'effectifs}
+    \label{fig:screenshot1}
+\end{figure}
+
+Cette capture présente le dashboard principal tel qu'affiché pour un utilisateur RH. En haut de l'interface, les statistiques et indicateurs essentiels sont mis en évidence, offrant une vue synthétique des données clés. La section centrale affiche la chronologie des mouvements d'effectifs par mois et par unité, permettant un suivi précis de l'évolution des équipes.
+
+La barre de navigation latérale donne accès aux différentes fonctionnalités de l'outil. On observe également le sélecteur de rôle en environnement local (visible en haut), permettant de tester efficacement les différentes vues utilisateur grâce au système d'authentification mockée développé pour faciliter le debugging.
+
+\subsection{Composant d'évolution des effectifs}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth,keepaspectratio]{images/Screenshot 2.png}
+    \caption{Graphique d'évolution des effectifs et de l'indicateur EMP}
+    \label{fig:screenshot2}
+\end{figure}
+
+Cette seconde capture met en avant l'un des composants les plus aboutis de l'application : le graphique d'évolution des effectifs dans le temps. Il présente à la fois l'historique réel des mois précédents et les prévisions pour les mois suivants, incluant l'évolution de l'indicateur EMP (Effectif Moyen Payé), récemment introduit chez Enedis.
+
+Ce composant illustre parfaitement la valeur ajoutée de l'automatisation : les données historiques sont automatiquement récupérées et mises à jour via les imports mensuels, tandis que les projections sont calculées en temps réel à partir des mouvements prévus saisis par les utilisateurs.
+
+Les captures d'écran illustrent l'aboutissement du travail de refonte et modernisation de l'interface utilisateur, avec un design moderne et intuitif basé sur la librairie NG-ZORRO pour Angular.
