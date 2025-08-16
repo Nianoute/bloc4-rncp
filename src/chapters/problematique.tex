@@ -18,6 +18,8 @@ Les sessions de présentation ont confirmé que, malgré des différences dans l
 \subsection{Contraintes réglementaires et d'intégration}
 Le développement d'une solution nationale impliquait de prendre en compte plusieurs contraintes majeures.
 Sur le plan RGPD, nous avons réalisé une cartographie précise des données personnelles traitées, implémenté le principe de minimisation des données, et mis en place des mécanismes de traçabilité des accès avec une politique de droits stricte.
+L'authentification SSO fournit les rôles utilisateur, tandis que les assignations hiérarchiques proviennent mensuellement des systèmes sources nationaux. L'API utilise des décorateurs pour vérifier automatiquement que chaque action correspond au rôle et au périmètre hiérarchique de l'utilisateur connecté.
+Un historique complet des actions à impact (création, modification, suppression) est enregistré en base avec identification de l'utilisateur, accessible via une interface d'administration métier.
 
 L'intégration au Système d'Information d'Enedis constituait un autre défi technique majeur.
 L'application devait s'insérer harmonieusement dans l'écosystème existant, nécessitant la mise en œuvre de l'authentification SSO via OAuth2.
@@ -50,11 +52,13 @@ Maintenant que l'équipe dispose d'une nouvelle instance GitLab avec runners dis
 \subsection{Choix architectural : séparation en repositories multiples}
 La décision de séparer le backend (NestJS) et le frontend (Angular) en deux repositories distincts résultait davantage d'un manque d'expérience avec les outils de mono-repository que d'un choix architectural réfléchi.
 
-Initialement, l'équipe souhaitait éviter la structure simple "dossier backend/dossier frontend" observée dans d'autres projets, perçue comme moins propre. Cependant, la méconnaissance des outils comme TurboRepo ou NX nous a orientés vers une séparation complète, sans mesurer les implications techniques.
+Initialement, l'équipe souhaitait éviter la structure simple "dossier backend/dossier frontend" observée dans d'autres projets. La méconnaissance des outils comme TurboRepo ou NX nous a orientés vers une séparation complète, sans mesurer les implications techniques.
 
-Cette architecture a généré plusieurs contraintes : duplication manuelle des types TypeScript entre les deux repositories, configuration séparée des outils de linting et formatting, et surtout difficulté de synchronisation des versions. À chaque retour sur un commit précis, il fallait identifier manuellement les commits correspondants dans chaque repository, complexifiant le debugging et la maintenance.
+Cette architecture a généré plusieurs contraintes : duplication manuelle des types TypeScript, configuration séparée des outils de linting, et difficulté de synchronisation des versions. À chaque retour sur un commit précis, il fallait identifier manuellement les commits correspondants dans chaque repository, complexifiant le debugging.
 
-Le déploiement illustre parfaitement cette problématique : notre script bash doit gérer la coordination entre deux repositories indépendants, sans garantie que les versions soient compatibles. Un mono-repository aurait permis un déploiement atomique, où chaque commit représente un état cohérent de l'ensemble de l'application. De plus, les outils modernes comme TurboRepo optimisent les builds en ne reconstruisant que les parties modifiées, et facilitent le partage de configuration (TypeScript, ESLint, Prettier) entre tous les packages.
+Le déploiement illustre parfaitement cette problématique : notre script bash doit gérer la coordination entre deux repositories indépendants, sans garantie que les versions soient compatibles.
+Un mono-repository aurait permis un déploiement atomique, où chaque commit représente un état cohérent de l'ensemble de l'application.
+De plus, les outils modernes comme TurboRepo optimisent les builds en ne reconstruisant que les parties modifiées, et facilitent le partage de configuration (TypeScript, ESLint, Prettier) entre tous les packages.
 
 L'utilisation d'un mono-repository aurait également simplifié la gestion des dépendances, tout en conservant la séparation logique des responsabilités.
 

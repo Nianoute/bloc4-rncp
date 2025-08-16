@@ -3,7 +3,7 @@
 Enedis, gestionnaire du réseau de distribution d'électricité français, dessert 37,5 millions de clients sur 95\% du territoire métropolitain.
 En tant qu'opérateur de service public, l'entreprise assure trois missions fondamentales : l'exploitation et la maintenance de plus de 1,4 million de kilomètres de lignes électriques, le raccordement des nouveaux clients et producteurs au réseau, et le comptage des consommations énergétiques.
 
-L'entreprise s'organise autour d'une structure décentralisée avec plus de 25 Directions Régionales (DR) réparties sur l'ensemble du territoire.
+L'entreprise s'organise autour d'une structure décentralisée avec 25 Directions Régionales (DR) réparties sur l'ensemble du territoire.
 Cette organisation territoriale permet d'adapter les solutions aux spécificités locales tout en maintenant une cohérence nationale sous la coordination de la Direction des Systèmes d'Information (DSI).
 
 
@@ -27,7 +27,7 @@ L'environnement de développement s'appuie sur GitLab pour le versioning, le sui
 \textbf{Contraintes réglementaires :} Le développement s'inscrit dans un cadre strict avec plusieurs exigences majeures :
 
 \begin{itemize}
-    \item \textbf{Sécurité :} Authentification SSO obligatoire via l'équipe Gardian, analyse hebdomadaire du code par CheckMarx (tolérance zéro faille haute), et audit de sécurité avant mise en production.
+    \item \textbf{Sécurité :} Authentification SSO obligatoire via l'équipe Gardian, analyse hebdomadaire du code par CheckMarx avec correction immédiate des vulnérabilités détectées, et audit de sécurité avant mise en production.
     \item \textbf{RGPD :} Rédaction de passeports DCP pour toute manipulation de données personnelles, avec conservation limitée à 5 ans.
     \item \textbf{Infrastructure :} Déploiement sur le cloud AWS via la plateforme MyConsoleCloud (MC2) d'Enedis, avec séparation des environnements de développement et de production.
 \end{itemize}
