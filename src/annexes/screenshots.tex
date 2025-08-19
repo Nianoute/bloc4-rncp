@@ -6,7 +6,7 @@ Cette annexe présente des captures d'écran de l'application développée, illu
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth,keepaspectratio]{images/Screenshot 1.png}
+    \includegraphics[width=0.9\textwidth,keepaspectratio]{images/Screenshot 1}
     \caption{Dashboard principal - Vue RH avec indicateurs et mouvements d'effectifs}
     \label{fig:screenshot1}
 \end{figure}
@@ -19,7 +19,7 @@ La barre de navigation latérale donne accès aux différentes fonctionnalités 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth,keepaspectratio]{images/Screenshot 2.png}
+    \includegraphics[width=0.9\textwidth,keepaspectratio]{images/Screenshot 2}
     \caption{Graphique d'évolution des effectifs et de l'indicateur EMP}
     \label{fig:screenshot2}
 \end{figure}
@@ -29,3 +29,16 @@ Cette seconde capture met en avant l'un des composants les plus aboutis de l'app
 Ce composant illustre parfaitement la valeur ajoutée de l'automatisation : les données historiques sont automatiquement récupérées et mises à jour via les imports mensuels, tandis que les projections sont calculées en temps réel à partir des mouvements prévus saisis par les utilisateurs.
 
 Les captures d'écran illustrent l'aboutissement du travail de refonte et modernisation de l'interface utilisateur, avec un design moderne et intuitif basé sur la librairie NG-ZORRO pour Angular.
+
+\subsection{Script de déploiement automatisé}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth,keepaspectratio]{images/Screenshot 3}
+    \caption{Diagramme de flux du script de déploiement automatisé}
+    \label{fig:screenshot3}
+\end{figure}
+
+Ce diagramme représente la solution de déploiement développée pour pallier l'absence d'infrastructure CI/CD dans l'environnement technique en place.
+
+L'architecture séquentielle Backend-Frontend reflète les dépendances techniques : les migrations de base de données doivent être appliquées avant la génération du client Prisma (qui permet l'utilisation de l'ORM), et le service backend doit être redémarré avant le déploiement frontend pour assurer la cohérence de l'API. La branche conditionnelle d'environnement permet une adaptation flexible entre les contextes de développement et de production.
