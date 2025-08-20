@@ -41,7 +41,7 @@ Les utilisateurs bénéficient d'une visualisation claire des divergences et d'u
 Chaque ajustement est intégralement tracé, conservant l'historique des modifications.
 
 \subsection{Solution de déploiement par script bash}
-Face à l'absence de runners GitLab disponibles pour l'équipe, nous avons développé une solution de déploiement par script bash exécuté directement sur les serveurs de développement et production.
+Face à l'absence de runners GitLab disponibles pour l'équipe, nous avons développé une solution de déploiement par script bash exécuté directement sur les serveurs de développement et production (voir figure \ref{fig:screenshot3}).
 
 Le processus automatise les étapes critiques et gère les environnements : git clone du repository backend, exécution des migrations de base de données et génération des types TypeScript via Prisma, build de l'application NestJS, récupération et build du frontend Angular avec optimisations de production.
 
