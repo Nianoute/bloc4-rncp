@@ -92,17 +92,6 @@ Cette capture présente une partie des 35 milestones utilisés au cours du proje
 
 Ces graphiques d'analyse des commits montrent la répartition des contributions entre les différents acteurs du projet. Malgré une équipe composée uniquement d'alternants et stagiaires, aucun moment creux n'est observable dans le développement. Les périodes de creux visibles sur les graphiques individuels correspondent aux rotations naturelles des alternants/stagiaires et aux périodes d'apprentissage. L'approche adoptée consistait à axer les débuts de développement sur la fiabilisation de l'API avant de développer et connecter les interfaces utilisateur.
 
-\subsubsection{Gestion des branches et versioning}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.1\textwidth,keepaspectratio]{images/Commits graph}
-    \caption{Graphique des commits montrant la gestion des branches}
-    \label{fig:commits-graph}
-\end{figure}
-
-Ce graphique illustre la stratégie de branching adoptée par l'équipe, permettant à 4 développeurs de travailler simultanément sans dépendances bloquantes. La visualisation des différentes branches montre une approche méthodique du développement collaboratif, avec des merges réguliers et une intégration continue des fonctionnalités.
-
 \subsection{Architecture et diagrammes techniques}
 
 \subsubsection{Flux d'authentification SSO}
@@ -128,3 +117,14 @@ Ce diagramme présente le flux complet de l'authentification SSO (Single Sign-On
 Ce diagramme représente la solution de déploiement développée pour pallier l'absence d'infrastructure CI/CD dans l'environnement technique en place.
 
 L'architecture séquentielle Backend-Frontend reflète les dépendances techniques : les migrations de base de données doivent être appliquées avant la génération du client Prisma (qui permet l'utilisation de l'ORM), et le service backend doit être redémarré avant le déploiement frontend pour assurer la cohérence de l'API. La branche conditionnelle d'environnement permet une adaptation flexible entre les contextes de développement et de production.
+
+\subsubsection{Gestion des branches et versioning}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.1\textwidth,keepaspectratio]{images/Commits graph}
+    \caption{Graphique des commits montrant la gestion des branches}
+    \label{fig:commits-graph}
+\end{figure}
+
+Ce graphique illustre la stratégie de branching adoptée par l'équipe, permettant à 4 développeurs de travailler simultanément sans dépendances bloquantes. La visualisation des différentes branches montre une approche méthodique du développement collaboratif, avec des merges réguliers et une intégration continue des fonctionnalités.
