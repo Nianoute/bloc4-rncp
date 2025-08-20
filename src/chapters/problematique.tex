@@ -4,7 +4,7 @@
 Face aux limitations de l'application existante (technologies vieillissantes, processus manuels chronophages), nous avons opté pour une approche pragmatique : moderniser la solution de notre Direction Régionale en l'enrichissant des fonctionnalités nationales.
 Cette décision s'appuyait sur plusieurs facteurs déterminants : la solution couvrait déjà une grande partie des besoins fondamentaux, nous disposions d'une expertise métier approfondie, et la nécessité de livrer rapidement une première version fonctionnelle.
 
-Plutôt que de conduire une analyse exhaustive des besoins de toutes les DR en amont, nous avons privilégié une refonte technique complète associée à l'ajout des fonctionnalités prioritaires, tout en capitalisant sur l'expérience de l'outil déjà en place dans notre région. Cela a permis d'avancer rapidement sur les aspects techniques tout en intégrant progressivement les retours utilisateurs.
+Plutôt que de conduire une analyse exhaustive des besoins de toutes les DR en amont, nous avons privilégié une refonte technique complète associée à l'ajout des fonctionnalités prioritaires, tout en capitalisant sur l'expérience de l'outil déjà en place dans notre région. Cette stratégie nous a amenés à axer les débuts de développement sur la fiabilisation de l'API avant de développer et connecter les interfaces utilisateur (voir figures \ref{fig:analytics-back} et \ref{fig:analytics-front}), permettant d'avancer rapidement sur les aspects techniques tout en intégrant progressivement les retours utilisateurs.
 
 \subsection{Découverte progressive des spécificités régionales}
 La compréhension des besoins des autres Directions Régionales s'est construite progressivement lors de la phase de conduite du changement.
@@ -22,7 +22,7 @@ L'authentification SSO fournit les rôles utilisateur, tandis que les assignatio
 Un historique complet des actions à impact (création, modification, suppression) est enregistré en base avec identification de l'utilisateur, accessible via une interface d'administration métier.
 
 L'intégration au Système d'Information d'Enedis constituait un autre défi technique majeur.
-L'application devait s'insérer harmonieusement dans l'écosystème existant, nécessitant la mise en œuvre de l'authentification SSO via OAuth2.
+L'application devait s'insérer harmonieusement dans l'écosystème existant, nécessitant la mise en œuvre de l'authentification SSO via OAuth2 (voir figure \ref{fig:flow-auth}).
 Cette intégration impliquait de configurer les flux d'autorisation avec les serveurs d'identité Enedis, gérer les tokens d'accès et leur renouvellement automatique, et implémenter les mécanismes de déconnexion sécurisée.
 Notre projet était pilote dans l'équipe sur cette nouvelle architecture, permettant de définir les bonnes pratiques pour les projets suivants : encapsulation des appels OAuth2 dans des services dédiés, utilisation d'un cookie sécurisé, gestion centralisée des erreurs d'authentification, et mise en place d'un système de cache pour les informations utilisateur.
 
@@ -54,7 +54,7 @@ La décision de séparer le backend (NestJS) et le frontend (Angular) en deux re
 
 Initialement, l'équipe souhaitait éviter la structure simple "dossier backend/dossier frontend" observée dans d'autres projets. La méconnaissance des outils comme TurboRepo ou NX nous a orientés vers une séparation complète, sans mesurer les implications techniques.
 
-Cette architecture a généré plusieurs contraintes : duplication manuelle des types TypeScript, configuration séparée des outils de linting, et difficulté de synchronisation des versions. À chaque retour sur un commit précis, il fallait identifier manuellement les commits correspondants dans chaque repository, complexifiant le debugging.
+Cette architecture a généré plusieurs contraintes : duplication manuelle des types TypeScript, configuration séparée des outils de linting, et difficulté de synchronisation des versions. À chaque retour sur un commit précis, il fallait identifier manuellement les commits correspondants dans chaque repository, complexifiant le debugging (voir figure \ref{fig:commits-graph}).
 
 Le déploiement illustre parfaitement cette problématique : notre script bash doit gérer la coordination entre deux repositories indépendants, sans garantie que les versions soient compatibles.
 Un mono-repository aurait permis un déploiement atomique, où chaque commit représente un état cohérent de l'ensemble de l'application.
