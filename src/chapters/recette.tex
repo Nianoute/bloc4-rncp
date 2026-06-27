@@ -3,7 +3,7 @@
 %               + Plan de correction des bogues (C2.3.2)
 % =====================================================================
 
-\section{Cahier de recettes (C2.3.1)}
+\section{Cahier de recettes}
 \competence{C2.3.1}{Le cahier de recettes}{OUI}
 
 Cette section formalise un plan de tests fonctionnels couvrant l'ensemble des fonctionnalités attendues, avec des résultats attendus explicites. Le cahier de recettes complet est fourni en annexe C ; le corps du dossier en présente la structure et quelques exemples représentatifs.
@@ -26,10 +26,10 @@ Chaque scénario est structuré ainsi~:
 Authentification (4 scénarios)~: inscription, connexion, accès refusé sans token, accès refusé avec mauvais rôle. Gestion des tournois (5 scénarios)~: création, configuration des phases, ajout de participants, duplication d'un format, sélection d'un template. Qualifications inter-phases (4 scénarios)~: qualification normale, saut d'étape, nombre insuffisant de qualifiés, qualification avec critère d'égalité activé. Saisie des résultats (3 scénarios)~: saisie d'un score, mise à jour du classement, gestion d'un forfait. Robin stage (3 scénarios)~: configuration du barème, calcul des points, déclenchement des critères d'égalité.
 
 \paragraph{Tests structurels.}
-Navigation au clavier complète sur les formulaires principaux ; comportement en cas de perte de connexion réseau ; comportement en cas de token JWT expiré (redirection vers la connexion).
+Navigation au clavier complète sur les formulaires principaux ; comportement en cas de perte de connexion réseau ; comportement en cas de session expirée (redirection vers la connexion).
 
 \paragraph{Tests de sécurité.}
-Tentative d'accès à un endpoint admin avec un token utilisateur ; tentative d'injection dans les champs de formulaire (vérification du rejet par la validation DTO) ; vérification que les mots de passe ne sont jamais retournés dans les réponses de l'API.
+Tentative d'accès à une route protégée sans session valide (vérification du rejet 401) ; tentative d'injection dans les champs de formulaire (vérification du rejet par la validation DTO) ; vérification que les mots de passe ne sont jamais retournés dans les réponses de l'API. Un scénario complémentaire \emph{reste à implémenter}~: la tentative d'accès à un endpoint d'administration avec un compte non administrateur (rejet 403), une fois l'autorisation par rôle développée côté backend (voir ci-dessous).
 
 \subsection{Exemple de scénario}
 \begin{table}[H]
@@ -40,7 +40,7 @@ Tentative d'accès à un endpoint admin avec un token utilisateur ; tentative d'
         \hline
         Identifiant & CR-AUTH-03 \\
         \hline
-        Fonctionnalité & Authentification --- contrôle d'accès \\
+        Fonctionnalité & Authentification --- contrôle d'accès par rôle \\
         \hline
         Pré-conditions & Utilisateur connecté avec le rôle « utilisateur » \\
         \hline
@@ -48,10 +48,12 @@ Tentative d'accès à un endpoint admin avec un token utilisateur ; tentative d'
         \hline
         Résultat attendu & L'API retourne une erreur 403 et aucune donnée de configuration n'est exposée \\
         \hline
-        Statut & \textit{à renseigner après exécution} \\
+        Statut & \textit{à implémenter~: l'autorisation par rôle (guard dédié) n'est pas encore développée côté backend} \\
         \hline
     \end{tabular}
 \end{table}
+
+Ce scénario illustre la structure cible du cahier de recettes. À ce stade, seule l'authentification (rejet d'une requête sans session valide, code 401) est effective~; le contrôle d'accès \emph{par rôle} (rejet 403 d'un compte non administrateur sur les routes d'administration) reste à implémenter via un guard de rôle dédié, le rôle étant déjà présent en base.
 
 \subsection{Résultats de la recette}
 \begin{table}[H]
@@ -69,7 +71,7 @@ Tentative d'accès à un endpoint admin avec un token utilisateur ; tentative d'
 
 \livrable{le cahier de recettes}
 
-\section{Plan de correction des bogues (C2.3.2)}
+\section{Plan de correction des bogues}
 \competence{C2.3.2}{Le plan de correction des bogues}{Non}
 
 Cette section présente la démarche structurée de qualification, de priorisation et de correction des anomalies détectées lors de la recette.
@@ -89,8 +91,8 @@ Les anomalies sont consignées sous forme d'issues GitLab avec un label de sév�
 \emph{Description}~: lors d'une triple égalité avec le critère head-to-head, le service retournait une erreur de calcul circulaire (A bat B, B bat C, C bat A). \emph{Analyse}~: la logique de résolution du head-to-head ne gérait pas le cas circulaire ; dans ce cas, le critère suivant de la cascade doit être appliqué automatiquement. \emph{Correction}~: ajout d'une détection de cycle dans le \texttt{TiebreakService}, avec basculement automatique vers le critère suivant lorsqu'un cycle est détecté.
 \todo{Référencer le hash Git du commit de correction.}
 
-\paragraph{Bogue 2 --- Participants non affichés après rechargement de la page.}
-\emph{Description}~: après un rechargement, la liste des participants d'une phase apparaissait vide alors que les données étaient présentes en base. \emph{Analyse}~: le token JWT stocké en \texttt{sessionStorage} était perdu au rechargement, provoquant une requête non authentifiée retournant 401 ; l'interceptor Angular ne gérait pas le rechargement initial. \emph{Correction}~: initialisation du token au démarrage de l'application dans le \texttt{AppComponent}.
+\paragraph{Bogue 2 --- Redirection vers la connexion après rechargement de la page.}
+\emph{Description}~: après un rechargement, un utilisateur pourtant connecté était redirigé vers la page de connexion. \emph{Analyse}~: le guard de route Angular s'exécutait avant que la session (cookie \texttt{httpOnly}) n'ait été rechargée depuis le backend, et concluait à tort à l'absence d'authentification. \emph{Correction}~: chargement de la session au démarrage de l'application via \texttt{APP\_INITIALIZER} (méthode \texttt{assurerSession}), avant l'activation des guards de route.
 \todo{Référencer le hash Git du commit de correction.}
 
 \subsection{Bilan de la recette}

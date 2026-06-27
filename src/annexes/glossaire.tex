@@ -5,7 +5,7 @@
 
     \item[Bracket] Représentation en arbre des confrontations d'une phase à élimination directe, montrant la progression des participants jusqu'à la finale.
 
-    \item[bcrypt] Algorithme de hachage de mots de passe avec sel et facteur de coût, utilisé pour stocker les mots de passe de manière sécurisée.
+    \item[better-auth] Librairie d'authentification pour Node.js gérant les comptes, le hachage des mots de passe et les sessions (cookie httpOnly). Utilisée par BrackX pour l'ensemble de l'authentification.
 
     \item[CI/CD] Continuous Integration / Continuous Deployment~: pratiques d'automatisation des tests et des déploiements pour fiabiliser et accélérer les livraisons.
 
@@ -23,19 +23,15 @@
 
     \item[Grafana] Outil de supervision utilisé pour visualiser les métriques applicatives et techniques.
 
-    \item[Guard] Composant NestJS contrôlant l'accès à un endpoint~: \texttt{RoleGuard} vérifie le rôle de l'utilisateur avant d'autoriser l'action.
+    \item[Guard] Composant NestJS contrôlant l'accès à un endpoint~: \texttt{GardeAuthentification} valide la session better-auth avant d'autoriser l'action.
 
     \item[Head-to-head] Critère de départage des égalités fondé sur le résultat des confrontations directes entre les participants à égalité.
-
-    \item[Helmet] Middleware ajoutant des en-têtes HTTP de sécurité à l'API NestJS.
 
     \item[Husky] Outil exécutant des hooks Git (par ex. \texttt{pre-commit}) pour lancer le lint avant chaque commit.
 
     \item[Jest] Framework de test standard de l'écosystème Node.js, utilisé pour les tests unitaires du backend NestJS.
 
     \item[Jasmine / Karma] Outils de test natifs d'Angular, utilisés pour les tests unitaires du frontend.
-
-    \item[JWT] JSON Web Token~: jeton signé utilisé pour authentifier les requêtes après connexion.
 
     \item[Merge Request (MR)] Demande de fusion d'une branche vers une autre sur GitLab, soumise à la validation du pipeline CI avant intégration (équivalent GitLab de la pull request).
 
@@ -68,6 +64,8 @@
     \item[Rollback] Retour à une version précédente de l'application en cas de problème après déploiement.
 
     \item[Saut d'étape] Mécanisme de qualification permettant à certains rangs d'une phase de se qualifier directement pour une phase ultérieure en sautant une phase intermédiaire.
+
+    \item[Session] Identifiant d'authentification émis par better-auth après connexion, conservé en base et transporté par un cookie \texttt{httpOnly} (inaccessible au JavaScript) à durée de vie limitée avec prolongement glissant.
 
     \item[Smoke test] Test de fumée~: vérification rapide des fonctionnalités critiques après chaque déploiement.
 

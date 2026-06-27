@@ -2,7 +2,7 @@
 % Chapitre 1 — Environnement (C2.1.1) et Intégration continue (C2.1.2)
 % =====================================================================
 
-\section{Environnement de déploiement et de test (C2.1.1)}
+\section{Environnement de déploiement et de test}
 
 Le développement de l'application a nécessité la mise en place d'un environnement de travail structuré et reproductible. Bien que je sois le seul développeur du projet, je l'ai pensé dès le départ pour faciliter la prise en main par n'importe quel développeur amené à le reprendre~: toute la configuration est versionnée à la racine du dépôt et l'ensemble des services se lance d'une seule commande. L'objectif était double~: garantir des conditions d'exécution identiques d'un poste à l'autre, et disposer d'environnements distincts pour le développement, les tests et la production, afin d'éviter qu'une modification non maîtrisée n'impacte directement les utilisateurs finaux. (test Cedric)
 
@@ -24,7 +24,7 @@ Trois environnements ont été mis en place afin de séparer clairement les usag
         \hline
         \textbf{Environnement} & \textbf{Caractéristiques} \\
         \hline
-        Développement & Les services sont exécutés localement via Docker Compose, avec hot reload activé sur le backend et le frontend. Les variables sensibles (chaîne de connexion PostgreSQL, identifiants MinIO, secret JWT) sont stockées dans des fichiers \texttt{.env} non versionnés. \\
+        Développement & Les services sont exécutés localement via Docker Compose, avec hot reload activé sur le backend et le frontend. Les variables sensibles (chaîne de connexion PostgreSQL, identifiants MinIO, secret d'authentification \texttt{BETTER\_AUTH\_SECRET}) sont stockées dans des fichiers \texttt{.env} non versionnés. \\
         \hline
         Test & Base de données PostgreSQL dédiée, totalement isolée de la base de développement, afin que l'exécution des tests automatisés (Jest) ne modifie jamais les données utilisées en local. \\
         \hline
@@ -45,7 +45,7 @@ Pour objectiver la notion de qualité, des critères mesurables ont été défin
         \hline
         \textbf{Critère} & \textbf{Cible} & \textbf{Justification} \\
         \hline
-        Couverture de tests & 70 \% minimum & Appliquée sur les services critiques (AuthService, QualificationService, MatchesService), porteurs de la logique métier la plus sensible. \\
+        Couverture de tests & 70 \% minimum & Appliquée sur les services critiques (QualificationService, TiebreakService, MatchesService), porteurs de la logique métier la plus sensible. \\
         \hline
         Erreurs ESLint & 0 en production & Le pipeline d'intégration continue bloque toute fusion vers la branche principale si une erreur de lint est détectée. \\
         \hline
@@ -83,7 +83,7 @@ Scaleway combine énergie renouvelable, refroidissement adiabatique (PUE bas) et
 
 Cette architecture présente enfin une limite connue~: packagée dans une image Docker sur une instance unique, elle n'est pas scalable horizontalement. Ce compromis privilégie la rapidité de développement et la simplicité d'installation. Si la charge l'exige, l'évolution prévue en TMA consiste à placer un répartiteur de charge (Elastic Load Balancer) devant plusieurs instances, puis à passer à une orchestration de conteneurs (ECS ou Kubernetes).
 
-\section{Intégration continue (C2.1.2)}
+\section{Intégration continue}
 
 Afin de détecter les régressions le plus tôt possible dans le cycle de développement, un pipeline d'intégration continue (CI) a été mis en place. Il s'exécute automatiquement à chaque modification du code source et empêche la fusion de code non conforme dans la branche principale.
 

@@ -3,7 +3,7 @@
 % Évolutivité (C2.2.3) — ÉLIMINATOIRES
 % =====================================================================
 
-\section{Tests unitaires (C2.2.2)}
+\section{Tests unitaires}
 \competence{C2.2.2}{Jeu de tests unitaires couvrant une fonctionnalité demandée}{OUI}
 
 Cette section montre la mise en place d'un harnais de tests unitaires couvrant les fonctionnalités principales, permettant de détecter automatiquement les régressions.
@@ -26,10 +26,10 @@ Les tests unitaires se concentrent sur la logique métier des services NestJS. L
         \hline
         MatchesService & Calcul du classement après saisie d'un résultat. & 75 \% \\
         \hline
-        AuthService & Création de compte, vérification du mot de passe, génération du token JWT. & 70 \% \\
-        \hline
     \end{tabular}
 \end{table}
+
+L'authentification n'apparaît pas dans ce tableau~: elle est déléguée à la librairie tierce better-auth (gestion des comptes, du hachage des mots de passe et des sessions), testée en amont par ses mainteneurs, et ne fait donc pas l'objet de tests unitaires applicatifs.
 
 \subsection{Cas de test représentatif}
 Le cas suivant illustre la complexité métier du \texttt{TiebreakService}~: étant données trois équipes à égalité, le service applique d'abord le head-to-head, puis le différentiel si l'égalité persiste. Le test suit le pattern Arrange / Act / Assert et utilise les mocks fournis par \texttt{@nestjs/testing}.
@@ -42,7 +42,7 @@ Le rapport de couverture généré par Jest (\texttt{--coverage}) est fourni en 
 
 \livrable{un jeu de tests unitaires couvrant une fonctionnalité demandée}
 
-\section{Sécurité, accessibilité et évolutivité (C2.2.3)}
+\section{Sécurité, accessibilité et évolutivité}
 \competence{C2.2.3}{Mesures de sécurité et actions d'accessibilité}{OUI}
 
 Cette section démontre que l'application respecte les standards de sécurité OWASP, prend en compte l'accessibilité, et que son architecture autorise des évolutions futures sans refonte.
@@ -55,49 +55,36 @@ Chaque faille de l'OWASP Top 10 (2021) est adressée par une mesure concrète da
     \textbf{Faille OWASP} & \textbf{Mesure mise en place} \\
     \hline
     \endhead
-    A01 --- Broken Access Control & \texttt{RoleGuard} NestJS vérifiant le rôle sur chaque endpoint sensible ; séparation stricte des actions administrateur / utilisateur. Un utilisateur sans rôle admin reçoit une erreur 403 sur les routes de configuration. \\
+    A01 --- Broken Access Control & Toute route protégée passe par le guard \texttt{GardeAuthentification}, qui valide la session better-auth et rejette toute requête sans session valide (401). Le rôle (\texttt{USER} / \texttt{ADMIN} / \texttt{DEV}) est stocké en base et exposé en lecture seule (\texttt{input: false} côté better-auth)~: un client ne peut pas s'auto-attribuer un rôle privilégié. \\
     \hline
-    A02 --- Cryptographic Failures & Mots de passe hachés via bcrypt (coût 12) avant stockage. Token JWT signé avec une clé secrète stockée en variable d'environnement, jamais en dur dans le code. \\
+    A02 --- Cryptographic Failures & Mots de passe hachés par better-auth et stockés dans la table \texttt{account} (provider \texttt{credential}), jamais en clair. Les sessions sont signées avec un secret (\texttt{BETTER\_AUTH\_SECRET}) externalisé en variable d'environnement, et l'identifiant de session est transporté par un cookie \texttt{httpOnly} + \texttt{SameSite=Lax}, inaccessible au JavaScript de la page. \\
     \hline
-    A03 --- Injection & Prisma utilise des requêtes paramétrées nativement, rendant les injections SQL impossibles. Les DTO NestJS avec class-validator valident et assainissent toutes les entrées. \\
+    A03 --- Injection & Prisma génère des requêtes paramétrées nativement, rendant les injections SQL impossibles. Le \texttt{ValidationPipe} global de NestJS (\texttt{whitelist}, \texttt{forbidNonWhitelisted}, \texttt{transform}) valide les DTO et rejette tout champ non attendu. \\
     \hline
-    A04 --- Insecure Design & Architecture pensée selon le principe du moindre privilège dès le cadrage. Les utilisateurs n'ont pas accès aux endpoints d'administration même en connaissant l'URL. \\
+    A04 --- Insecure Design & Architecture pensée selon le principe du moindre privilège dès le cadrage~: le rôle par défaut est \texttt{USER} et ne peut être modifié par le client. Le rôle est déjà stocké en base~; la restriction effective des endpoints d'administration par rôle (guard dédié) reste à implémenter côté backend. \\
     \hline
-    A05 --- Security Misconfiguration & Variables d'environnement externalisées et non versionnées. CORS configuré explicitement pour n'autoriser que l'origine du frontend. Headers de sécurité HTTP via Helmet. \\
+    A05 --- Security Misconfiguration & Variables d'environnement externalisées et non versionnées (\texttt{.env}). CORS configuré explicitement (origine limitée au frontend, \texttt{credentials: true}, méthodes et en-têtes restreints) et \texttt{trustedOrigins} better-auth aligné sur la même origine. \\
     \hline
-    A06 --- Vulnerable and Outdated Components & Veille active sur les dépendances via le Dependency Scanning de GitLab. Versions figées dans \texttt{package-lock.json}. \\
+    A06 --- Vulnerable and Outdated Components & Versions des dépendances figées dans \texttt{package-lock.json} et installées via \texttt{npm ci} en intégration continue. La mise en place du Dependency Scanning GitLab est prévue pour automatiser la veille. \\
     \hline
-    A07 --- Identification and Authentication Failures & JWT à expiration courte (1h). Validation du format email et complexité minimale du mot de passe côté DTO. Pas de remember-me en V1. \\
+    A07 --- Identification and Authentication Failures & Authentification déléguée à better-auth~: session à durée limitée (7 jours) avec prolongement glissant (au plus une fois par jour), longueur minimale de mot de passe imposée (8 caractères) et réinitialisation par token à usage unique envoyé par email (table \texttt{verification}). \\
     \hline
     A08 --- Software and Data Integrity Failures & Intégrité du pipeline CI (seul le pipeline déploie en production). Images Docker versionnées et contrôlées. \\
     \hline
-    A09 --- Security Logging and Monitoring Failures & Erreurs d'authentification loguées côté serveur. Un middleware de logging NestJS trace les requêtes en erreur 4xx/5xx. \\
+    A09 --- Security Logging and Monitoring Failures & La gestion des sessions et des échecs d'authentification est assurée par better-auth et remontée par NestJS. La centralisation des logs et la supervision (Grafana) sont prévues~; un middleware de journalisation des erreurs 4xx/5xx reste à ajouter. \\
     \hline
     A10 --- Server-Side Request Forgery & L'API ne réalise aucune requête HTTP vers des URLs fournies par l'utilisateur en V1~: ce vecteur n'est pas applicable. \\
     \hline
 \end{longtable}
 
-\todo{Pour appuyer une ou deux mesures clés (par exemple le RoleGuard ou le hachage bcrypt), insérer un court extrait de code commenté.}
+\todo{Pour appuyer une ou deux mesures clés (par exemple le guard \texttt{GardeAuthentification} ou la configuration better-auth de l'authentification), insérer un court extrait de code commenté.}
 
 \subsection{Accessibilité — RGAA 4.1}
-Le référentiel retenu est le RGAA 4.1 (Référentiel Général d'Amélioration de l'Accessibilité), référence officielle française compatible avec les exigences légales applicables aux services numériques. Les mesures mises en œuvre dans le prototype~:
-\begin{itemize}
-    \item Tous les éléments interactifs (boutons, liens, inputs) disposent d'attributs \texttt{aria-label} ou \texttt{aria-labelledby} décrivant clairement leur fonction pour les lecteurs d'écran.
-    \item Les formulaires de configuration de phases utilisent des labels explicitement associés à leurs champs via l'attribut \texttt{for}/\texttt{id}.
-    \item Le contraste des textes respecte le ratio minimum de 4.5:1 préconisé par le WCAG AA pour le texte normal.
-    \item La navigation au clavier est fonctionnelle sur l'ensemble de l'application (tabulation logique, focus visible).
-    \item Les messages d'erreur de formulaire sont annoncés aux lecteurs d'écran via \texttt{aria-live}.
-\end{itemize}
+Le référentiel retenu est le RGAA 4.1 (Référentiel Général d'Amélioration de l'Accessibilité), référence officielle française compatible avec les exigences légales applicables aux services numériques. Plusieurs mesures sont mises en œuvre dans le prototype pour s'en rapprocher. Tous les éléments interactifs (boutons, liens, inputs) disposent d'attributs \texttt{aria-label} ou \texttt{aria-labelledby} décrivant clairement leur fonction pour les lecteurs d'écran, et les formulaires de configuration de phases associent explicitement chaque label à son champ via l'attribut \texttt{for}/\texttt{id}. Le contraste des textes respecte le ratio minimum de 4.5:1 préconisé par le WCAG AA pour le texte normal. La navigation au clavier est fonctionnelle sur l'ensemble de l'application, avec une tabulation logique et un focus visible. Enfin, les messages d'erreur de formulaire sont annoncés aux lecteurs d'écran via \texttt{aria-live}.
 
-\paragraph{Limite identifiée pour la V1.}
-La vue bracket en arbre (visualisation des phases d'élimination) est complexe à rendre entièrement accessible. En V1, une alternative textuelle sous forme de tableau de résultats est proposée en complément du bracket visuel.
+Une limite a toutefois été identifiée pour la V1~: la vue bracket en arbre (visualisation des phases d'élimination) est complexe à rendre entièrement accessible. Une alternative textuelle sous forme de tableau de résultats est donc proposée en complément du bracket visuel.
 
 \subsection{Évolutivité}
-L'architecture modulaire permet d'ajouter les fonctionnalités planifiées sans refonte~:
-\begin{itemize}
-    \item \textbf{Export statistique} : les données sont déjà structurées en base (entités Standing, Match, Result). L'ajout d'un endpoint dans un nouveau \texttt{StatsModule} suffit, sans modifier le schéma existant.
-    \item \textbf{Partage public d'un tournoi} : il suffit d'ajouter un champ \texttt{is\_public} sur l'entité Tournament et un guard autorisant l'accès non authentifié aux routes de lecture des tournois publics.
-    \item \textbf{Notifications temps réel} : NestJS supporte les WebSockets via des gateways dédiées (\texttt{@WebSocketGateway}). L'ajout d'une gateway dans le \texttt{MatchesModule} ne modifie pas les modules existants.
-\end{itemize}
+L'architecture modulaire permet d'ajouter les fonctionnalités planifiées sans refonte. L'export statistique pourra s'appuyer sur des données déjà structurées en base (entités Standing, Match, Result)~: l'ajout d'un endpoint dans un nouveau \texttt{StatsModule} suffira, sans modifier le schéma existant. Le partage public d'un tournoi ne nécessitera que l'ajout d'un champ \texttt{is\_public} sur l'entité Tournament et d'un guard autorisant l'accès non authentifié aux routes de lecture des tournois publics. Enfin, les notifications temps réel s'appuieront sur le support natif des WebSockets par NestJS via des gateways dédiées (\texttt{@WebSocketGateway})~: l'ajout d'une gateway dans le \texttt{MatchesModule} ne modifiera pas les modules existants.
 
 \livrable{la présentation des mesures de sécurité et des actions d'accessibilité aux personnes en situation de handicap}
