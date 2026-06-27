@@ -135,10 +135,10 @@ L'hébergeur retenu est Scaleway, fournisseur de cloud souverain français. Ce c
 Afin de détecter les régressions le plus tôt possible dans le cycle de développement, un pipeline d'intégration continue (CI) a été mis en place. Il s'exécute automatiquement à chaque modification du code source et empêche la fusion de code non conforme dans la branche principale.
 
 \subsection{Choix de l'outil d'intégration continue}
-L'outil retenu est GitHub Actions. Ce choix s'explique par sa gratuité pour les dépôts publics, son intégration native avec GitHub (le dépôt du projet y étant déjà hébergé) et la simplicité de configuration des workflows via des fichiers YAML versionnés directement dans le dépôt, ce qui rend la configuration du pipeline traçable au même titre que le code applicatif.
+L'outil retenu est GitLab CI/CD. Ce choix s'explique par son intégration native avec GitLab (le dépôt du projet y étant déjà hébergé), sa gratuité pour les projets publics et la simplicité de configuration des pipelines via un fichier YAML versionné directement dans le dépôt, ce qui rend la configuration du pipeline traçable au même titre que le code applicatif.
 
 \subsection{Description du pipeline CI}
-Le pipeline est défini dans le fichier \texttt{.github/workflows/ci.yml}. Il se déclenche automatiquement à chaque push, quelle que soit la branche, ainsi qu'à chaque ouverture ou mise à jour d'une pull request vers la branche \texttt{main}.
+Le pipeline est défini dans le fichier \texttt{.gitlab-ci.yml}. Il se déclenche automatiquement à chaque push, quelle que soit la branche, ainsi qu'à chaque ouverture ou mise à jour d'une merge request vers la branche \texttt{main}.
 
 \begin{table}[H]
     \centering
@@ -158,15 +158,15 @@ Le pipeline est défini dans le fichier \texttt{.github/workflows/ci.yml}. Il se
         \hline
         6 & Exécution des tests unitaires (npm run test) & Bloque le pipeline si un test échoue. \\
         \hline
-        7 & Génération et archivage du rapport de couverture & Le rapport est conservé en artefact, consultable depuis GitHub Actions. \\
+        7 & Génération et archivage du rapport de couverture & Le rapport est conservé en artefact, consultable depuis l'interface GitLab CI/CD. \\
         \hline
     \end{tabular}
     \caption{Séquences du pipeline d'intégration continue}
 \end{table}
 
-Chacune de ces étapes est bloquante~: si l'une d'elles échoue, les étapes suivantes ne sont pas exécutées et le pipeline est marqué en échec, ce qui empêche la fusion de la pull request concernée.
+Chacune de ces étapes est bloquante~: si l'une d'elles échoue, les étapes suivantes ne sont pas exécutées et le pipeline est marqué en échec, ce qui empêche la fusion de la merge request concernée.
 
-\todo{Insérer un extrait commenté du fichier ci.yml (15-20 lignes représentatives) et une capture d'une exécution réussie du pipeline dans GitHub Actions.}
+\todo{Insérer un extrait commenté du fichier .gitlab-ci.yml (15-20 lignes représentatives) et une capture d'une exécution réussie du pipeline dans GitLab CI/CD.}
 
 \subsection{Stratégie de gestion des branches}
 La stratégie de branches adoptée vient renforcer l'efficacité du pipeline CI en structurant le flux de contribution au code.
@@ -177,7 +177,7 @@ La stratégie de branches adoptée vient renforcer l'efficacité du pipeline CI 
         \hline
         \textbf{Branche} & \textbf{Rôle} \\
         \hline
-        main & Branche de production, protégée. Aucun push direct~: toute modification passe par une pull request dont le pipeline CI doit être au vert avant fusion. \\
+        main & Branche de production, protégée. Aucun push direct~: toute modification passe par une merge request dont le pipeline CI doit être au vert avant fusion. \\
         \hline
         develop & Branche d'intégration sur laquelle les fonctionnalités sont fusionnées avant d'être intégrées à main. \\
         \hline
@@ -189,6 +189,6 @@ La stratégie de branches adoptée vient renforcer l'efficacité du pipeline CI 
 
 Cette organisation garantit qu'aucune régression ne peut être introduite en production sans avoir au préalable été détectée par le pipeline, et qu'une fonctionnalité en cours de développement n'impacte jamais directement la branche de production.
 
-\todo{Insérer une capture des règles de protection de la branche main configurées sur GitHub (Settings > Branches).}
+\todo{Insérer une capture des règles de protection de la branche main configurées sur GitLab (Settings > Repository > Protected branches).}
 
 \livrable{le protocole d'intégration continue}

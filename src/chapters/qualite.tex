@@ -67,7 +67,7 @@ Chaque faille de l'OWASP Top 10 (2021) est adressée par une mesure concrète da
     \hline
     A05 --- Security Misconfiguration & Variables d'environnement externalisées et non versionnées. CORS configuré explicitement pour n'autoriser que l'origine du frontend. Headers de sécurité HTTP via Helmet. \\
     \hline
-    A06 --- Vulnerable and Outdated Components & Veille active sur les dépendances via GitHub Dependabot. Versions figées dans \texttt{package-lock.json}. \\
+    A06 --- Vulnerable and Outdated Components & Veille active sur les dépendances via le Dependency Scanning de GitLab. Versions figées dans \texttt{package-lock.json}. \\
     \hline
     A07 --- Identification and Authentication Failures & JWT à expiration courte (1h). Validation du format email et complexité minimale du mot de passe côté DTO. Pas de remember-me en V1. \\
     \hline
