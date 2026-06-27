@@ -1,0 +1,43 @@
+% =====================================================================
+% Chapitre 6 — Documentation technique d'exploitation (C2.4.1)
+% =====================================================================
+
+\competence{C2.4.1}{Manuel de déploiement, manuel d'utilisation, manuel de mise à jour}{Non}
+
+Cette section montre que l'application est documentée de façon à permettre à l'équipe CDS d'en assurer la TMA sans intervention de l'auteur. La documentation complète est placée dans le dépôt Git (dossier \texttt{/docs}) ; le corps du dossier présente la structure et les points clés de chacun des trois manuels.
+
+\section{Manuel de déploiement}
+Ce manuel couvre l'installation de l'application depuis zéro sur un nouveau serveur. Il doit permettre à un développeur connaissant Docker de déployer l'application sans aide.
+\begin{itemize}
+    \item Prérequis système (Docker, Docker Compose, Git, versions minimales).
+    \item Clonage du dépôt et configuration des variables d'environnement (\texttt{.env} à créer depuis \texttt{.env.example}).
+    \item Commandes de démarrage (\texttt{docker compose up -d}) et vérification du bon démarrage des conteneurs.
+    \item Application des migrations Prisma au premier démarrage.
+    \item Vérification post-déploiement via les smoke tests.
+\end{itemize}
+
+\section{Manuel d'utilisation}
+Ce manuel est destiné à l'administrateur non technique. Il explique l'utilisation de l'application pas à pas.
+\begin{itemize}
+    \item Création d'un compte administrateur.
+    \item Création d'un tournoi depuis un template existant.
+    \item Configuration des phases et des qualifications.
+    \item Ajout des participants.
+    \item Saisie des résultats au fil du tournoi.
+    \item Consultation des classements et du bracket.
+\end{itemize}
+
+\section{Manuel de mise à jour}
+Ce manuel couvre la procédure de montée de version de l'application.
+\begin{itemize}
+    \item Procédure de mise à jour (\texttt{git pull}, \texttt{docker compose pull}, \texttt{docker compose up -d}).
+    \item Gestion des migrations de base de données lors d'une mise à jour (\texttt{prisma migrate deploy}).
+    \item Procédure de rollback vers la version précédente en cas de problème (redémarrage avec l'image précédente taguée).
+    \item Fréquence recommandée des mises à jour de sécurité des dépendances.
+\end{itemize}
+
+\section{Documentation de l'API (Swagger)}
+NestJS génère automatiquement une documentation Swagger à partir des décorateurs des contrôleurs. Elle est accessible à l'URL de l'environnement de développement (par exemple \url{http://localhost:3000/api}) et permet de consulter et de tester chaque endpoint. Une capture est fournie en annexe F.
+\todo{Confirmer l'URL d'accès à la documentation Swagger (\url{http://localhost:3000/api}) et insérer la capture correspondante en annexe F.}
+
+\livrable{le manuel de déploiement, le manuel d'utilisation et le manuel de mise à jour}

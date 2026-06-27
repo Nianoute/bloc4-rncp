@@ -1,42 +1,17 @@
-\section*{Contexte général}
-Mon alternance chez Enedis s'inscrit dans un contexte de transformation numérique accélérée des processus RH.
-Les entreprises de grande envergure comme Enedis, avec ses 41 000 collaborateurs répartis sur 25 Directions Régionales, font face à des défis croissants de pilotage et d'harmonisation de leurs pratiques RH.
+\section*{Rappel du projet}
+BrackX est une application web permettant de créer des tournois modulables par étapes, avec des règles de qualification configurables entre chaque phase. Le projet a été commandé par Paul-Lucas Estrada dans le cadre de l'agence CDS. Le cadrage, l'analyse du besoin et les choix d'architecture ont été réalisés et validés au cours du Bloc 1 ; ce dossier se concentre sur la réalisation technique : conception, développement, tests et documentation.
 
-La tendance actuelle pousse vers la digitalisation des processus traditionnellement gérés via des fichiers Excel partagés, sources d'erreurs et de disparités entre les entités.
-Cette évolution répond à un double impératif : améliorer la fiabilité des données RH et permettre un pilotage stratégique en temps réel des effectifs et des compétences.
+\section*{Périmètre couvert par ce dossier et état d'avancement}
+Le périmètre traité ici correspond au produit minimum viable (PMV), c'est-à-dire au prototype fonctionnel, ainsi qu'à certains éléments de la V1 tels que validés en réunion de comité de pilotage (COPIL). Il couvre l'authentification et la gestion des rôles, la création de tournois multi-phases, la configuration des qualifications inter-phases, la saisie des résultats avec mise à jour des classements, l'affichage des brackets et une bibliothèque de templates.
 
+À la date de ce rendu, l'application \textbf{n'est pas encore en production}~: la suite du développement (finalisation de la V1 et mise en production) est planifiée pour août et septembre. Le présent dossier décrit donc l'environnement, le prototype et les processus mis en place ou prévus, certains éléments restant à confirmer une fois le développement achevé. Les évolutions ultérieures (export statistique, partage public, notifications temps réel, application mobile) sont hors périmètre et abordées uniquement sous l'angle de l'évolutivité de l'architecture.
 
+\section*{Stack technique retenue}
+La stack a été validée au Bloc 1 (C1.3.2 et C1.6) et n'est pas rejustifiée ici~: NestJS pour le backend (API REST), Angular pour le frontend, PostgreSQL pour la base de données, Prisma comme ORM, et Docker pour la conteneurisation de l'ensemble des services.
 
-\section*{Présentation de la mission}
-Ma mission consiste à piloter la refonte complète de l'application de suivi des effectifs RH, en tant que chef de projet et développeur au sein du Centre de Services d'Enedis.
-Ce projet vise à transformer un outil local utilisé uniquement par la DR Sillon Rhodanien en une solution nationale déployée sur l'ensemble des Directions Régionales d'Enedis.
+\section*{Dépôt et période de développement}
+Le code source est hébergé sur un dépôt Git accessible en lecture au moment de l'évaluation. Le développement du PMV et des premiers éléments de la V1 est en cours ; la finalisation et la mise en production sont prévues pour août et septembre.
+\todo{Indiquer l'URL du dépôt GitHub/GitLab contenant le code source, ainsi que les dates de début et de fin de développement (PMV livré, V1 en cours, production prévue août-septembre).}
 
-L'enjeu stratégique est majeur : créer une plateforme unifiée permettant le suivi en temps réel des cibles EMP (Effectif Moyen Payé) et EFA (Effectif Fin d'Année), avec automatisation des flux de données depuis les systèmes RH nationaux.
-Cette transformation s'inscrit dans la stratégie d'Enedis de modernisation de ses outils de pilotage et d'harmonisation des pratiques entre Directions Régionales.
-
-Mon rôle de chef de projet m'a amené à coordonner une équipe de 3 développeurs en moyenne, gérer les relations avec les parties prenantes (DRHTS, RH locales, managers), et assurer le développement technique avec la stack Angular/NestJS/Prisma.
-
-
-
-\section*{Problématique}
-La problématique centrale de ce mémoire peut être formulée ainsi : \("\)Comment orchestrer la transition d'une solution régionale vers une application à portée nationale en assurant l'adhésion des différentes parties prenantes dans un cadre technique et réglementaire exigeant ?\("\)
-
-Cette problématique est pertinente car elle soulève des défis multiples : l'industrialisation du développement pour un déploiement national, la gestion du changement auprès d'utilisateurs habitués à leurs outils locaux, le respect des contraintes de sécurité et de conformité RGPD, et la pérennisation d'une solution maintenue par la DSI.
-Elle illustre également les enjeux contemporains de transformation numérique des grandes entreprises publiques.
-
-
-
-\section*{Démarche adoptée}
-Ma démarche s'appuie sur la méthodologie Prince2 alliée à Agile avec des cérémonies de pilotage du projet, permettant une validation continue avec les différents acteurs.
-J'ai privilégié une approche pragmatique impliquant les utilisateurs finaux de la solution existante de la DR Sillon Rhodanien, via des ateliers de recensement des besoins et des boucles courtes hebdomadaires.
-
-Sur le plan technique, les choix se sont orientés vers des technologies pérennes et supportées par l'équipe dans laquelle j'évolue (Angular, NestJS, Prisma), avec une architecture pensée pour l'extension et la maintenance.
-La collaboration étroite avec l'entité responsable des données nationales a permis d'intégrer les flux automatisés essentiels au projet.
-
-
-
-\section*{Structure du mémoire}
-Ce mémoire s'articule autour de trois parties principales répondant progressivement à la problématique posée.
-La synthèse du travail effectué présente de manière factuelle le déroulement du projet, les technologies mises en œuvre et les résultats obtenus.
-Le focus sur la problématique analyse en profondeur les défis techniques et organisationnels rencontrés, ainsi que les solutions apportées pour assurer la transition vers le national.
-Enfin, le retour d'expérience partage les enseignements tirés de cette double mission chef de projet/développeur et l'apport de la formation universitaire dans ce contexte professionnel exigeant.
+\section*{Organisation du dossier}
+Ce dossier suit l'ordre logique du cycle de développement, chaque section répondant à une compétence de la grille~: mise en place de l'environnement et de l'intégration continue (C2.1.1 et C2.1.2), conception du prototype (C2.2.1), tests unitaires (C2.2.2), sécurité, accessibilité et évolutivité (C2.2.3), déploiement et gestion des versions (C2.2.4), cahier de recettes (C2.3.1), plan de correction des bogues (C2.3.2) et documentation technique d'exploitation (C2.4.1).

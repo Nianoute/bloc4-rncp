@@ -1,75 +1,83 @@
 \begin{description}
-    \item[Angular] Framework JavaScript développé par Google pour créer des applications web single-page (SPA). Utilisé pour développer l'interface utilisateur de l'application.
-    
-    \item[API] Application Programming Interface - Interface de programmation permettant la communication entre différents composants logiciels.
-    
-    \item[CDS] Centre de Services - équipe de 9 personnes de la DR Sillon Rhodanien spécialisée dans le développement d'outils numériques pour les métiers d'Enedis.
-    
-    \item[CheckMarx] Outil d'analyse statique de code utilisé chez Enedis pour détecter les vulnérabilités de sécurité dans le code source.
-    
-    \item[CI/CD] Continuous Integration/Continuous Deployment - Pratique DevOps d'automatisation des tests et déploiements pour améliorer la qualité et la rapidité des livraisons.
+    \item[Angular] Framework JavaScript développé par Google pour créer des applications web single-page (SPA). Utilisé pour le frontend de BrackX.
 
-    \item[DIR2S] Système d'information RH national d'Enedis contenant les données des collaborateurs utilisé comme source pour l'automatisation des imports.
-    
-    \item[Downtime] Période d'indisponibilité d'un service ou application durant les opérations de maintenance ou de déploiement.
-    
-    \item[DR] Direction Régionale - Division territoriale d'Enedis.
-    \item Il existe 25 DR réparties sur le territoire français.
-    
-    \item[DRHTS] Direction des Ressources Humaines et Transformation Santé-Sécurité - Direction nationale d'Enedis ayant porté le projet de refonte de l'outil de gestion des effectifs.
-    
-    \item[DSI] Direction des Systèmes d'Information - Direction nationale d'Enedis responsable de l'infrastructure informatique et des systèmes d'information.
-    
-    \item[EBIOS] Expression des Besoins et Identification des Objectifs de Sécurité - Méthode française d'analyse et de gestion des risques en sécurité informatique.
-    
-    \item[EFA] Effectif Fin d'Année - Indicateur RH correspondant au nombre de collaborateurs comptabilisés en fin d'année civile.
-    
-    \item[EMP] Effectif Moyen Payé - Nouvel indicateur RH majeur correspondant à la moyenne des effectifs payés sur une période donnée, introduit récemment chez Enedis.
-    
-    \item[GitLab] Plateforme de développement collaboratif utilisée pour le versioning du code, le suivi des issues et la gestion des sprints.
-    
-    \item[MC2] MyConsoleCloud - Plateforme cloud AWS d'Enedis utilisée pour le déploiement et l'hébergement des applications.
-    
-    \item[Migration] Processus de transformation ou mise à jour de la structure d'une base de données, généralement automatisé via des scripts.
-    
-    \item[Mono-repository] Structure de code où plusieurs projets liés sont stockés dans un seul repository Git, facilitant la gestion des dépendances et la synchronisation.
-    
-    \item[NestJS] Framework Node.js pour construire des applications backend efficaces et évolutives.
-    \item Utilisé pour développer l'API de l'application.
-    
-    \item[Node.js] Environnement d'exécution JavaScript côté serveur permettant d'exécuter du code JavaScript en dehors d'un navigateur web.
-    
-    \item[NG-ZORRO] Bibliothèque de composants UI pour Angular basée sur Ant Design, utilisée pour l'interface utilisateur de l'application.
-    
-    \item[OAuth2] Protocole d'autorisation standard utilisé pour l'authentification SSO (Single Sign-On) dans l'écosystème Enedis.
-    
-    \item[ORM] Object-Relational Mapping - Technique de programmation permettant de faire correspondre les bases de données relationnelles avec les objets d'un langage de programmation.
-    
-    \item[Pipeline] Ensemble d'étapes automatisées pour le build, test et déploiement d'une application dans un processus CI/CD.
-    
-    \item[Planning Poker] Technique d'estimation agile utilisant des cartes numérotées pour évaluer la complexité et l'effort requis pour développer les user stories.
-    
-    \item[POC] Proof of Concept - Prototype ou démonstration permettant de valider la faisabilité d'un concept ou d'une technologie.
-    
-    \item[Prince2] Projects IN Controlled Environments - Méthodologie de gestion de projet structurée utilisée pour la gouvernance et le pilotage stratégique.
-    
-    \item[Prisma] ORM moderne pour Node.js et TypeScript utilisé pour la gestion de la base de données et les requêtes SQL.
-    
-    \item[Recette] Phase de tests et validation d'une fonctionnalité par les utilisateurs métier avant sa mise en production définitive.
-    
-    \item[RGPD] Règlement Général sur la Protection des Données - Réglementation européenne sur la protection des données personnelles, contrainte majeure du projet.
-    
-    \item[Rollback] Processus de retour à une version précédente d'une application en cas de problème détecté après un déploiement.
-    
-    \item[Sprint] Période de développement courte (généralement 1-2 semaines) dans la méthodologie Agile durant laquelle l'équipe se concentre sur un ensemble de fonctionnalités défini.
+    \item[API REST] Application Programming Interface suivant le style REST~: interface permettant au frontend de communiquer avec le backend via des requêtes HTTP.
 
-    \item[SSO] Single Sign-On - Méthode d'authentification permettant à un utilisateur d'accéder à plusieurs applications avec une seule connexion.
-    
-    \item[TMA] Tierce Maintenance Applicative - Service de maintenance et d'évolution d'applications informatiques assuré par une équipe externe au développement initial.
-    
-    \item[TurboRepo / Nx] Ensemble d'outils pour mono-repositories.
-    
-    \item[TypeScript] Langage de programmation développé par Microsoft, extension typée de JavaScript apportant une meilleure robustesse et maintenabilité du code.
-    
-    \item[User Story] Description courte et simple d'une fonctionnalité du point de vue de l'utilisateur final, utilisée dans les méthodologies agiles pour définir les besoins.
+    \item[Bracket] Représentation en arbre des confrontations d'une phase à élimination directe, montrant la progression des participants jusqu'à la finale.
+
+    \item[bcrypt] Algorithme de hachage de mots de passe avec sel et facteur de coût, utilisé pour stocker les mots de passe de manière sécurisée.
+
+    \item[CI/CD] Continuous Integration / Continuous Deployment~: pratiques d'automatisation des tests et des déploiements pour fiabiliser et accélérer les livraisons.
+
+    \item[CORS] Cross-Origin Resource Sharing~: mécanisme de sécurité du navigateur, configuré côté API pour n'autoriser que l'origine du frontend.
+
+    \item[Docker / Docker Compose] Technologie de conteneurisation. Docker Compose orchestre l'ensemble des services du projet (backend, frontend, base de données, stockage, supervision) via un seul fichier.
+
+    \item[DTO] Data Transfer Object~: objet décrivant et validant la structure des données entrantes d'une requête, associé à class-validator côté NestJS.
+
+    \item[Élimination directe] Format de tournoi où un participant est éliminé dès sa première défaite.
+
+    \item[ESLint] Outil d'analyse statique du code TypeScript détectant erreurs et écarts aux conventions du projet.
+
+    \item[GitHub Actions] Service d'intégration continue intégré à GitHub, configuré via des fichiers YAML versionnés.
+
+    \item[Grafana] Outil de supervision utilisé pour visualiser les métriques applicatives et techniques.
+
+    \item[Guard] Composant NestJS contrôlant l'accès à un endpoint~: \texttt{RoleGuard} vérifie le rôle de l'utilisateur avant d'autoriser l'action.
+
+    \item[Head-to-head] Critère de départage des égalités fondé sur le résultat des confrontations directes entre les participants à égalité.
+
+    \item[Helmet] Middleware ajoutant des en-têtes HTTP de sécurité à l'API NestJS.
+
+    \item[Husky] Outil exécutant des hooks Git (par ex. \texttt{pre-commit}) pour lancer le lint avant chaque commit.
+
+    \item[Jest] Framework de test standard de l'écosystème Node.js, utilisé pour les tests unitaires du backend NestJS.
+
+    \item[Jasmine / Karma] Outils de test natifs d'Angular, utilisés pour les tests unitaires du frontend.
+
+    \item[JWT] JSON Web Token~: jeton signé utilisé pour authentifier les requêtes après connexion.
+
+    \item[MinIO] Service de stockage d'objets compatible S3, utilisé pour stocker les fichiers PDF générés par l'application.
+
+    \item[Migration] Script versionné décrivant une évolution de la structure de la base de données, appliqué via Prisma.
+
+    \item[NestJS] Framework Node.js pour construire des applications backend modulaires et évolutives. Utilisé pour l'API de BrackX.
+
+    \item[Node.js] Environnement d'exécution JavaScript côté serveur.
+
+    \item[ORM] Object-Relational Mapping~: technique faisant correspondre les tables d'une base relationnelle à des objets typés du code.
+
+    \item[OWASP Top 10] Liste de référence des dix risques de sécurité les plus critiques des applications web.
+
+    \item[Pipeline] Ensemble d'étapes automatisées (lint, build, tests) exécutées à chaque modification du code.
+
+    \item[Poules] Format de tournoi où les participants d'un groupe s'affrontent tous, un classement déterminant les qualifiés.
+
+    \item[Prisma] ORM moderne pour Node.js et TypeScript, suivant une approche schéma-first avec migrations versionnées et client typé.
+
+    \item[Qualification inter-phases] Règle définissant combien de participants passent d'une phase à la suivante et selon quel parcours (y compris saut d'étape).
+
+    \item[Recette] Phase de tests fonctionnels validant l'application au regard des résultats attendus avant livraison.
+
+    \item[RGAA] Référentiel Général d'Amélioration de l'Accessibilité (version 4.1)~: référentiel officiel français pour l'accessibilité numérique.
+
+    \item[Robin stage] Format de tournoi (round-robin) où chaque participant affronte tous les autres ; le classement s'établit aux points.
+
+    \item[Rollback] Retour à une version précédente de l'application en cas de problème après déploiement.
+
+    \item[Saut d'étape] Mécanisme de qualification permettant à certains rangs d'une phase de se qualifier directement pour une phase ultérieure en sautant une phase intermédiaire.
+
+    \item[Smoke test] Test de fumée~: vérification rapide des fonctionnalités critiques après chaque déploiement.
+
+    \item[Tiebreak] Cascade de critères appliquée pour départager des participants à égalité (head-to-head, différentiel, barrage).
+
+    \item[TMA] Tierce Maintenance Applicative~: maintenance et évolution de l'application après livraison.
+
+    \item[TypeScript] Extension typée de JavaScript apportant robustesse et maintenabilité au code.
+
+    \item[User Story] Description courte d'une fonctionnalité du point de vue de l'utilisateur, au format « En tant que… je peux… afin de… ».
+
+    \item[Versionnement sémantique] Convention de numérotation des versions \texttt{major.minor.patch} (par ex. v1.0.0).
+
+    \item[WebSocket] Protocole de communication bidirectionnelle temps réel, envisagé via les gateways NestJS pour les futures notifications.
 \end{description}
