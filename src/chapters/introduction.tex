@@ -1,17 +1,18 @@
 \section*{Rappel du projet}
-BrackX est une application web permettant de créer des tournois modulables par étapes, avec des règles de qualification configurables entre chaque phase. Le projet a été commandé par Paul-Lucas Estrada dans le cadre de l'agence CDS. Le cadrage, l'analyse du besoin et les choix d'architecture ont été réalisés et validés au cours du Bloc 1 ; ce dossier se concentre sur la réalisation technique : conception, développement, tests et documentation.
+BrackX est une application web permettant de créer des tournois modulables par étapes, avec des règles de qualification configurables entre chaque phase. Le projet a été commandé par Paul-Lucas Estrada dans le cadre de l'agence CDS, une agence fictive reprenant la structuration et les bonnes pratiques de mon service d'alternance au sein d'Enedis. Le cadrage, l'analyse du besoin et les choix d'architecture ont été réalisés et validés au cours du Bloc 1. Ce dossier se concentre sur la réalisation technique de l'application~: conception, développement, tests et documentation.
 
 \section*{Périmètre couvert par ce dossier et état d'avancement}
 Le périmètre traité ici correspond au produit minimum viable (PMV), c'est-à-dire au prototype fonctionnel, ainsi qu'à certains éléments de la V1 tels que validés en réunion de comité de pilotage (COPIL). Il couvre l'authentification et la gestion des rôles, la création de tournois multi-phases, la configuration des qualifications inter-phases, la saisie des résultats avec mise à jour des classements, l'affichage des brackets et une bibliothèque de templates.
 
-À la date de ce rendu, l'application \textbf{n'est pas encore en production}~: la suite du développement (finalisation de la V1 et mise en production) est planifiée pour août et septembre. Le présent dossier décrit donc l'environnement, le prototype et les processus mis en place ou prévus, certains éléments restant à confirmer une fois le développement achevé. Les évolutions ultérieures (export statistique, partage public, notifications temps réel, application mobile) sont hors périmètre et abordées uniquement sous l'angle de l'évolutivité de l'architecture.
+À la date de ce rendu, l'application \textbf{n'est pas encore en production}~: la suite du développement (finalisation de la V1 et mise en production) est planifiée pour août et septembre. Le dossier décrit donc l'environnement, le prototype et les processus mis en place ou prévus, certains éléments restant à confirmer une fois le développement achevé. Les évolutions ultérieures (export statistique, partage public, notifications temps réel, application mobile) sont hors périmètre et abordées uniquement sous l'angle de l'évolutivité de l'architecture.
 
 \section*{Stack technique retenue}
 La stack a été validée au Bloc 1 (C1.3.2 et C1.6) et n'est pas rejustifiée ici~: NestJS pour le backend (API REST), Angular pour le frontend, PostgreSQL pour la base de données, Prisma comme ORM, et Docker pour la conteneurisation de l'ensemble des services.
 
 \section*{Dépôt et période de développement}
-Le code source est hébergé sur un dépôt Git accessible en lecture au moment de l'évaluation. Le développement du PMV et des premiers éléments de la V1 est en cours ; la finalisation et la mise en production sont prévues pour août et septembre.
-\todo{Indiquer l'URL du dépôt GitHub/GitLab contenant le code source, ainsi que les dates de début et de fin de développement (PMV livré, V1 en cours, production prévue août-septembre).}
+Le code source est hébergé sur un dépôt GitLab public, accessible en lecture au moment de l'évaluation. L'ensemble du développement du PMV et des premiers éléments de la V1 y est versionné~; la finalisation de la V1 et la mise en production sont prévues pour août et septembre 2026.
+
+\noindent Dépôt GitLab~: \url{https://gitlab.com/enzo.angot/rncp}
 
 \section*{Organisation du dossier}
 Ce dossier suit l'ordre logique du cycle de développement, chaque section répondant à une compétence de la grille~: mise en place de l'environnement et de l'intégration continue (C2.1.1 et C2.1.2), conception du prototype (C2.2.1), tests unitaires (C2.2.2), sécurité, accessibilité et évolutivité (C2.2.3), déploiement et gestion des versions (C2.2.4), cahier de recettes (C2.3.1), plan de correction des bogues (C2.3.2) et documentation technique d'exploitation (C2.4.1).
