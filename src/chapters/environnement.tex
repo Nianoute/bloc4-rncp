@@ -1,67 +1,19 @@
 % =====================================================================
 % Chapitre 1 — Environnement (C2.1.1) et Intégration continue (C2.1.2)
-% Contenu repris et structuré depuis le dossier rédigé C2.1.1 / C2.1.2
 % =====================================================================
 
 \section{Environnement de déploiement et de test (C2.1.1)}
-\competence{C2.1.1}{Protocole de déploiement continu, critères de qualité et de performance}{Non}
 
-Le développement de l'application a nécessité la mise en place d'un environnement de travail structuré, reproductible et partagé par l'ensemble des contributeurs du projet. L'objectif était double~: garantir que chaque développeur travaille dans des conditions identiques, et disposer d'environnements distincts pour le développement, les tests et la production, afin d'éviter qu'une modification non maîtrisée n'impacte directement les utilisateurs finaux.
+Le développement de l'application a nécessité la mise en place d'un environnement de travail structuré et reproductible. Bien que je sois le seul développeur du projet, je l'ai pensé dès le départ pour faciliter la prise en main par n'importe quel développeur amené à le reprendre~: toute la configuration est versionnée à la racine du dépôt et l'ensemble des services se lance d'une seule commande. L'objectif était double~: garantir des conditions d'exécution identiques d'un poste à l'autre, et disposer d'environnements distincts pour le développement, les tests et la production, afin d'éviter qu'une modification non maîtrisée n'impacte directement les utilisateurs finaux. (test Cedric)
 
 \subsection{Environnement de développement local}
-Le projet repose sur la stack Angular (frontend) / NestJS (backend) / PostgreSQL (base de données), avec Prisma comme ORM. Pour homogénéiser les pratiques entre développeurs, les outils suivants ont été retenus et configurés à la racine du dépôt.
+Le projet repose sur la stack Angular (frontend) / NestJS (backend) / PostgreSQL (base de données), avec Prisma comme ORM. L'éditeur utilisé est Visual Studio Code, complété des extensions adaptées à la stack (Angular Language Service, ESLint, Prettier et Prisma). La gestion des dépendances repose sur npm, le fichier \texttt{package-lock.json} étant versionné pour figer précisément les versions installées d'un poste à l'autre.
 
-\paragraph{Éditeur de code et extensions.}
-L'éditeur utilisé est Visual Studio Code, accompagné des extensions suivantes~:
+Bien que le frontend et le backend s'exécutent dans des conteneurs Docker, une version de Node.js cohérente reste nécessaire sur le poste de développement. Plusieurs outils tournent en effet directement sur l'hôte (hooks de pré-commit Husky, ESLint et serveur de langage Angular dans l'éditeur) et les images Docker sont elles-mêmes construites à partir d'une image de base Node.js v20. La version est donc figée à Node.js v20 (LTS) via un fichier \texttt{.nvmrc}, ce qui aligne l'environnement du poste sur celui des conteneurs et évite tout écart.
 
-\begin{table}[H]
-    \centering
-    \begin{tabular}{|>{\raggedright\arraybackslash}p{0.28\linewidth}|>{\raggedright\arraybackslash}p{0.60\linewidth}|}
-        \hline
-        \textbf{Extension} & \textbf{Rôle dans le projet} \\
-        \hline
-        Angular Language Service & Autocomplétion, navigation dans le code et détection d'erreurs dans les templates et composants Angular. \\
-        \hline
-        ESLint & Analyse statique du code TypeScript afin de détecter les erreurs de syntaxe et les écarts aux conventions définies pour le projet. \\
-        \hline
-        Prettier & Formatage automatique du code à l'enregistrement, garantissant une présentation homogène quel que soit le développeur. \\
-        \hline
-        Prisma & Coloration syntaxique et autocomplétion du schéma Prisma (modèles de données, relations, migrations). \\
-        \hline
-    \end{tabular}
-    \caption{Extensions VS Code retenues pour le projet}
-\end{table}
+L'ensemble de l'environnement local est orchestré par un unique fichier \texttt{docker-compose.yml}, qui décrit les services interdépendants. Tout développeur peut ainsi démarrer l'intégralité du projet d'une seule commande, sans installer Node.js, PostgreSQL ou un client S3 sur sa machine. L'option \texttt{develop.watch} reconstruit en outre automatiquement les images backend et frontend lorsque les fichiers de dépendances ou de variables d'environnement changent.
 
-\paragraph{Gestion de la version de Node.js.}
-Afin d'éviter les incompatibilités liées à des versions différentes de Node.js entre les postes de développement, la version utilisée est fixée à Node.js v20 (LTS) via un fichier \texttt{.nvmrc} placé à la racine du projet. Chaque développeur exécute la commande \texttt{nvm use} avant de lancer le projet, ce qui garantit que tous travaillent avec un environnement d'exécution identique.
-
-\paragraph{Gestionnaire de paquets.}
-La gestion des dépendances repose sur npm. Le fichier \texttt{package-lock.json} est versionné dans le dépôt Git, ce qui permet de figer précisément les versions des dépendances installées et d'éviter qu'une mise à jour involontaire d'un paquet ne provoque une régression chez un développeur et pas chez un autre.
-
-\paragraph{Orchestration des services via Docker Compose.}
-L'ensemble de l'environnement de développement local est orchestré par un unique fichier \texttt{docker-compose.yml}, qui décrit cinq services interdépendants. Cette approche garantit que tout nouveau développeur peut démarrer l'intégralité du projet avec une seule commande, sans installer Node.js, PostgreSQL ou un client S3 directement sur sa machine. L'option \texttt{develop.watch} de Docker Compose permet en outre de reconstruire automatiquement les images backend et frontend lorsque les fichiers de dépendances ou de variables d'environnement sont modifiés.
-
-\begin{table}[H]
-    \centering
-    \begin{tabular}{|>{\raggedright\arraybackslash}p{0.18\linewidth}|>{\raggedright\arraybackslash}p{0.70\linewidth}|}
-        \hline
-        \textbf{Service} & \textbf{Rôle} \\
-        \hline
-        backend & API NestJS. Le code source est monté en volume depuis l'hôte pour bénéficier du rechargement à chaud ; les dépendances restent isolées dans le conteneur pour éviter les conflits liés au système d'exploitation de l'hôte. \\
-        \hline
-        frontend & Application Angular. Même principe de montage du code en volume pour le hot reload, avec activation du polling de fichiers (CHOKIDAR\_USEPOLLING / WATCHPACK\_POLLING) pour fiabiliser la détection des changements sous Windows et macOS. \\
-        \hline
-        postgres & Base de données PostgreSQL 17. Un healthcheck (pg\_isready) garantit que le backend n'est démarré qu'une fois la base prête à accepter des connexions. \\
-        \hline
-        minio & Service de stockage d'objets compatible S3, utilisé pour le stockage des fichiers PDF générés. Un service minio-init initialise le bucket et ses droits au démarrage. \\
-        \hline
-        grafana & Outil de supervision, utilisé pour visualiser les métriques applicatives et techniques du projet. \\
-        \hline
-    \end{tabular}
-    \caption{Services orchestrés par Docker Compose}
-\end{table}
-
-\todo{Insérer en annexe le fichier \texttt{docker-compose.yml} complet, ainsi qu'une capture de \texttt{docker compose ps} montrant les cinq services démarrés et en bonne santé (healthy). Insérer également une capture du fichier \texttt{.nvmrc} et de la commande \texttt{nvm use}.}
+\todo{Ne pas oublier d'insérer une annexe sur le docker-compose.}
 
 \subsection{Les trois environnements distincts}
 Trois environnements ont été mis en place afin de séparer clairement les usages et de sécuriser le passage du code vers la production.
@@ -72,26 +24,17 @@ Trois environnements ont été mis en place afin de séparer clairement les usag
         \hline
         \textbf{Environnement} & \textbf{Caractéristiques} \\
         \hline
-        Développement & Les cinq services sont exécutés localement via Docker Compose, avec hot reload activé sur le backend et le frontend. Les variables sensibles (chaîne de connexion PostgreSQL, identifiants MinIO, secret JWT) sont stockées dans des fichiers \texttt{.env} non versionnés. \\
+        Développement & Les services sont exécutés localement via Docker Compose, avec hot reload activé sur le backend et le frontend. Les variables sensibles (chaîne de connexion PostgreSQL, identifiants MinIO, secret JWT) sont stockées dans des fichiers \texttt{.env} non versionnés. \\
         \hline
         Test & Base de données PostgreSQL dédiée, totalement isolée de la base de développement, afin que l'exécution des tests automatisés (Jest) ne modifie jamais les données utilisées en local. \\
         \hline
         Production & Déploiement du même \texttt{docker-compose.yml} (adapté avec des valeurs de production) sur un VPS, avec des variables d'environnement injectées sans fichier \texttt{.env} versionné. \\
         \hline
     \end{tabular}
-    \caption{Les trois environnements du projet}
 \end{table}
 
 \subsection{Outils de qualité et de performance}
-Plusieurs outils ont été intégrés à la chaîne de développement afin de garantir un niveau de qualité constant sur le code produit~:
-\begin{itemize}
-    \item \textbf{ESLint} : configuré avec les règles recommandées pour Angular et NestJS, exécuté automatiquement à chaque tentative de commit grâce à un hook \texttt{pre-commit} géré par Husky. Un commit contenant des erreurs de lint est bloqué avant d'atteindre le dépôt distant.
-    \item \textbf{Prettier} : formatage automatique du code (indentation, guillemets, longueur de ligne), supprimant les débats de style et les diffs Git inutiles.
-    \item \textbf{Jest} : tests unitaires côté backend (services, contrôleurs NestJS).
-    \item \textbf{Jasmine / Karma} : outils natifs d'Angular, utilisés pour les tests unitaires côté frontend.
-\end{itemize}
-
-\todo{Insérer un extrait de configuration ESLint/Husky et une capture d'un commit bloqué par le hook pre-commit.}
+Au-delà du lint (ESLint) et du formatage (Prettier), la qualité repose sur un harnais de tests automatisés~: Jest couvre les tests unitaires du backend (services et contrôleurs NestJS), tandis que Jasmine et Karma, natifs d'Angular, assurent ceux du frontend. Ces outils, exécutés localement via un hook de pré-commit (Husky) et dans le pipeline d'intégration continue, garantissent un niveau de qualité constant indépendamment du moment du développement.
 
 \subsection{Critères de qualité retenus}
 Pour objectiver la notion de qualité, des critères mesurables ont été définis en amont du développement.
@@ -109,36 +52,48 @@ Pour objectiver la notion de qualité, des critères mesurables ont été défin
         Temps de réponse API & < 500 ms & Mesuré sur les endpoints principaux en développement, pour garantir une expérience utilisateur fluide. \\
         \hline
     \end{tabular}
-    \caption{Critères de qualité et de performance retenus}
 \end{table}
 
 Les temps de réponse n'ont pas fait l'objet d'un outil de mesure automatisé dédié~: des tests de charge manuels ont été réalisés via Postman sur les endpoints principaux, et les résultats obtenus ont été jugés satisfaisants au regard du volume d'utilisation attendu pour cette première version.
 
-\todo{Insérer une capture des tests de charge réalisés sous Postman (temps de réponse observés sur les endpoints principaux).}
-
 \subsection{Choix de l'infrastructure d'hébergement en production}
-Le choix de la plateforme d'hébergement a été guidé par trois critères~: la cohérence avec la méthode de développement déjà en place (tout le projet est packagé en conteneurs via \texttt{docker-compose.yml}), la simplicité technique de mise en œuvre, et la sobriété environnementale de l'infrastructure cible.
+La plateforme retenue est AWS (instance EC2), sur laquelle le \texttt{docker-compose.yml} de développement est réutilisé quasiment à l'identique~: seules les variables liées au hot reload sont retirées, et les services sont démarrés via \texttt{docker compose up -d}, comme en local. Ce choix répond à un objectif de représentativité~: AWS est l'hébergeur utilisé dans mon entreprise, ce qui permet au projet de refléter mon contexte professionnel, tout en limitant le risque d'erreur puisque la production reprend l'environnement déjà maîtrisé.
 
-\paragraph{Solution retenue : un VPS exploité avec le même docker-compose.yml.}
-Plutôt que de migrer vers une architecture orchestrée (Kubernetes) ou vers des services managés distincts, le choix retenu est un serveur privé virtuel (VPS) unique sur lequel le \texttt{docker-compose.yml} de développement est réutilisé quasiment à l'identique~: seules les variables d'environnement et les options de montage de volumes liées au hot reload sont retirées pour la production. Les cinq services sont démarrés via \texttt{docker compose up -d}, exactement comme en local. Ce choix minimise la charge d'apprentissage et le risque d'erreur~: l'infrastructure de production est une transposition directe de l'environnement déjà maîtrisé en développement.
+Le critère écoresponsable a néanmoins fait l'objet d'une analyse comparative, dont il ressort que Scaleway offrirait le meilleur profil.
 
-\paragraph{Critère écoresponsable.}
-L'hébergeur retenu est Scaleway, fournisseur de cloud souverain français. Ce choix répond au critère de sobriété environnementale~: datacenters alimentés en énergie renouvelable (majoritairement hydraulique), indicateur d'efficacité énergétique (PUE) nettement sous la moyenne du secteur grâce au refroidissement adiabatique, implantation en France limitant la latence et s'appuyant sur un mix électrique parmi les moins carbonés d'Europe, et exécution native de Docker Compose. Une alternative équivalente, écartée pour ce projet mais documentée par souci de transparence, est Infomaniak (hébergeur suisse), au profil environnemental comparable mais hébergeant les données hors Union européenne.
+\begin{table}[H]
+    \centering
+    \small
+    \begin{tabular}{|>{\raggedright\arraybackslash}p{0.20\linewidth}|>{\raggedright\arraybackslash}p{0.22\linewidth}|>{\raggedright\arraybackslash}p{0.20\linewidth}|>{\raggedright\arraybackslash}p{0.20\linewidth}|}
+        \hline
+        \textbf{Critère} & \textbf{Scaleway (meilleur profil)} & \textbf{Infomaniak} & \textbf{OVHcloud} \\
+        \hline
+        Énergie & Renouvelable, majoritairement hydraulique & Renouvelable, hydraulique & Renouvelable \\
+        \hline
+        Refroidissement & Adiabatique, PUE bas & Free cooling, PUE bas & Watercooling, PUE bas \\
+        \hline
+        Localisation des données & France (UE) & Suisse (hors UE) & France / UE \\
+        \hline
+        Docker Compose natif & Oui & Oui & Oui \\
+        \hline
+    \end{tabular}
+\end{table}
 
-\todo{Insérer le comparatif chiffré final entre les offres VPS retenues et une capture de la configuration réellement déployée (taille du VPS, OS, prix), avec la justification du dimensionnement.}
+Scaleway combine énergie renouvelable, refroidissement adiabatique (PUE bas) et hébergement des données en France~; Infomaniak présente un profil comparable mais hors Union européenne, et OVHcloud reste une alternative française crédible. Sur ce seul critère, Scaleway s'imposerait. Le choix d'AWS, motivé par la représentativité, n'en demeure pas moins assumé, cette analyse valant recommandation pour une optimisation ultérieure.
 
-\livrable{le protocole de déploiement continu et les critères de qualité et de performance}
+Cette architecture présente enfin une limite connue~: packagée dans une image Docker sur une instance unique, elle n'est pas scalable horizontalement. Ce compromis privilégie la rapidité de développement et la simplicité d'installation. Si la charge l'exige, l'évolution prévue en TMA consiste à placer un répartiteur de charge (Elastic Load Balancer) devant plusieurs instances, puis à passer à une orchestration de conteneurs (ECS ou Kubernetes).
 
 \section{Intégration continue (C2.1.2)}
-\competence{C2.1.2}{Protocole d'intégration continue}{Non}
 
 Afin de détecter les régressions le plus tôt possible dans le cycle de développement, un pipeline d'intégration continue (CI) a été mis en place. Il s'exécute automatiquement à chaque modification du code source et empêche la fusion de code non conforme dans la branche principale.
 
 \subsection{Choix de l'outil d'intégration continue}
-L'outil retenu est GitLab CI/CD. Ce choix s'explique par son intégration native avec GitLab (le dépôt du projet y étant déjà hébergé), sa gratuité pour les projets publics et la simplicité de configuration des pipelines via un fichier YAML versionné directement dans le dépôt, ce qui rend la configuration du pipeline traçable au même titre que le code applicatif.
+L'outil retenu est GitLab CI/CD. Ce choix répond d'abord à un objectif de représentativité~: GitLab est la plateforme de stockage des repository utilisée dans mon entreprise, et reproduire cet environnement permet à ce projet de refléter les compétences réellement mises en œuvre dans mon contexte professionnel. Il s'appuie en outre sur une intégration native avec GitLab (le dépôt y étant déjà hébergé), sa gratuité pour les projets publics et la simplicité de configuration des pipelines via un fichier YAML versionné dans le dépôt, ce qui rend la configuration traçable au même titre que le code applicatif.
+
+Si le choix avait été entièrement libre, je me serais orienté vers GitHub Actions~: son écosystème d'actions réutilisables (le Marketplace) accélère nettement la mise en place des pipelines, sa communauté plus large facilite la résolution des problèmes, et son intégration avec de nombreux services tiers en fait l'outil le plus productif pour un projet personnel. Le critère de représentativité a néanmoins primé sur cette préférence.
 
 \subsection{Description du pipeline CI}
-Le pipeline est défini dans le fichier \texttt{.gitlab-ci.yml}. Il se déclenche automatiquement à chaque push, quelle que soit la branche, ainsi qu'à chaque ouverture ou mise à jour d'une merge request vers la branche \texttt{main}.
+Le pipeline est défini dans le fichier \texttt{.gitlab-ci.yml}. Il se déclenche automatiquement à chaque push, quelle que soit la branche, ainsi qu'à chaque ouverture ou mise à jour d'une merge request vers la branche \texttt{main}. Il enchaîne sept étapes.
 
 \begin{table}[H]
     \centering
@@ -161,13 +116,13 @@ Le pipeline est défini dans le fichier \texttt{.gitlab-ci.yml}. Il se déclench
         7 & Génération et archivage du rapport de couverture & Le rapport est conservé en artefact, consultable depuis l'interface GitLab CI/CD. \\
         \hline
     \end{tabular}
-    \caption{Séquences du pipeline d'intégration continue}
 \end{table}
 
 Chacune de ces étapes est bloquante~: si l'une d'elles échoue, les étapes suivantes ne sont pas exécutées et le pipeline est marqué en échec, ce qui empêche la fusion de la merge request concernée.
 
 \todo{Insérer un extrait commenté du fichier .gitlab-ci.yml (15-20 lignes représentatives) et une capture d'une exécution réussie du pipeline dans GitLab CI/CD.}
 
+\clearpage
 \subsection{Stratégie de gestion des branches}
 La stratégie de branches adoptée vient renforcer l'efficacité du pipeline CI en structurant le flux de contribution au code.
 
@@ -184,11 +139,8 @@ La stratégie de branches adoptée vient renforcer l'efficacité du pipeline CI 
         feature/xxx & Branches de fonctionnalités, créées depuis develop pour chaque évolution, et supprimées une fois la fonctionnalité fusionnée. \\
         \hline
     \end{tabular}
-    \caption{Stratégie de branches}
 \end{table}
 
-Cette organisation garantit qu'aucune régression ne peut être introduite en production sans avoir au préalable été détectée par le pipeline, et qu'une fonctionnalité en cours de développement n'impacte jamais directement la branche de production.
+Cette organisation garantit qu'aucune régression ne peut être introduite en production sans avoir au préalable été détectée par le pipeline, et qu'une fonctionnalité en cours de développement n'impacte jamais directement la branche de production. Même seul sur le projet, cette discipline de branches et de merge requests reproduit les conditions d'un travail en équipe et facilite une éventuelle reprise à plusieurs.
 
 \todo{Insérer une capture des règles de protection de la branche main configurées sur GitLab (Settings > Repository > Protected branches).}
-
-\livrable{le protocole d'intégration continue}
