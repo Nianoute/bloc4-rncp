@@ -1,0 +1,101 @@
+% =====================================================================
+% Chapitre 5 — Cahier de recettes (C2.3.1, ÉLIMINATOIRE)
+%               + Plan de correction des bogues (C2.3.2)
+% =====================================================================
+
+\section{Cahier de recettes (C2.3.1)}
+\competence{C2.3.1}{Le cahier de recettes}{OUI}
+
+Cette section formalise un plan de tests fonctionnels couvrant l'ensemble des fonctionnalités attendues, avec des résultats attendus explicites. Le cahier de recettes complet est fourni en annexe C ; le corps du dossier en présente la structure et quelques exemples représentatifs.
+
+\subsection{Structure d'un scénario de test}
+Chaque scénario est structuré ainsi~:
+\begin{itemize}
+    \item Identifiant (ex.~: \texttt{CR-AUTH-01})
+    \item Fonctionnalité testée
+    \item Pré-conditions (état initial de l'application)
+    \item Étapes de test (actions de l'utilisateur)
+    \item Résultat attendu
+    \item Résultat obtenu
+    \item Statut (Succès / Échec / Bloquant)
+\end{itemize}
+
+\subsection{Catégories de tests couvertes}
+
+\paragraph{Tests fonctionnels (user stories V1).}
+Authentification (4 scénarios)~: inscription, connexion, accès refusé sans token, accès refusé avec mauvais rôle. Gestion des tournois (5 scénarios)~: création, configuration des phases, ajout de participants, duplication d'un format, sélection d'un template. Qualifications inter-phases (4 scénarios)~: qualification normale, saut d'étape, nombre insuffisant de qualifiés, qualification avec critère d'égalité activé. Saisie des résultats (3 scénarios)~: saisie d'un score, mise à jour du classement, gestion d'un forfait. Robin stage (3 scénarios)~: configuration du barème, calcul des points, déclenchement des critères d'égalité.
+
+\paragraph{Tests structurels.}
+Navigation au clavier complète sur les formulaires principaux ; comportement en cas de perte de connexion réseau ; comportement en cas de token JWT expiré (redirection vers la connexion).
+
+\paragraph{Tests de sécurité.}
+Tentative d'accès à un endpoint admin avec un token utilisateur ; tentative d'injection dans les champs de formulaire (vérification du rejet par la validation DTO) ; vérification que les mots de passe ne sont jamais retournés dans les réponses de l'API.
+
+\subsection{Exemple de scénario}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|>{\raggedright\arraybackslash}p{0.24\linewidth}|>{\raggedright\arraybackslash}p{0.64\linewidth}|}
+        \hline
+        \textbf{Champ} & \textbf{Valeur} \\
+        \hline
+        Identifiant & CR-AUTH-03 \\
+        \hline
+        Fonctionnalité & Authentification --- contrôle d'accès \\
+        \hline
+        Pré-conditions & Utilisateur connecté avec le rôle « utilisateur » \\
+        \hline
+        Étapes & Appeler un endpoint de configuration de tournoi réservé à l'administrateur \\
+        \hline
+        Résultat attendu & L'API retourne une erreur 403 et aucune donnée de configuration n'est exposée \\
+        \hline
+        Statut & \textit{à renseigner après exécution} \\
+        \hline
+    \end{tabular}
+    \caption{Exemple de scénario du cahier de recettes}
+\end{table}
+
+\subsection{Résultats de la recette}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \textbf{Scénarios exécutés} & \textbf{Succès} & \textbf{Échecs} & \textbf{Bloquants} \\
+        \hline
+        \textit{N} & \textit{N} & \textit{N} & \textit{N} \\
+        \hline
+    \end{tabular}
+    \caption{Synthèse des résultats de la recette}
+\end{table}
+
+\todo{Compléter le tableau de synthèse avec les chiffres réels une fois la recette exécutée. Pour les tests en échec, préciser s'ils sont corrigés avant livraison ou reportés en TMA.}
+
+\livrable{le cahier de recettes}
+
+\section{Plan de correction des bogues (C2.3.2)}
+\competence{C2.3.2}{Le plan de correction des bogues}{Non}
+
+Cette section présente la démarche structurée de qualification, de priorisation et de correction des anomalies détectées lors de la recette.
+
+\subsection{Processus de gestion des anomalies}
+Les anomalies sont consignées sous forme d'issues GitHub avec un label de sévérité. Quatre niveaux sont définis~:
+\begin{itemize}
+    \item \textbf{Bloquant} : l'application ne peut pas fonctionner. Correction immédiate obligatoire avant livraison.
+    \item \textbf{Majeur} : une fonctionnalité principale est affectée mais un contournement existe. Correction avant livraison si possible.
+    \item \textbf{Mineur} : une fonctionnalité secondaire est affectée. Correction planifiée en TMA.
+    \item \textbf{Cosmétique} : problème d'affichage sans impact fonctionnel. Correction planifiée en TMA.
+\end{itemize}
+
+\subsection{Bogues rencontrés et corrigés}
+
+\paragraph{Bogue 1 --- Calcul d'égalité incorrect en cas de triple égalité.}
+\emph{Description}~: lors d'une triple égalité avec le critère head-to-head, le service retournait une erreur de calcul circulaire (A bat B, B bat C, C bat A). \emph{Analyse}~: la logique de résolution du head-to-head ne gérait pas le cas circulaire ; dans ce cas, le critère suivant de la cascade doit être appliqué automatiquement. \emph{Correction}~: ajout d'une détection de cycle dans le \texttt{TiebreakService}, avec basculement automatique vers le critère suivant lorsqu'un cycle est détecté.
+\todo{Référencer le hash Git du commit de correction.}
+
+\paragraph{Bogue 2 --- Participants non affichés après rechargement de la page.}
+\emph{Description}~: après un rechargement, la liste des participants d'une phase apparaissait vide alors que les données étaient présentes en base. \emph{Analyse}~: le token JWT stocké en \texttt{sessionStorage} était perdu au rechargement, provoquant une requête non authentifiée retournant 401 ; l'interceptor Angular ne gérait pas le rechargement initial. \emph{Correction}~: initialisation du token au démarrage de l'application dans le \texttt{AppComponent}.
+\todo{Référencer le hash Git du commit de correction.}
+
+\subsection{Bilan de la recette}
+\todo{Récapituler les anomalies détectées, qualifiées et traitées avant livraison, ainsi que celles reportées en TMA avec leur justification (impact limité, correction ne remettant pas en cause la stabilité globale).}
+
+\livrable{le plan de correction des bogues}

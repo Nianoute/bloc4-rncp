@@ -1,53 +1,15 @@
-\section*{Synthèse du projet et de ses apports}
+\section*{Bilan de l'état d'avancement}
+Le PMV (prototype fonctionnel) couvre les fonctionnalités principales validées en COPIL~: authentification et gestion des rôles, création de tournois multi-phases, configuration des qualifications inter-phases avec saut d'étape, saisie des résultats avec mise à jour automatique des classements, affichage des brackets et bibliothèque de templates. Certains éléments de la V1 sont engagés~; la finalisation de la V1 et la mise en production sont planifiées pour août-septembre.
+\todo{Préciser à la date du rendu ce qui est réellement terminé (PMV), en cours (V1) et restant à faire, et les éventuels ajustements de périmètre.}
 
-La démarche utilisée pour la transformation d'une solution locale en application nationale a permis de répondre avec succès à la problématique initiale : "Comment orchestrer la transition d'une solution régionale vers une application à portée nationale en assurant l'adhésion des différentes parties prenantes dans un cadre technique et réglementaire exigeant ?"
+\section*{Points forts techniques}
+Deux éléments se distinguent par la complexité métier surmontée~: la gestion des égalités en cascade avec détection de cycle dans le \texttt{TiebreakService}, qui traite proprement les triples égalités circulaires, et l'architecture modulaire NestJS, qui a facilité l'isolation et le test unitaire de la logique métier. La réutilisation prévue d'un unique \texttt{docker-compose.yml} du développement à la production vise par ailleurs à réduire fortement le risque d'erreur lors de la future mise en production.
 
-La refonte complète de l'application de gestion des effectifs RH d'Enedis illustre parfaitement les enjeux contemporains de transformation numérique des grandes entreprises non-technologiques.
-En passant d'un outil local aux technologies vieillissantes à une solution moderne actuellement déployée et utilisée par neuf directions régionales avec d'excellents retours, nous avons démontré qu'une approche pragmatique et itérative peut concilier excellence technique et adoption utilisateur.
+\section*{Points d'amélioration identifiés}
+\todo{Être honnête sur un ou deux points à renforcer en V2~: par exemple, la couverture des tests du frontend Angular reste à compléter, ou la gestion des erreurs côté API pourrait être plus granulaire pour améliorer l'expérience utilisateur.}
 
-Les résultats obtenus dépassent les objectifs initiaux avec une réduction concrète du temps de traitement des données mensuelles (gain de 8 à 10 heures par DR et par mois), l'automatisation complète des flux critiques grâce aux données nationales disponibles depuis début 2023, et l'harmonisation effective des pratiques RH au niveau des neuf directions régionales utilisatrices.
-Au-delà des gains quantifiables, ce projet a généré un changement culturel significatif, favorisant une approche plus agile et numérique de la gestion des ressources humaines chez Enedis.
+\section*{Perspectives et évolutions planifiées}
+Cinq évolutions sont documentées et planifiées~: export statistique, partage public d'un tournoi, notifications temps réel, application mobile et commentaires de match. L'architecture mise en place les supporte sans refonte, comme détaillé dans la partie évolutivité (C2.2.3).
 
-\section*{Réflexions sur les choix réalisés}
-
-L'approche pragmatique retenue, consistant à moderniser l'existant plutôt qu'à repartir de zéro, s'est révélée particulièrement judicieuse.
-Cette stratégie a permis de capitaliser sur l'expertise métier existante tout en livrant rapidement une première version fonctionnelle.
-La découverte progressive des spécificités régionales lors de la phase de déploiement, bien qu'initialement risquée, a favorisé un dialogue constructif avec les utilisateurs finaux.
-
-Les choix techniques (Angular, NestJS, Prisma) se sont révélés pertinents, offrant à la fois la robustesse nécessaire pour une application d'entreprise et la flexibilité requise pour les évolutions futures.
-L'investissement important dans l'automatisation des processus critiques, bien qu'ambitieux, a généré les gains de productivité les plus significatifs du projet.
-
-La méthodologie hybride Prince2/Agile, adaptée aux contraintes de l'alternance, a permis de maintenir un cadre structuré tout en conservant la flexibilité nécessaire aux ajustements continus.
-
-\section*{Perspectives d'évolution du projet}
-
-La solution développée constitue désormais un socle technique solide pour de futures évolutions.
-L'architecture modulaire choisie facilite l'ajout de nouvelles fonctionnalités, tandis que l'automatisation des flux de données ouvre la voie à des analyses prédictives plus poussées sur les mouvements d'effectifs.
-
-Le succès du déploiement en production sur neuf directions régionales, avec des retours positifs et une amélioration continue active, ouvre des perspectives d'extension aux directions régionales restantes et à d'autres domaines RH d'Enedis.
-Les bonnes pratiques établies en matière d'intégration SI et de gestion du changement constituent un capital réutilisable pour d'autres projets de transformation numérique au sein de l'équipe.
-
-L'approche collaborative développée avec les directions régionales pourrait également inspirer d'autres initiatives de standardisation des pratiques métier, contribuant à une meilleure cohérence organisationnelle au niveau national.
-
-\section*{Perspectives professionnelles}
-
-Cette expérience d'alternance a considérablement enrichi mon profil professionnel, me permettant de développer une vision complète des projets de transformation numérique.
-La double compétence technique et managériale acquise constitue un atout précieux pour la suite de ma carrière.
-
-Les compétences développées en architecture d'applications complexes, en gestion de projet agile, et en conduite du changement me positionnent favorablement pour des rôles de lead technique ou de chef de projet dans des contextes d'entreprise exigeants.
-L'expérience acquise en matière de contraintes réglementaires et de sécurité applicative constitue également un différenciant important.
-
-Cette mission m'a conforté dans mon choix de carrière à l'intersection entre technique et management, avec l'ambition de contribuer à des projets de transformation numérique d'envergure.
-Les perspectives d'évolution identifiées (conduite du changement, architecture d'entreprise, dimension économique des projets) guideront mes prochains choix de formation et d'expérience professionnelle.
-
-\section*{Mot de conclusion}
-
-Au-delà des aspects techniques et organisationnels, ce projet illustre la capacité des équipes d'alternants à porter des initiatives stratégiques d'envergure nationale.
-Il démontre que l'innovation peut émerger des entités locales pour ensuite irriguer l'ensemble d'une organisation, pourvu que les conditions d'accompagnement et de soutien institutionnel soient réunies.
-
-Cette expérience restera marquante dans mon parcours professionnel, non seulement par l'ampleur des responsabilités assumées, mais aussi par l'impact concret mesuré sur le quotidien d'environ 80 utilisateurs répartis sur les neuf directions régionales en production, avec des retours très positifs qui confirment la valeur apportée.
-Elle confirme que la technologie, mise au service des besoins métier réels et accompagnée d'une conduite du changement adaptée, peut véritablement transformer les pratiques de travail et libérer du temps pour des activités à plus forte valeur ajoutée.
-
-La réussite de ce projet ouvre de nouvelles perspectives pour l'équipe du Centre de Services et démontre le potentiel des structures hybrides alliant permanents expérimentés et alternants innovants.
-Cette transformation d'un outil local en solution nationale symbolise parfaitement les enjeux de modernisation des grandes entreprises publiques à l'ère du numérique.
-
+\section*{Retour d'expérience personnel}
+\todo{Conclure par deux à trois phrases personnelles sur les apports du projet en termes de montée en compétences~: gestion de la complexité métier, architecture NestJS, conduite d'un développement complet en autonomie.}

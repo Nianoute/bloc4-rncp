@@ -1,0 +1,75 @@
+% Annexe — Validation des compétences du Bloc 2
+\section*{Objet de l'annexe}
+Cette annexe reprend, compétence par compétence, la grille du Bloc 2 (RNCP 39583). Pour chacune, elle explique \textbf{pourquoi} la compétence est couverte par le projet BrackX et \textbf{comment} elle est validée, en renvoyant à la section du dossier et aux livrables correspondants. Les compétences marquées \textbf{éliminatoires} font l'objet d'une attention particulière.
+
+\section{C2.1.1 — Environnement de déploiement et de test}
+\textbf{Livrable de grille} : protocole de déploiement continu, critères de qualité et de performance. \textbf{Éliminatoire} : non.
+
+\textit{Pourquoi} : un environnement standardisé et reproductible (Docker Compose, version Node figée, trois environnements séparés) conditionne tout le cycle de développement.
+
+\textit{Comment} : voir chapitre 1, section C2.1.1. Preuves : fichier \texttt{docker-compose.yml}, fichier \texttt{.nvmrc}, configuration ESLint/Husky, tableau des critères de qualité.
+\todo{Citer les captures réellement fournies (docker compose ps, hook pre-commit, tests Postman) et confirmer les valeurs de couverture et de temps de réponse mesurées.}
+
+\section{C2.1.2 — Intégration continue}
+\textbf{Livrable de grille} : protocole d'intégration continue. \textbf{Éliminatoire} : non.
+
+\textit{Pourquoi} : un pipeline CI détecte les régressions avant toute fusion en branche principale, ce qui sécurise le travail collaboratif.
+
+\textit{Comment} : voir chapitre 1, section C2.1.2. Preuves : fichier \texttt{.github/workflows/ci.yml}, règles de protection de la branche \texttt{main}, exécutions du pipeline.
+\todo{Joindre la capture d'une exécution réussie du pipeline et l'extrait commenté du ci.yml (annexe extraits de code).}
+
+\section{C2.2.1 — Prototype de l'application}
+\textbf{Livrable de grille} : architecture maintenable, présentation d'un prototype, frameworks et paradigmes. \textbf{Éliminatoire} : OUI.
+
+\textit{Pourquoi} : le prototype (PMV) démontre la couverture des fonctionnalités principales et le respect des exigences ergonomiques et de sécurité.
+
+\textit{Comment} : voir chapitre 2. Preuves : architecture Angular/NestJS/Prisma, captures d'écran annotées (annexe captures), user stories couvertes.
+\todo{Lister les fonctionnalités réellement implémentées dans le PMV au moment du rendu, et distinguer ce qui relève déjà de la V1 partielle.}
+
+\section{C2.2.2 — Tests unitaires}
+\textbf{Livrable de grille} : jeu de tests unitaires couvrant une fonctionnalité demandée. \textbf{Éliminatoire} : OUI.
+
+\textit{Pourquoi} : un harnais de tests sur la logique métier sensible prévient les régressions.
+
+\textit{Comment} : voir chapitre 3, section C2.2.2. Preuves : tests Jest des services (QualificationService, TiebreakService...), rapport de couverture (annexe couverture).
+\todo{Indiquer les tests réellement écrits et le taux de couverture obtenu ; joindre l'extrait d'un test représentatif (pattern Arrange/Act/Assert).}
+
+\section{C2.2.3 — Sécurité, accessibilité et évolutivité}
+\textbf{Livrable de grille} : mesures de sécurité, actions d'accessibilité. \textbf{Éliminatoire} : OUI.
+
+\textit{Pourquoi} : la conformité OWASP et l'accessibilité (RGAA) sont des exigences fortes ; l'évolutivité garantit l'ajout des fonctionnalités planifiées sans refonte.
+
+\textit{Comment} : voir chapitre 3, section C2.2.3. Preuves : tableau OWASP Top 10, mesures RGAA, pistes d'évolutivité documentées.
+\todo{Confirmer les mesures réellement en place dans le code (RoleGuard, bcrypt, Helmet, aria-*) et joindre un extrait de code pour une ou deux mesures clés.}
+
+\section{C2.2.4 — Déploiement et gestion des versions}
+\textbf{Livrable de grille} : historique des versions, dernière version fonctionnelle, fiable et viable. \textbf{Éliminatoire} : non.
+
+\textit{Pourquoi} : un déploiement reproductible et des versions tracées garantissent la stabilité des livraisons.
+
+\textit{Comment} : voir chapitre 4. Preuves : tags sémantiques, journal Git (annexe versions), procédure docker-compose.
+\todo{La mise en production est planifiée pour août-septembre. Décrire ici le processus tel que validé en local, et préciser le statut réel au moment du rendu (PMV livré, V1 partielle, production non encore effectuée).}
+
+\section{C2.3.1 — Cahier de recettes}
+\textbf{Livrable de grille} : le cahier de recettes. \textbf{Éliminatoire} : OUI.
+
+\textit{Pourquoi} : un plan de tests fonctionnels avec résultats attendus explicites permet de détecter anomalies et régressions.
+
+\textit{Comment} : voir chapitre 5, section C2.3.1. Preuves : cahier de recettes complet (annexe cahier de recettes), tableau de synthèse des résultats.
+\todo{Compléter le cahier avec les scénarios réellement exécutés et leurs résultats (succès/échec/bloquant).}
+
+\section{C2.3.2 — Plan de correction des bogues}
+\textbf{Livrable de grille} : le plan de correction des bogues. \textbf{Éliminatoire} : non.
+
+\textit{Pourquoi} : une démarche structurée de qualification et de priorisation des anomalies garantit la conformité du logiciel.
+
+\textit{Comment} : voir chapitre 5, section C2.3.2. Preuves : issues GitHub avec niveaux de sévérité, bogues documentés et corrigés.
+\todo{Documenter les bogues réellement rencontrés avec le hash du commit de correction.}
+
+\section{C2.4.1 — Documentation technique d'exploitation}
+\textbf{Livrable de grille} : manuel de déploiement, manuel d'utilisation, manuel de mise à jour. \textbf{Éliminatoire} : non.
+
+\textit{Pourquoi} : la documentation permet à l'équipe CDS d'assurer la TMA sans intervention de l'auteur.
+
+\textit{Comment} : voir chapitre 6. Preuves : dossier \texttt{/docs} (manuels), documentation Swagger auto-générée (annexe Swagger).
+\todo{Confirmer que les trois manuels sont rédigés et joindre la capture de l'interface Swagger réelle.}

@@ -1,0 +1,105 @@
+% =====================================================================
+% Chapitre 3 — Tests unitaires (C2.2.2) + Sécurité/Accessibilité/
+% Évolutivité (C2.2.3) — ÉLIMINATOIRES
+% =====================================================================
+
+\section{Tests unitaires (C2.2.2)}
+\competence{C2.2.2}{Jeu de tests unitaires couvrant une fonctionnalité demandée}{OUI}
+
+Cette section montre la mise en place d'un harnais de tests unitaires couvrant les fonctionnalités principales, permettant de détecter automatiquement les régressions.
+
+\subsection{Frameworks de test retenus}
+Le backend NestJS est testé avec Jest, intégré nativement via \texttt{@nestjs/testing} ; le frontend Angular est testé avec Jasmine (framework natif). Jest est le standard de l'écosystème Node.js et facilite le \emph{mocking} des dépendances injectées.
+
+\subsection{Stratégie de test}
+Les tests unitaires se concentrent sur la logique métier des services NestJS. Les contrôleurs, qui se contentent de déléguer aux services, ne sont pas testés unitairement mais couverts par les tests end-to-end. La priorité est donnée aux services à forte logique métier.
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|>{\raggedright\arraybackslash}p{0.26\linewidth}|>{\raggedright\arraybackslash}p{0.48\linewidth}|c|}
+        \hline
+        \textbf{Service} & \textbf{Logique testée} & \textbf{Cible} \\
+        \hline
+        QualificationService & Passage inter-phases, saut d'étape, calcul des qualifiés. & 80 \% \\
+        \hline
+        TiebreakService & Cascade des critères d'égalité (head-to-head, différentiel, barrage). & 80 \% \\
+        \hline
+        MatchesService & Calcul du classement après saisie d'un résultat. & 75 \% \\
+        \hline
+        AuthService & Création de compte, vérification du mot de passe, génération du token JWT. & 70 \% \\
+        \hline
+    \end{tabular}
+    \caption{Services testés et taux de couverture cible}
+\end{table}
+
+\subsection{Cas de test représentatif}
+Le cas suivant illustre la complexité métier du \texttt{TiebreakService}~: étant données trois équipes à égalité, le service applique d'abord le head-to-head, puis le différentiel si l'égalité persiste. Le test suit le pattern Arrange / Act / Assert et utilise les mocks fournis par \texttt{@nestjs/testing}.
+
+\todo{Insérer ici un extrait de 15 à 20 lignes du test du TiebreakService (ou du QualificationService), commenté, mettant en évidence les phases Arrange / Act / Assert et l'usage des mocks. Reporter le fichier complet en annexe A.}
+
+\subsection{Rapport de couverture}
+Le rapport de couverture généré par Jest (\texttt{--coverage}) est fourni en annexe E.
+\todo{Indiquer ici le taux de couverture global réellement obtenu et commenter les fichiers situés sous le seuil cible. En cas d'écart, expliquer la raison (complexité de mock, fonctionnalité couverte par les tests end-to-end) plutôt que de la passer sous silence.}
+
+\livrable{un jeu de tests unitaires couvrant une fonctionnalité demandée}
+
+\section{Sécurité, accessibilité et évolutivité (C2.2.3)}
+\competence{C2.2.3}{Mesures de sécurité et actions d'accessibilité}{OUI}
+
+Cette section démontre que l'application respecte les standards de sécurité OWASP, prend en compte l'accessibilité, et que son architecture autorise des évolutions futures sans refonte.
+
+\subsection{Sécurité — OWASP Top 10}
+Chaque faille de l'OWASP Top 10 (2021) est adressée par une mesure concrète dans BrackX.
+
+\begin{longtable}{|>{\raggedright\arraybackslash}p{0.30\linewidth}|>{\raggedright\arraybackslash}p{0.60\linewidth}|}
+    \caption{Mesures OWASP Top 10 mises en place dans BrackX}\\
+    \hline
+    \textbf{Faille OWASP} & \textbf{Mesure mise en place} \\
+    \hline
+    \endhead
+    A01 --- Broken Access Control & \texttt{RoleGuard} NestJS vérifiant le rôle sur chaque endpoint sensible ; séparation stricte des actions administrateur / utilisateur. Un utilisateur sans rôle admin reçoit une erreur 403 sur les routes de configuration. \\
+    \hline
+    A02 --- Cryptographic Failures & Mots de passe hachés via bcrypt (coût 12) avant stockage. Token JWT signé avec une clé secrète stockée en variable d'environnement, jamais en dur dans le code. \\
+    \hline
+    A03 --- Injection & Prisma utilise des requêtes paramétrées nativement, rendant les injections SQL impossibles. Les DTO NestJS avec class-validator valident et assainissent toutes les entrées. \\
+    \hline
+    A04 --- Insecure Design & Architecture pensée selon le principe du moindre privilège dès le cadrage. Les utilisateurs n'ont pas accès aux endpoints d'administration même en connaissant l'URL. \\
+    \hline
+    A05 --- Security Misconfiguration & Variables d'environnement externalisées et non versionnées. CORS configuré explicitement pour n'autoriser que l'origine du frontend. Headers de sécurité HTTP via Helmet. \\
+    \hline
+    A06 --- Vulnerable and Outdated Components & Veille active sur les dépendances via GitHub Dependabot. Versions figées dans \texttt{package-lock.json}. \\
+    \hline
+    A07 --- Identification and Authentication Failures & JWT à expiration courte (1h). Validation du format email et complexité minimale du mot de passe côté DTO. Pas de remember-me en V1. \\
+    \hline
+    A08 --- Software and Data Integrity Failures & Intégrité du pipeline CI (seul le pipeline déploie en production). Images Docker versionnées et contrôlées. \\
+    \hline
+    A09 --- Security Logging and Monitoring Failures & Erreurs d'authentification loguées côté serveur. Un middleware de logging NestJS trace les requêtes en erreur 4xx/5xx. \\
+    \hline
+    A10 --- Server-Side Request Forgery & L'API ne réalise aucune requête HTTP vers des URLs fournies par l'utilisateur en V1~: ce vecteur n'est pas applicable. \\
+    \hline
+\end{longtable}
+
+\todo{Pour appuyer une ou deux mesures clés (par exemple le RoleGuard ou le hachage bcrypt), insérer un court extrait de code commenté.}
+
+\subsection{Accessibilité — RGAA 4.1}
+Le référentiel retenu est le RGAA 4.1 (Référentiel Général d'Amélioration de l'Accessibilité), référence officielle française compatible avec les exigences légales applicables aux services numériques. Les mesures mises en œuvre dans le prototype~:
+\begin{itemize}
+    \item Tous les éléments interactifs (boutons, liens, inputs) disposent d'attributs \texttt{aria-label} ou \texttt{aria-labelledby} décrivant clairement leur fonction pour les lecteurs d'écran.
+    \item Les formulaires de configuration de phases utilisent des labels explicitement associés à leurs champs via l'attribut \texttt{for}/\texttt{id}.
+    \item Le contraste des textes respecte le ratio minimum de 4.5:1 préconisé par le WCAG AA pour le texte normal.
+    \item La navigation au clavier est fonctionnelle sur l'ensemble de l'application (tabulation logique, focus visible).
+    \item Les messages d'erreur de formulaire sont annoncés aux lecteurs d'écran via \texttt{aria-live}.
+\end{itemize}
+
+\paragraph{Limite identifiée pour la V1.}
+La vue bracket en arbre (visualisation des phases d'élimination) est complexe à rendre entièrement accessible. En V1, une alternative textuelle sous forme de tableau de résultats est proposée en complément du bracket visuel.
+
+\subsection{Évolutivité}
+L'architecture modulaire permet d'ajouter les fonctionnalités planifiées sans refonte~:
+\begin{itemize}
+    \item \textbf{Export statistique} : les données sont déjà structurées en base (entités Standing, Match, Result). L'ajout d'un endpoint dans un nouveau \texttt{StatsModule} suffit, sans modifier le schéma existant.
+    \item \textbf{Partage public d'un tournoi} : il suffit d'ajouter un champ \texttt{is\_public} sur l'entité Tournament et un guard autorisant l'accès non authentifié aux routes de lecture des tournois publics.
+    \item \textbf{Notifications temps réel} : NestJS supporte les WebSockets via des gateways dédiées (\texttt{@WebSocketGateway}). L'ajout d'une gateway dans le \texttt{MatchesModule} ne modifie pas les modules existants.
+\end{itemize}
+
+\livrable{la présentation des mesures de sécurité et des actions d'accessibilité aux personnes en situation de handicap}

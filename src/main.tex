@@ -1,33 +1,82 @@
-\documentclass[12pt,twoside]{report}
+\documentclass[11pt,twoside]{report}
 \setlength{\headheight}{14.49998pt}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+% Police Times New Roman (texte et mathématiques) en 11 pt
+\usepackage{newtxtext,newtxmath}
 \usepackage[french]{babel}
 \usepackage{graphicx}
 \graphicspath{ {images/} }
 \usepackage{caption}
 \usepackage{subcaption}
-\usepackage[a4paper,width=150mm,top=25mm,bottom=25mm,bindingoffset=6mm]{geometry}
+\usepackage[a4paper,
+    top=2cm,
+    bottom=3cm,
+    left=2.5cm,
+    right=2.5cm,
+    headheight=14.5pt,
+    headsep=0.5cm,
+    footskip=1cm]{geometry}
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhead{}
-\fancyhead[RO,LE]{Transformation d'un outil local en solution nationale}
+\fancyhead[RO,LE]{BrackX --- Dossier Bloc 2}
 \fancyfoot{}
 \fancyfoot[LE,RO]{\thepage}
 \fancyfoot[LO,CE]{Chapitre \thechapter}
-\fancyfoot[CO,RE]{Farès SIONI}
+\fancyfoot[CO,RE]{Enzo ANGOT}
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\footrulewidth}{0.4pt}
 \usepackage{tikz}
 \usetikzlibrary{fit, positioning}
-\usepackage{lipsum}
+\usepackage{xcolor}
+\usepackage[normalem]{ulem}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{listings}
+\usepackage{etoolbox}
 \usepackage{hyperref}
 \usepackage{biblatex}
 \addbibresource{main.bib}
 \usepackage{float}
 
-\usepackage{titlesec}
-\titlespacing{\subsection}{0pt}{*2}{*1}
+\usepackage[explicit]{titlesec}
+
+% Titre de chapitre : présentation « Chapitre N » puis le titre, sans le
+% grand blanc par défaut de la classe report.
+\titleformat{\chapter}[display]
+    {\normalfont\huge\bfseries}{\chaptername\ \thechapter}{12pt}{\Huge #1}
+\titlespacing*{\chapter}{0pt}{0pt}{16pt}
+
+% Section (1.1, 1.2...) : conservée en titre à part entière.
+\titleformat{\section}
+    {\normalfont\Large\bfseries}{\thesection}{0.6em}{#1}
+\titlespacing*{\section}{0pt}{1em}{0.5em}
+
+% Sous-section (1.1.1...) : même taille que le corps de texte, en gras
+% souligné, précédée de son numéro.
+\titleformat{\subsection}
+    {\normalfont\normalsize\bfseries}{\thesubsection}{0.5em}{\uline{#1}}
+\titlespacing*{\subsection}{0pt}{0.7em}{0.3em}
+
+\titleformat{\subsubsection}
+    {\normalfont\normalsize\bfseries}{\thesubsubsection}{0.5em}{\uline{#1}}
+\titlespacing*{\subsubsection}{0pt}{0.5em}{0.2em}
+
+% Saut de page avant chaque section NUMÉROTÉE (1.1, 1.2, 2.1...), sauf la
+% première d'un chapitre (évite de laisser la page de titre presque vide).
+% Les sections étoilées (\section*) de l'introduction et de la conclusion
+% ne déclenchent pas de saut, afin de rester compactes.
+\newif\ifbrackxfirstsection
+\pretocmd{\chapter}{\global\brackxfirstsectiontrue}{}{}
+\makeatletter
+\let\brackxorigsection\section
+\renewcommand{\section}{\@ifstar{\brackxstarsection}{\brackxnumsection}}
+\makeatother
+\newcommand{\brackxstarsection}[1]{\brackxorigsection*{#1}}
+\newcommand{\brackxnumsection}{%
+    \ifbrackxfirstsection\global\brackxfirstsectionfalse\else\clearpage\fi
+    \brackxorigsection}
 
 \usepackage{tocloft}
 
@@ -39,37 +88,75 @@
 \setlength{\parskip}{0.5em}
 \newcommand{\smallgap}{\vspace{0.3em}}
 
+% Configuration de l'affichage des extraits de code
+\lstset{
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    frame=single,
+    captionpos=b,
+    showstringspaces=false,
+    columns=fullflexible,
+    keepspaces=true,
+}
+
+% Commandes utilitaires propres au dossier
+\input{styles/commands}
+
 \begin{document}
     \input{title}
     \tableofcontents
 
-    \chapter*{Introduction}
-    \addcontentsline{toc}{chapter}{Introduction}
+    \chapter*{Introduction et contexte du développement}
+    \addcontentsline{toc}{chapter}{Introduction et contexte du développement}
     \input{chapters/introduction}
 
-    \chapter{Présentation de l'entreprise et environnement de travail}
-    \input{chapters/entreprise}
+    \chapter{Environnement de développement, de test et d'intégration continue}
+    \input{chapters/environnement}
 
-    \chapter{Synthèse du travail effectué}
-    \input{chapters/synthese}
+    \chapter{Conception et développement du prototype}
+    \input{chapters/prototype}
 
-    \chapter{Focus sur la problématique}
-    \input{chapters/problematique}
+    \chapter{Qualité, sécurité et accessibilité du logiciel}
+    \input{chapters/qualite}
 
-    \chapter{Retour d'expérience}
-    \input{chapters/rex}
+    \chapter{Déploiement et gestion des versions}
+    \input{chapters/deploiement}
 
-    \chapter*{Conclusion}
-    \addcontentsline{toc}{chapter}{Conclusion}
+    \chapter{Recette et correction des anomalies}
+    \input{chapters/recette}
+
+    \chapter{Documentation technique d'exploitation}
+    \input{chapters/documentation}
+
+    \chapter*{Conclusion et bilan technique}
+    \addcontentsline{toc}{chapter}{Conclusion et bilan technique}
     \input{chapters/conclusion}
 
 %TC:ignore
     \appendix
+    \chapter{Validation des compétences du Bloc 2}
+    \input{annexes/competences}
+
+    \chapter{Extraits de code commentés}
+    \input{annexes/code}
+
+    \chapter{Captures d'écran de l'interface}
+    \input{annexes/screenshots}
+
+    \chapter{Cahier de recettes complet}
+    \input{annexes/recette}
+
+    \chapter{Journal des versions Git}
+    \input{annexes/versions}
+
+    \chapter{Rapport de couverture des tests}
+    \input{annexes/couverture}
+
+    \chapter{Documentation Swagger de l'API}
+    \input{annexes/swagger}
+
     \chapter{Glossaire des termes techniques et métier}
     \input{annexes/glossaire}
-
-    \chapter{Captures d'écran de l'application}
-    \input{annexes/screenshots}
 
     \printbibliography
 %TC:endignore

@@ -1,147 +1,21 @@
-\section{Éléments visuels et documentation du projet}
+% Annexe B — Captures d'écran de l'interface
+\section*{Objet de l'annexe}
+Cette annexe rassemble les captures d'écran annotées de l'interface de BrackX, illustrant les fonctionnalités principales décrites dans le chapitre consacré au prototype (C2.2.1). Chaque capture doit être annotée pour mettre en évidence les éléments d'interface pertinents.
 
-Cette annexe présente des captures d'écran de l'application développée, des éléments de gestion de projet et d'organisation d'équipe, ainsi que des diagrammes techniques illustrant les aspects méthodologiques et architecturaux du projet. Les données présentées sont des exemples utilisés à des fins de démonstration.
+\subsection*{Page de connexion et inscription}
+\todo{Insérer la capture de la page de connexion / inscription (gestion du JWT côté client).}
 
-\subsection{Interface utilisateur}
+\subsection*{Formulaire de création de tournoi}
+\todo{Insérer la capture du formulaire de création d'un tournoi multi-phases (nom, description, ajout de phases).}
 
-\subsubsection{Dashboard RH - Interface principale}
+\subsection*{Configuration des phases et des qualifications}
+\todo{Insérer la capture de la vue de configuration des phases et des règles de qualification inter-phases (saut d'étape).}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\textwidth,keepaspectratio]{images/Screenshot 1}
-    \caption{Dashboard principal - Vue RH avec indicateurs et mouvements d'effectifs}
-    \label{fig:screenshot1}
-\end{figure}
+\subsection*{Vue bracket (élimination directe)}
+\todo{Insérer la capture du bracket en arbre d'une phase à élimination directe.}
 
-Cette capture présente le dashboard principal tel qu'affiché pour un utilisateur RH. En haut de l'interface, les statistiques et indicateurs essentiels sont mis en évidence, offrant une vue synthétique des données clés. La section centrale affiche la chronologie des mouvements d'effectifs par mois et par unité, permettant un suivi précis de l'évolution des équipes.
+\subsection*{Tableau de classement (poules / robin stage)}
+\todo{Insérer la capture du tableau de classement avec points, victoires, défaites et différentiel.}
 
-La barre de navigation latérale donne accès aux différentes fonctionnalités de l'outil. On observe également le sélecteur de rôle en environnement local (visible en haut), permettant de tester efficacement les différentes vues utilisateur grâce au système d'authentification mockée développé pour faciliter le debugging.
-
-\subsubsection{Composant d'évolution des effectifs}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\textwidth,keepaspectratio]{images/Screenshot 2}
-    \caption{Graphique d'évolution des effectifs et de l'indicateur EMP}
-    \label{fig:screenshot2}
-\end{figure}
-
-Cette seconde capture met en avant l'un des composants les plus aboutis de l'application : le graphique d'évolution des effectifs dans le temps. Il présente à la fois l'historique réel des mois précédents et les prévisions pour les mois suivants, incluant l'évolution de l'indicateur EMP (Effectif Moyen Payé), récemment introduit chez Enedis.
-
-Ce composant illustre parfaitement la valeur ajoutée de l'automatisation : les données historiques sont automatiquement récupérées et mises à jour via les imports mensuels, tandis que les projections sont calculées en temps réel à partir des mouvements prévus saisis par les utilisateurs.
-
-Les captures d'écran illustrent l'aboutissement du travail de refonte et modernisation de l'interface utilisateur, avec un design moderne et intuitif basé sur la librairie NG-ZORRO pour Angular.
-
-\subsection{Organisation et équipe}
-
-\subsubsection{Trombinoscope de l'équipe}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\textwidth,keepaspectratio]{images/Trombinoscope}
-    \caption{Organigramme de l'équipe GESTION IMMOBILIÈRE, LOGISTIQUE ET INFORMATIQUE}
-    \label{fig:trombinoscope}
-\end{figure}
-
-Ce trombinoscope présente la structure de l'équipe GESTION IMMOBILIÈRE, LOGISTIQUE ET INFORMATIQUE à laquelle appartient notre équipe de développement. On y retrouve Fabrice Gascoin, notre responsable et également adjoint de cette unité, ainsi que les différentes sous-équipes. L'équipe CDS (Centre De Service) comprend Xavier Beguin et Loïc Cardon, accompagnés de tous les alternants développeurs participant au projet.
-
-\subsection{Gestion de projet}
-
-\subsubsection{Lean Canvas du projet}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth,keepaspectratio]{images/Lean Canva}
-    \caption{Lean Canvas pour l'intégration au portefeuille de projets}
-    \label{fig:lean-canvas}
-\end{figure}
-
-Document Confidentiel - Ne pas diffuser.
-Ce Lean Canvas a été réalisé dans le cadre de l'ajout du projet au portefeuille de projets de l'entreprise. Il synthétise les éléments clés du projet : problème identifié, solution proposée, segments de clients, propositions de valeur, avantages concurrentiels, et indicateurs de performance. Cet outil de formalisation était requis par la gouvernance projet d'Enedis.
-
-\subsubsection{Suivi des jalons projet}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\textwidth,keepaspectratio]{images/Milestones}
-    \caption{Exemple des milestones utilisés pour le suivi projet}
-    \label{fig:milestones}
-\end{figure}
-
-Cette capture présente une partie des 35 milestones utilisés au cours du projet. L'utilisation des outils de gestion de tickets GitLab s'est révélée efficace et fluide, permettant un suivi précis de l'avancement et une planification rigoureuse des livrables. Chaque milestone correspondait à un ensemble cohérent de fonctionnalités ou d'objectifs techniques.
-
-\subsubsection{Évolution des verbatims par comité de pilotage}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\textwidth,keepaspectratio]{images/Resume verbatims}
-    \caption{Évolution temporelle de la satisfaction des participants aux comités de pilotage}
-    \label{fig:resume-verbatims}
-\end{figure}
-
-Ce graphique présente l'évolution de la satisfaction des participants aux comités de pilotage, du kick-off jusqu'au comité de pilotage 11. À chaque fin de comité, les participants étaient invités à donner une note sur 4 concernant leur ressenti sur le pilotage du projet.
-
-L'évolution révèle plusieurs phases distinctes : une phase de démarrage avec une note initiale légèrement supérieure à 3, suivie d'une amélioration à 3,6 au copil 2 suite à la réussite du premier sprint avec les fonctionnalités d'import. Une dégradation progressive des notes s'observe ensuite (copils 3-5) avec la découverte de la complexité métier sous-estimée, culminant au copil 5 lors de l'annonce officielle du retard.
-
-Cette phase critique révèle un pilotage réactif plutôt qu'anticipatif, avec un apprentissage clé sur l'importance de l'anticipation dans la communication des difficultés. Cependant, une remontée continue s'observe par la suite (copils 6-11), atteignant quasiment la note maximale, reflétant l'acceptation du retard et la satisfaction croissante vis-à-vis de la qualité des livrables.
-
-Cette courbe met également en évidence la bienveillance particulière de l'équipe projet, où l'absence de pression temporelle critique et les bonnes relations interpersonnelles entre les participants ont permis cette remontée de satisfaction, un contexte favorable qui ne sera pas nécessairement reproduit dans d'autres équipes ou environnements professionnels futurs.
-
-\subsection{Développement et collaboration}
-
-\subsubsection{Répartition des contributions - Backend}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth,keepaspectratio]{images/Analytics Back}
-    \caption{Analyse des contributions sur le backend avec les principaux acteurs}
-    \label{fig:analytics-back}
-\end{figure}
-
-\subsubsection{Répartition des contributions - Frontend}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth,keepaspectratio]{images/Analytics front}
-    \caption{Analyse des contributions sur le frontend avec les principaux acteurs}
-    \label{fig:analytics-front}
-\end{figure}
-
-Ces graphiques d'analyse des commits montrent la répartition des contributions entre les différents acteurs du projet. Malgré une équipe composée uniquement d'alternants et stagiaires, aucun moment creux n'est observable dans le développement. Les périodes de creux visibles sur les graphiques individuels correspondent aux rotations naturelles des alternants/stagiaires et aux périodes d'apprentissage. L'approche adoptée consistait à axer les débuts de développement sur la fiabilisation de l'API avant de développer et connecter les interfaces utilisateur.
-
-\subsection{Architecture et diagrammes techniques}
-
-\subsubsection{Flux d'authentification SSO}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\textwidth,keepaspectratio]{images/Flow Auth}
-    \caption{Diagramme de flux complet de l'authentification SSO}
-    \label{fig:flow-auth}
-\end{figure}
-
-Ce diagramme présente le flux complet de l'authentification SSO (Single Sign-On) implémenté dans l'application. Il illustre la gestion différenciée selon l'environnement (local et dev/prod), avec notamment la gestion du mock en environnement local pour faciliter le développement et les tests. Cette architecture garantit la sécurité des accès tout en maintenant une flexibilité de développement.
-
-\subsubsection{Script de déploiement automatisé}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\textwidth,keepaspectratio]{images/Screenshot 3}
-    \caption{Diagramme de flux du script de déploiement automatisé}
-    \label{fig:screenshot3}
-\end{figure}
-
-Ce diagramme représente la solution de déploiement développée pour pallier l'absence d'infrastructure CI/CD dans l'environnement technique en place.
-
-L'architecture séquentielle Backend-Frontend reflète les dépendances techniques : les migrations de base de données doivent être appliquées avant la génération du client Prisma (qui permet l'utilisation de l'ORM), et le service backend doit être redémarré avant le déploiement frontend pour assurer la cohérence de l'API. La branche conditionnelle d'environnement permet une adaptation flexible entre les contextes de développement et de production.
-
-\subsubsection{Gestion des branches et versioning}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.1\textwidth,keepaspectratio]{images/Commits graph}
-    \caption{Graphique des commits montrant la gestion des branches}
-    \label{fig:commits-graph}
-\end{figure}
-
-Ce graphique illustre la stratégie de branching adoptée par l'équipe, permettant à 4 développeurs de travailler simultanément sans dépendances bloquantes. La visualisation des différentes branches montre une approche méthodique du développement collaboratif, avec des merges réguliers et une intégration continue des fonctionnalités.
+\subsection*{Bibliothèque de templates}
+\todo{Insérer la capture de la bibliothèque de templates de tournoi.}
