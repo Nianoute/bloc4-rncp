@@ -7,19 +7,29 @@
 Cette section montre que l'application est déployable de manière reproductible et que les versions sont tracées. La mise en production effective n'a pas encore eu lieu~: elle est planifiée pour août-septembre 2026. Le processus décrit ci-dessous a été préparé et testé en local ; il sera appliqué lors de la première mise en production.
 
 \section{Système de gestion de versions}
-Le projet utilise Git avec GitLab. La branche \texttt{main} a vocation à contenir la dernière version stable. Chaque version fera l'objet d'un tag Git (\texttt{v1.0.0}, \texttt{v1.0.1}, etc.) suivant le standard de versionnement sémantique (\texttt{major.minor.patch}).
+Le projet utilise Git avec GitLab. La branche \texttt{main} a vocation à contenir la dernière version stable. Chaque version fera l'objet d'un tag Git (\texttt{v1.0.0}, \texttt{v1.0.1}, etc.) suivant le standard de versionnement sémantique (\texttt{major.minor.patch})~: l'incrément \texttt{major} signale une rupture de compatibilité, \texttt{minor} l'ajout d'une fonctionnalité rétrocompatible, et \texttt{patch} une correction.
+
+Ce dispositif présente plusieurs avantages. D'abord, la traçabilité~: à tout moment, la version en production est identifiable par son tag, et l'on sait exactement quel code et quelles évolutions y correspondent. Ensuite, la reproductibilité~: chaque tag de version déclenche la construction d'une image Docker immuable, publiée sur le registre avec ce même numéro de version (\texttt{:vX.Y.Z}) en plus du tag mobile \texttt{:latest}. Une version livrée correspond donc à un artefact figé, réinstallable à l'identique tant qu'il reste présent sur le registre. Enfin, la lisibilité~: le versionnement sémantique communique d'emblée la nature d'une mise à jour aux personnes qui exploitent l'application.
+
+Concrètement, le cycle est le suivant~: une fois \texttt{main} à jour et validée, un tag \texttt{vX.Y.Z} est créé puis poussé, ce qui déclenche la chaîne de déploiement décrite plus bas (construction et publication des images). La version effectivement déployée est ainsi toujours rattachée à un tag précis. En production, il est recommandé d'épingler explicitement la version de l'image (\texttt{:vX.Y.Z}) plutôt que de s'appuyer sur \texttt{:latest}, afin que le déploiement soit déterministe et que l'on maîtrise précisément ce qui tourne.
+
+C'est cette mécanique qui rend le \emph{rollback} rapide. Comme chaque version correspond à une image déjà construite et conservée sur le registre, revenir en arrière ne nécessite aucune recompilation~: il suffit de réépingler la version précédente (\texttt{:vX.Y.Z}) dans le \texttt{docker-compose.prod.yml}, puis de relancer \texttt{docker compose pull} et \texttt{docker compose up -d}. Le retour à l'état stable se fait alors en quelques minutes. Pour que cette manœuvre reste fiable, plusieurs bonnes pratiques sont retenues~: conserver sur le registre les dernières images de version (et non uniquement \texttt{:latest}), concevoir les migrations de base de données de façon rétrocompatible (approche \emph{expand/contract}, en évitant les suppressions destructrices dans la même version) pour qu'un retour au code précédent ne casse pas le schéma, et ne déclarer un déploiement réussi qu'après le test de stabilité décrit en section suivante --- un échec de ce test déclenchant immédiatement le rollback vers le tag précédent.
 
 \section{Processus de déploiement prévu en production}
 \begin{enumerate}
     \item La branche \texttt{develop} est fusionnée dans \texttt{main} via une merge request dont le pipeline CI doit être au vert.
     \item Un tag de version est créé sur le commit de merge.
-    \item Le pipeline CD se déclenche sur ce tag et construit les images Docker de l'API et du frontend.
-    \item Les images sont poussées sur le registre Docker (GitLab Container Registry).
-    \item Sur le serveur de production, \texttt{docker compose pull} récupère les nouvelles images et \texttt{docker compose up -d} redémarre les conteneurs.
-    \item Prisma applique automatiquement les migrations de base de données en attente au démarrage du conteneur API.
+    \item Le pipeline CD se déclenche sur ce tag (et uniquement sur un tag au format \texttt{vX.Y.Z}) et construit les images Docker de production de l'API et du frontend à partir de leurs \texttt{Dockerfile.prod}.
+    \item Les images sont poussées sur Docker Hub, taguées à la fois \texttt{:vX.Y.Z} (version figée) et \texttt{:latest}.
+    \item Sur le serveur de production, \texttt{docker compose -f docker-compose.prod.yml pull} récupère les nouvelles images et \texttt{docker compose -f docker-compose.prod.yml up -d} redémarre les conteneurs.
+    \item Au démarrage du conteneur de l'API, les migrations de base de données en attente sont appliquées automatiquement via \texttt{prisma migrate deploy} (commande lancée par le \texttt{Dockerfile.prod}) avant que l'application ne serve les requêtes.
 \end{enumerate}
 
 Ce processus a été préparé et testé en environnement local via Docker Compose, l'infrastructure de production prévue étant une transposition directe de cet environnement (voir C2.1.1). La mise en production réelle interviendra lors de la phase d'août-septembre 2026.
+
+Une fois les conteneurs redémarrés, la stabilité de la version déployée est vérifiée par un \emph{smoke test} manuel reprenant les scénarios critiques du cahier de recettes~: connexion, création d'un tournoi simple, saisie d'un résultat et vérification du classement. Ce test de fumée prend moins de dix minutes et garantit que les fonctionnalités essentielles sont opérationnelles~; en cas d'échec, le déploiement n'est pas validé et le rollback vers le tag de version précédent est déclenché immédiatement (voir la section précédente).
+
+\todo{Une fois la première release publiée, insérer une capture d'une exécution réussie du pipeline CD (jobs \texttt{cd:backend} / \texttt{cd:frontend}) ou de la page Docker Hub montrant les images \texttt{rncp-backend} / \texttt{rncp-frontend} et leurs tags \texttt{vX.Y.Z}.}
 
 \section{Traçabilité des évolutions}
 Les commits suivent la convention Conventional Commits (\texttt{feat:}, \texttt{fix:}, \texttt{chore:}, \texttt{docs:}, \texttt{test:}), ce qui rend l'historique lisible et exploitable pour générer un journal des changements. Le journal complet (\texttt{git log --oneline --decorate}) est fourni en annexe D.
@@ -38,8 +48,5 @@ Les commits suivent la convention Conventional Commits (\texttt{feat:}, \texttt{
 \end{table}
 
 \todo{Compléter le tableau des versions avec les dates et le contenu réels une fois les tags créés (production prévue août-septembre 2026).}
-
-\section{Vérification de la stabilité à chaque déploiement}
-À chaque déploiement, les scénarios de \emph{smoke test} du cahier de recettes seront exécutés manuellement~: connexion, création d'un tournoi simple, saisie d'un résultat et vérification du classement. Ce test de fumée prend moins de dix minutes et garantit que les fonctionnalités critiques sont opérationnelles.
 
 \livrable{l'historique des différentes versions et la dernière version du logiciel fonctionnel, fiable et viable}

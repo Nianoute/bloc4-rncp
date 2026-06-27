@@ -9,27 +9,15 @@
 Cette section formalise un plan de tests fonctionnels couvrant l'ensemble des fonctionnalités attendues, avec des résultats attendus explicites. Le cahier de recettes complet est fourni en annexe C ; le corps du dossier en présente la structure et quelques exemples représentatifs.
 
 \subsection{Structure d'un scénario de test}
-Chaque scénario est structuré ainsi~:
-\begin{itemize}
-    \item Identifiant (ex.~: \texttt{CR-AUTH-01})
-    \item Fonctionnalité testée
-    \item Pré-conditions (état initial de l'application)
-    \item Étapes de test (actions de l'utilisateur)
-    \item Résultat attendu
-    \item Résultat obtenu
-    \item Statut (Succès / Échec / Bloquant)
-\end{itemize}
+Chaque scénario est structuré autour de sept champs~: un identifiant (par exemple \texttt{CR-AUTH-01}), la fonctionnalité testée, les pré-conditions (état initial de l'application), les étapes de test (actions de l'utilisateur), le résultat attendu, le résultat obtenu et le statut (Succès, Échec ou Bloquant).
 
 \subsection{Catégories de tests couvertes}
 
-\paragraph{Tests fonctionnels (user stories V1).}
-Authentification (4 scénarios)~: inscription, connexion, accès refusé sans token, accès refusé avec mauvais rôle. Gestion des tournois (5 scénarios)~: création, configuration des phases, ajout de participants, duplication d'un format, sélection d'un template. Qualifications inter-phases (4 scénarios)~: qualification normale, saut d'étape, nombre insuffisant de qualifiés, qualification avec critère d'égalité activé. Saisie des résultats (3 scénarios)~: saisie d'un score, mise à jour du classement, gestion d'un forfait. Robin stage (3 scénarios)~: configuration du barème, calcul des points, déclenchement des critères d'égalité.
+Les tests fonctionnels valident les user stories de la V1. L'authentification est couverte par quatre scénarios (inscription, connexion, accès refusé sans session valide, accès refusé avec un rôle non autorisé). La gestion des tournois compte cinq scénarios (création, configuration des phases, ajout de participants, duplication d'un format, sélection d'un template). Les qualifications inter-phases en comptent quatre (qualification normale, saut d'étape, nombre insuffisant de qualifiés, qualification avec critère d'égalité activé). La saisie des résultats en compte trois (saisie d'un score, mise à jour du classement, gestion d'un forfait), de même que le robin stage (configuration du barème, calcul des points, déclenchement des critères d'égalité).
 
-\paragraph{Tests structurels.}
-Navigation au clavier complète sur les formulaires principaux ; comportement en cas de perte de connexion réseau ; comportement en cas de session expirée (redirection vers la connexion).
+Les tests structurels portent sur la navigation au clavier complète des formulaires principaux, le comportement en cas de perte de connexion réseau et celui en cas de session expirée (redirection vers la connexion).
 
-\paragraph{Tests de sécurité.}
-Tentative d'accès à une route protégée sans session valide (vérification du rejet 401) ; tentative d'injection dans les champs de formulaire (vérification du rejet par la validation DTO) ; vérification que les mots de passe ne sont jamais retournés dans les réponses de l'API. Un scénario complémentaire \emph{reste à implémenter}~: la tentative d'accès à un endpoint d'administration avec un compte non administrateur (rejet 403), une fois l'autorisation par rôle développée côté backend (voir ci-dessous).
+Les tests de sécurité comprennent la tentative d'accès à une route protégée sans session valide (vérification du rejet 401), la tentative d'injection dans les champs de formulaire (vérification du rejet par la validation DTO) et la vérification que les mots de passe ne sont jamais retournés dans les réponses de l'API. Un scénario complémentaire \emph{reste à implémenter}~: la tentative d'accès à un endpoint d'administration avec un compte non administrateur (rejet 403), une fois l'autorisation par rôle développée côté backend (voir l'exemple ci-dessous).
 
 \subsection{Exemple de scénario}
 \begin{table}[H]
@@ -78,22 +66,27 @@ Cette section présente la démarche structurée de qualification, de priorisati
 
 \subsection{Processus de gestion des anomalies}
 Les anomalies sont consignées sous forme d'issues GitLab avec un label de sévérité. Quatre niveaux sont définis~:
-\begin{itemize}
-    \item \textbf{Bloquant} : l'application ne peut pas fonctionner. Correction immédiate obligatoire avant livraison.
-    \item \textbf{Majeur} : une fonctionnalité principale est affectée mais un contournement existe. Correction avant livraison si possible.
-    \item \textbf{Mineur} : une fonctionnalité secondaire est affectée. Correction planifiée en TMA.
-    \item \textbf{Cosmétique} : problème d'affichage sans impact fonctionnel. Correction planifiée en TMA.
-\end{itemize}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|>{\raggedright\arraybackslash}p{0.16\linewidth}|>{\raggedright\arraybackslash}p{0.44\linewidth}|>{\raggedright\arraybackslash}p{0.28\linewidth}|}
+        \hline
+        \textbf{Sévérité} & \textbf{Définition} & \textbf{Traitement} \\
+        \hline
+        Bloquant & L'application ne peut pas fonctionner. & Correction immédiate obligatoire avant livraison. \\
+        \hline
+        Majeur & Une fonctionnalité principale est affectée mais un contournement existe. & Correction avant livraison si possible. \\
+        \hline
+        Mineur & Une fonctionnalité secondaire est affectée. & Correction planifiée en TMA. \\
+        \hline
+        Cosmétique & Problème d'affichage sans impact fonctionnel. & Correction planifiée en TMA. \\
+        \hline
+    \end{tabular}
+\end{table}
 
 \subsection{Bogues rencontrés et corrigés}
 
-\paragraph{Bogue 1 --- Calcul d'égalité incorrect en cas de triple égalité.}
-\emph{Description}~: lors d'une triple égalité avec le critère head-to-head, le service retournait une erreur de calcul circulaire (A bat B, B bat C, C bat A). \emph{Analyse}~: la logique de résolution du head-to-head ne gérait pas le cas circulaire ; dans ce cas, le critère suivant de la cascade doit être appliqué automatiquement. \emph{Correction}~: ajout d'une détection de cycle dans le \texttt{TiebreakService}, avec basculement automatique vers le critère suivant lorsqu'un cycle est détecté.
-\todo{Référencer le hash Git du commit de correction.}
-
-\paragraph{Bogue 2 --- Redirection vers la connexion après rechargement de la page.}
-\emph{Description}~: après un rechargement, un utilisateur pourtant connecté était redirigé vers la page de connexion. \emph{Analyse}~: le guard de route Angular s'exécutait avant que la session (cookie \texttt{httpOnly}) n'ait été rechargée depuis le backend, et concluait à tort à l'absence d'authentification. \emph{Correction}~: chargement de la session au démarrage de l'application via \texttt{APP\_INITIALIZER} (méthode \texttt{assurerSession}), avant l'activation des guards de route.
-\todo{Référencer le hash Git du commit de correction.}
+\todo{Une fois la recette exécutée, documenter ici les bogues réellement rencontrés (deux ou trois cas représentatifs). Pour chacun, présenter~: le symptôme observé, l'analyse de la cause racine, la correction apportée (service ou fichier concerné) et la référence du commit Git de correction. Privilégier des cas illustrant la logique métier sensible (cascade des critères d'égalité, calcul du classement) et un cas lié à l'authentification ou à la gestion de session.}
 
 \subsection{Bilan de la recette}
 \todo{Récapituler les anomalies détectées, qualifiées et traitées avant livraison, ainsi que celles reportées en TMA avec leur justification (impact limité, correction ne remettant pas en cause la stabilité globale).}
