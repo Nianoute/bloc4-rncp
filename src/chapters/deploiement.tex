@@ -4,7 +4,7 @@
 
 \competence{C2.2.4}{Historique des versions et dernière version fonctionnelle, fiable et viable}{Non}
 
-Cette section montre que l'application est déployable de manière reproductible et que les versions sont tracées. La mise en production effective n'a pas encore eu lieu~: elle est planifiée pour août-septembre 2026. Le processus décrit ci-dessous a été préparé et testé en local ; il sera appliqué lors de la première mise en production.
+Cette section montre que l'application est déployable de manière reproductible et que les versions sont tracées. La mise en production effective n'a pas encore eu lieu~: elle est planifiée pour août-septembre 2026. Le processus décrit ci-dessous a été préparé et testé en local. Il sera appliqué lors de la première mise en production.
 
 \section{Système de gestion de versions}
 Le projet utilise Git avec GitLab. La branche \texttt{main} a vocation à contenir la dernière version stable. Chaque version fera l'objet d'un tag Git (\texttt{v1.0.0}, \texttt{v1.0.1}, etc.) suivant le standard de versionnement sémantique (\texttt{major.minor.patch})~: l'incrément \texttt{major} signale une rupture de compatibilité, \texttt{minor} l'ajout d'une fonctionnalité rétrocompatible, et \texttt{patch} une correction.
@@ -27,7 +27,7 @@ C'est cette mécanique qui rend le \emph{rollback} rapide. Comme chaque version 
 
 Ce processus a été préparé et testé en environnement local via Docker Compose, l'infrastructure de production prévue étant une transposition directe de cet environnement (voir C2.1.1). La mise en production réelle interviendra lors de la phase d'août-septembre 2026.
 
-Une fois les conteneurs redémarrés, la stabilité de la version déployée est vérifiée par un \emph{smoke test} manuel reprenant les scénarios critiques du cahier de recettes~: connexion, création d'un tournoi simple, saisie d'un résultat et vérification du classement. Ce test de fumée prend moins de dix minutes et garantit que les fonctionnalités essentielles sont opérationnelles~; en cas d'échec, le déploiement n'est pas validé et le rollback vers le tag de version précédent est déclenché immédiatement (voir la section précédente).
+Une fois les conteneurs redémarrés, la stabilité de la version déployée est vérifiée par un \emph{smoke test} manuel reprenant les scénarios critiques du cahier de recettes~: connexion, création d'un tournoi simple, saisie d'un résultat et vérification du classement. Ce test de fumée prend moins de dix minutes et garantit que les fonctionnalités essentielles sont opérationnelles~. En cas d'échec, le déploiement n'est pas validé et le rollback vers le tag de version précédent est déclenché immédiatement (voir la section précédente).
 
 \todo{Une fois la première release publiée, insérer une capture d'une exécution réussie du pipeline CD (jobs \texttt{cd:backend} / \texttt{cd:frontend}) ou de la page Docker Hub montrant les images \texttt{rncp-backend} / \texttt{rncp-frontend} et leurs tags \texttt{vX.Y.Z}.}
 

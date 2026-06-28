@@ -48,32 +48,32 @@ Le rapport de couverture généré par Jest (\texttt{--coverage}) est fourni en 
 Cette section démontre que l'application respecte les standards de sécurité OWASP, prend en compte l'accessibilité, et que son architecture autorise des évolutions futures sans refonte.
 
 \subsection{Sécurité — OWASP Top 10}
-Chaque faille de l'OWASP Top 10 (2021) est adressée par une mesure concrète dans BrackX.
+Chaque risque de l'OWASP Top 10 (2025) est adressé par une mesure concrète dans BrackX.
 
 \begin{longtable}{|>{\raggedright\arraybackslash}p{0.30\linewidth}|>{\raggedright\arraybackslash}p{0.60\linewidth}|}
     \hline
-    \textbf{Faille OWASP} & \textbf{Mesure mise en place} \\
+    \textbf{Risque (OWASP Top 10 : 2025)} & \textbf{Mesure mise en place} \\
     \hline
     \endhead
     A01 --- Broken Access Control & Toute route protégée passe par le guard \texttt{GardeAuthentification}, qui valide la session better-auth et rejette toute requête sans session valide (401). Le rôle (\texttt{USER} / \texttt{ADMIN} / \texttt{DEV}) est stocké en base et exposé en lecture seule (\texttt{input: false} côté better-auth)~: un client ne peut pas s'auto-attribuer un rôle privilégié. \\
     \hline
-    A02 --- Cryptographic Failures & Mots de passe hachés par better-auth et stockés dans la table \texttt{account} (provider \texttt{credential}), jamais en clair. Les sessions sont signées avec un secret (\texttt{BETTER\_AUTH\_SECRET}) externalisé en variable d'environnement, et l'identifiant de session est transporté par un cookie \texttt{httpOnly} + \texttt{SameSite=Lax}, inaccessible au JavaScript de la page. \\
+    A02 --- Security Misconfiguration & Variables d'environnement externalisées et non versionnées (\texttt{.env}). CORS configuré explicitement (origine limitée au frontend, \texttt{credentials: true}, méthodes et en-têtes restreints) et \texttt{trustedOrigins} better-auth aligné sur la même origine. \\
     \hline
-    A03 --- Injection & Prisma génère des requêtes paramétrées nativement, rendant les injections SQL impossibles. Le \texttt{ValidationPipe} global de NestJS (\texttt{whitelist}, \texttt{forbidNonWhitelisted}, \texttt{transform}) valide les DTO et rejette tout champ non attendu. \\
+    A03 --- Software Supply Chain Failures & Versions des dépendances figées dans \texttt{package-lock.json} et installées via \texttt{npm ci} (builds reproductibles). Les images de production ne sont construites et publiées que par le pipeline CI/CD GitLab, à partir des \texttt{Dockerfile.prod} versionnés dans le dépôt. La mise en place du Dependency Scanning GitLab est prévue pour automatiser la détection des dépendances vulnérables. \\
     \hline
-    A04 --- Insecure Design & Architecture pensée selon le principe du moindre privilège dès le cadrage~: le rôle par défaut est \texttt{USER} et ne peut être modifié par le client. Le rôle est déjà stocké en base~; la restriction effective des endpoints d'administration par rôle (guard dédié) reste à implémenter côté backend. \\
+    A04 --- Cryptographic Failures & Mots de passe hachés par better-auth et stockés dans la table \texttt{account} (provider \texttt{credential}), jamais en clair. Les sessions sont signées avec un secret (\texttt{BETTER\_AUTH\_SECRET}) externalisé en variable d'environnement, et l'identifiant de session est transporté par un cookie \texttt{httpOnly} + \texttt{SameSite=Lax}, inaccessible au JavaScript de la page. \\
     \hline
-    A05 --- Security Misconfiguration & Variables d'environnement externalisées et non versionnées (\texttt{.env}). CORS configuré explicitement (origine limitée au frontend, \texttt{credentials: true}, méthodes et en-têtes restreints) et \texttt{trustedOrigins} better-auth aligné sur la même origine. \\
+    A05 --- Injection & Prisma génère des requêtes paramétrées nativement, rendant les injections SQL impossibles. Le \texttt{ValidationPipe} global de NestJS (\texttt{whitelist}, \texttt{forbidNonWhitelisted}, \texttt{transform}) valide les DTO et rejette tout champ non attendu. \\
     \hline
-    A06 --- Vulnerable and Outdated Components & Versions des dépendances figées dans \texttt{package-lock.json} et installées via \texttt{npm ci} en intégration continue. La mise en place du Dependency Scanning GitLab est prévue pour automatiser la veille. \\
+    A06 --- Insecure Design & Architecture pensée selon le principe du moindre privilège dès le cadrage~: le rôle par défaut est \texttt{USER} et ne peut être modifié par le client. Le rôle est déjà stocké en base~; la restriction effective des endpoints d'administration par rôle (guard dédié) reste à implémenter côté backend. \\
     \hline
-    A07 --- Identification and Authentication Failures & Authentification déléguée à better-auth~: session à durée limitée (7 jours) avec prolongement glissant (au plus une fois par jour), longueur minimale de mot de passe imposée (8 caractères) et réinitialisation par token à usage unique envoyé par email (table \texttt{verification}). \\
+    A07 --- Authentication Failures & Authentification déléguée à better-auth~: session à durée limitée (7 jours) avec prolongement glissant (au plus une fois par jour), longueur minimale de mot de passe imposée (8 caractères) et réinitialisation par token à usage unique envoyé par email (table \texttt{verification}). \\
     \hline
-    A08 --- Software and Data Integrity Failures & Intégrité du pipeline CI (seul le pipeline déploie en production). Images Docker versionnées et contrôlées. \\
+    A08 --- Software or Data Integrity Failures & Seul le pipeline CI/CD déploie en production~: les images Docker sont versionnées par tag (\texttt{:vX.Y.Z}) et tirées d'un registre maîtrisé, sans mise à jour automatique depuis une source non vérifiée. \\
     \hline
-    A09 --- Security Logging and Monitoring Failures & La gestion des sessions et des échecs d'authentification est assurée par better-auth et remontée par NestJS. La centralisation des logs et la supervision (Grafana) sont prévues~; un middleware de journalisation des erreurs 4xx/5xx reste à ajouter. \\
+    A09 --- Security Logging and Alerting Failures & La gestion des sessions et des échecs d'authentification est assurée par better-auth et remontée par NestJS. La centralisation des journaux, les alertes et la supervision (Grafana) sont prévues~; un middleware de journalisation des erreurs 4xx/5xx reste à ajouter. \\
     \hline
-    A10 --- Server-Side Request Forgery & L'API ne réalise aucune requête HTTP vers des URLs fournies par l'utilisateur en V1~: ce vecteur n'est pas applicable. \\
+    A10 --- Mishandling of Exceptional Conditions & Les erreurs sont traitées de manière contrôlée plutôt que renvoyées brutes~: le \texttt{ValidationPipe} global renvoie des réponses 400 structurées sur les entrées invalides et le guard d'authentification un 401 explicite, sans exposer de détail interne. En production (\texttt{NODE\_ENV=production}), la verbosité des messages d'erreur est réduite. La généralisation d'un filtre d'exception NestJS centralisant le format des erreurs (sans fuite de \emph{stack trace}) reste à mettre en place. \\
     \hline
 \end{longtable}
 
