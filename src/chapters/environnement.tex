@@ -45,7 +45,7 @@ Pour objectiver la notion de qualité, des critères mesurables ont été défin
         \hline
         \textbf{Critère} & \textbf{Cible} & \textbf{Justification} \\
         \hline
-        Couverture de tests & 70 \% minimum & Appliquée sur les services critiques (QualificationService, TiebreakService, MatchesService), porteurs de la logique métier la plus sensible. \\
+        Couverture de tests & 70 \% minimum & Appliquée sur la logique métier la plus sensible du module tournois~: \texttt{TournoisService} et les fonctions de calcul du classement, des résultats et des statistiques. \\
         \hline
         Erreurs ESLint & 0 en production & Le pipeline d'intégration continue bloque toute fusion vers la branche principale si une erreur de lint est détectée. \\
         \hline

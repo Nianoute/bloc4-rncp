@@ -4,7 +4,7 @@
 
 \competence{C2.2.1}{Architecture maintenable, présentation d'un prototype, frameworks et paradigmes}{OUI}
 
-\todo{Chapitre à compléter une fois le code développé. Le développement du prototype est en cours~; la mise en production est prévue pour août-septembre 2026. En l'état, cette section ne décrit pas un prototype achevé mais expose la démarche de validation~: ce qui doit être produit et démontré pour valider la compétence C2.2.1. Chaque affirmation sera remplacée par des éléments concrets (captures, extraits de code, démonstration) au fur et à mesure de l'avancement.}
+\todo{Chapitre à finaliser au fur et à mesure de l'avancement. Le PMV est aujourd'hui largement développé~: authentification, gestion complète des tournois multi-phases, formats (élimination directe, poules, ronde suisse), qualifications inter-phases, planification et saisie des matchs, classements, brackets, statistiques et onboarding. Il reste principalement à insérer les captures d'écran réelles (annexe B) et les extraits de code, puis à confirmer le périmètre exact à la date du rendu. La mise en production est prévue pour août-septembre 2026.}
 
 \section{Objectif de la compétence et critères d'évaluation}
 La compétence C2.2.1 est éliminatoire. Pour la valider, le dossier devra démontrer trois points~:
@@ -16,62 +16,65 @@ La compétence C2.2.1 est éliminatoire. Pour la valider, le dossier devra démo
 
 Les sections suivantes décrivent, pour chacun de ces points, ce qui doit être réalisé et les livrables à fournir une fois le code développé.
 
-\section{Architecture applicative à mettre en œuvre}
-L'architecture cible suit le schéma validé au Bloc 1 (C1.5)~: un frontend Angular communique avec une API REST NestJS, laquelle accède à une base PostgreSQL via l'ORM Prisma, l'ensemble étant conteneurisé sous Docker. La séparation stricte entre couche de présentation, couche métier et couche de persistance doit garantir que chaque responsabilité reste isolée et testable indépendamment.
+\section{Architecture applicative mise en œuvre}
+L'architecture suit le schéma validé au Bloc 1 (C1.5)~: un frontend Angular communique avec une API REST NestJS, laquelle accède à une base PostgreSQL via l'ORM Prisma, l'ensemble étant conteneurisé sous Docker. La séparation stricte entre couche de présentation, couche métier et couche de persistance garantit que chaque responsabilité reste isolée et testable indépendamment. Le backend est organisé en modules (\texttt{authentification}, \texttt{tournois}, \texttt{utilisateurs})~; la logique métier des tournois est en outre décomposée en fonctions utilitaires pures (classements, générateurs de format, appariements, calcul des résultats, statistiques), testées indépendamment du reste.
 
-\todo{Une fois le code développé~: démontrer la maintenabilité par l'arborescence réelle du projet (organisation en modules) et expliquer comment une évolution sur un module reste sans effet sur les autres. Les schémas d'architecture détaillés sont renvoyés au dossier du Bloc 1 pour éviter la redondance.}
+\todo{Insérer l'arborescence réelle du projet (organisation en modules) pour matérialiser la maintenabilité. Les schémas d'architecture détaillés sont renvoyés au dossier du Bloc 1 pour éviter la redondance.}
 
-\section{Paradigmes et frameworks à utiliser}
+\section{Paradigmes et frameworks utilisés}
 
 \subsection{NestJS — architecture modulaire backend}
-Le backend doit s'appuyer sur l'architecture modulaire de NestJS~: injection de dépendances, décorateurs, et séparation nette entre \texttt{Controller} (réception des requêtes HTTP), \texttt{Service} (logique métier) et \texttt{DTO} (validation des données entrantes). Chaque domaine fonctionnel (authentification, tournois, phases, matchs) doit constituer un module indépendant, testable et remplaçable, afin de garantir la maintenabilité~: une évolution sur un module ne doit pas impacter les autres.
+Le backend s'appuie sur l'architecture modulaire de NestJS~: injection de dépendances, décorateurs, et séparation nette entre \texttt{Controller} (réception des requêtes HTTP), \texttt{Service} (logique métier) et \texttt{DTO} (validation des données entrantes). Chaque domaine fonctionnel (authentification, tournois, utilisateurs) constitue un module indépendant, testable et remplaçable, ce qui garantit la maintenabilité~: une évolution sur un module n'impacte pas les autres.
 
 \subsection{Angular — composants et formulaires réactifs}
-Le frontend doit reposer sur les composants, services et le routing d'Angular. La configuration des phases de tournoi sera gérée via des formulaires réactifs (Reactive Forms), particulièrement adaptés ici car ils impliquent des champs dynamiques (ajout/suppression de phases) et des validations complexes (cohérence du nombre de qualifiés entre phases successives).
+Le frontend repose sur les composants, services et le routing d'Angular. La configuration des phases de tournoi est gérée via des formulaires réactifs (Reactive Forms), particulièrement adaptés ici car ils impliquent des champs dynamiques (ajout/suppression de phases) et des validations complexes (cohérence du nombre de qualifiés entre phases successives).
 
 \subsection{Prisma — schéma-first et migrations versionnées}
-La couche de persistance utilisera Prisma selon une approche schéma-first~: le modèle de données est décrit dans un fichier \texttt{schema.prisma}, les migrations sont versionnées dans le dépôt, et un client typé est généré automatiquement, ce qui sécurise les accès à la base dès la compilation.
+La couche de persistance utilise Prisma selon une approche schéma-first~: le modèle de données est décrit dans un fichier \texttt{schema.prisma}, les migrations sont versionnées dans le dépôt, et un client typé est généré automatiquement, ce qui sécurise les accès à la base dès la compilation.
 
-\todo{Une fois le code développé~: insérer en annexe A un extrait du fichier schema.prisma illustrant les entités Tournament, Phase et QualificationRule, pour matérialiser concrètement l'approche schéma-first.}
+\todo{Insérer en annexe A un extrait du fichier schema.prisma illustrant les entités \texttt{Tournoi}, \texttt{Phase} et \texttt{RegleQualification}, pour matérialiser concrètement l'approche schéma-first.}
 
-\section{Fonctionnalités principales à présenter}
-Le prototype devra couvrir les fonctionnalités ci-dessous, identifiées lors du cadrage. Pour chacune, une capture d'écran annotée sera fournie en annexe B une fois l'interface développée.
+\section{Fonctionnalités principales du prototype}
+Le prototype couvre les fonctionnalités ci-dessous, identifiées lors du cadrage et aujourd'hui implémentées. Pour chacune, une capture d'écran annotée sera fournie en annexe B.
 
-\subsection{Authentification et gestion des rôles}
-L'utilisateur doit pouvoir s'inscrire, se connecter et accéder à l'application. L'authentification repose sur la librairie better-auth~: la session est portée par un cookie \texttt{httpOnly} envoyé automatiquement à chaque requête (interceptor Angular en \texttt{withCredentials}), sans token stocké côté client. Plusieurs rôles existent en base (\texttt{USER}, \texttt{ADMIN}, \texttt{DEV})~: l'administrateur crée et configure les tournois, l'utilisateur remplit et utilise les formats existants.
+\subsection{Authentification, sécurité du compte et onboarding}
+L'utilisateur peut s'inscrire, se connecter et accéder à l'application. L'authentification repose sur la librairie better-auth~: la session est portée par un cookie \texttt{httpOnly} envoyé automatiquement à chaque requête (interceptor Angular en \texttt{withCredentials}), sans token stocké côté client. Le mot de passe doit respecter une politique de complexité (au moins 8 caractères, une majuscule, une minuscule et un caractère spécial), vérifiée côté client comme côté serveur, et peut être réinitialisé par email. À la première connexion, un guide d'onboarding accompagne l'utilisateur (état mémorisé en base par le champ \texttt{onboardingTermine}). Plusieurs rôles existent en base (\texttt{USER}, \texttt{ADMIN}, \texttt{DEV}).
 
 \subsection{Création d'un tournoi multi-phases}
-L'administrateur doit pouvoir créer un tournoi en définissant son nom, sa description et en ajoutant des phases successives. Pour chaque phase, il choisit le format (élimination directe, robin stage, poules) et le nombre de participants. Les phases seront ordonnables par glisser-déposer.
+L'utilisateur crée un tournoi en définissant son nom, sa description et en ajoutant des phases successives. Chaque phase adopte un format --- élimination directe, poules (round-robin) ou ronde suisse --- et un nombre de participants. Les matchs de la structure sont générés dès la création, avant même que les équipes soient connues.
 
 \subsection{Configuration des qualifications inter-phases}
-Pour chaque phase, l'administrateur doit pouvoir définir combien de participants se qualifient, vers quelle phase ils vont, et s'il existe un saut d'étape pour certains rangs (par exemple, le premier se qualifie directement pour la phase 3 en sautant la phase 2).
+Pour chaque phase, l'utilisateur définit combien de participants se qualifient, vers quelle phase ils vont, et s'il existe un saut d'étape pour certains rangs (par exemple, le premier se qualifie directement pour la phase 3 en sautant la phase 2). À la clôture d'une phase, les équipes qualifiées sont résolues et propagées automatiquement vers les phases suivantes.
 
-\subsection{Saisie des résultats et mise à jour du classement}
-Les résultats des matchs seront saisis via un formulaire simple. Le classement de la phase devra se mettre à jour automatiquement après chaque saisie. En cas d'égalité, le système appliquera la cascade de critères configurée par l'administrateur.
+\subsection{Définition des équipes et génération des affrontements}
+Les équipes d'une poule sont définies manuellement ou générées, puis les affrontements d'une phase sont produits par tête de série (seed) ou de façon aléatoire. Cette étape n'est possible que tant que la phase est en attente de création, ce qui garantit la cohérence de la structure une fois le tournoi démarré.
 
-\subsection{Affichage du bracket et des classements}
-Les phases à élimination directe afficheront un bracket en arbre. Les phases de poules afficheront un tableau de classement avec points, victoires, défaites et différentiel. Une vue d'ensemble permettra de visualiser toutes les phases du tournoi.
+\subsection{Planification, saisie et validation des matchs}
+Les matchs se planifient par séries (\emph{best-of}~: nombre de séries, dates et règle de victoire). La saisie enregistre les scores série par série~; la validation d'un match fixe le résultat, clôture le match et, en élimination directe, propage automatiquement le vainqueur au tour suivant.
 
-\subsection{Bibliothèque de templates}
-Des structures de tournoi prédéfinies seront disponibles (élimination simple, double élimination, poules + KO, robin stage). L'administrateur pourra sélectionner un template comme point de départ et le personnaliser.
+\subsection{Classements, brackets et cycle de vie du tournoi}
+Les phases à élimination directe s'affichent sous forme de bracket en arbre~; les poules et la ronde suisse présentent un classement (points, victoires, défaites, différentiel) recalculé à partir des résultats. Le tournoi suit un cycle de vie explicite~: création, démarrage (qui verrouille la configuration), déroulement des phases (commencer puis terminer), avec la possibilité d'annuler puis de reprendre un tournoi (l'état étant alors recalculé depuis les phases).
 
-\todo{Une fois le code développé~: pour chaque fonctionnalité ci-dessus, remplacer la formulation au futur par une description de l'écran réel et insérer la capture annotée correspondante en annexe B.}
+\subsection{Statistiques du tournoi et par équipe}
+L'application calcule des statistiques à deux niveaux. Au niveau d'un tournoi ou d'une phase~: podium, classement et faits marquants. Au niveau de chaque équipe~: bilan, scores, « bête noire », « cible facile » et « rival ». Ces statistiques sont exposées par des endpoints dédiés et restituées dans l'interface.
 
-\section{Exigences de sécurité à matérialiser dans le prototype}
-Plusieurs mesures de sécurité sont déjà visibles dans le prototype~: toute route protégée passe par le guard \texttt{GardeAuthentification}, qui rejette (401) les requêtes sans session better-auth valide ; les entrées sont validées côté serveur par le \texttt{ValidationPipe} global de NestJS (\texttt{whitelist}, \texttt{forbidNonWhitelisted}), en complément de la validation Angular ; et le rôle, stocké en base et exposé en lecture seule, empêche un client de s'auto-attribuer des droits d'administration. Ces aspects sont développés en détail au chapitre suivant.
+\todo{Pour chaque fonctionnalité ci-dessus, insérer la capture d'écran annotée correspondante en annexe B.}
 
-\section{User stories à couvrir}
-Le prototype devra couvrir les user stories suivantes, issues du cadrage~:
+\section{Mesures de sécurité visibles dans le prototype}
+Plusieurs mesures de sécurité sont déjà visibles dans le prototype~: toute route protégée passe par le guard \texttt{GardeAuthentification}, qui rejette (401) les requêtes sans session better-auth valide ; chaque utilisateur n'accède qu'à ses propres tournois (contrôle de propriété appliqué sur les endpoints à partir de l'identifiant de session) ; les entrées sont validées côté serveur par le \texttt{ValidationPipe} global de NestJS (\texttt{whitelist}, \texttt{forbidNonWhitelisted}), en complément de la validation Angular ; et le rôle, stocké en base et exposé en lecture seule, empêche un client de s'auto-attribuer des droits d'administration. Ces aspects sont développés en détail au chapitre suivant.
+
+\section{User stories couvertes}
+Le prototype couvre les user stories suivantes, issues du cadrage~:
 \begin{itemize}
-    \item En tant qu'administrateur, je peux créer un tournoi avec trois phases distinctes afin d'organiser un championnat structuré.
-    \item En tant qu'administrateur, je peux définir que le top 2 de la phase 1 saute directement en phase 3 afin de récompenser les meilleurs participants.
-    \item En tant qu'administrateur, je peux choisir un template de tournoi afin de gagner du temps lors de la configuration.
-    \item En tant qu'administrateur, je peux saisir le résultat d'un match afin de mettre à jour automatiquement le classement de la phase.
-    \item En tant qu'administrateur, je peux configurer une cascade de critères d'égalité afin de départager les participants à égalité.
-    \item En tant qu'utilisateur, je peux consulter le classement en temps réel afin de suivre l'avancement du tournoi.
-    \item En tant qu'utilisateur, je peux visualiser le bracket d'une phase à élimination directe afin de comprendre les confrontations à venir.
+    \item En tant qu'utilisateur, je peux créer un tournoi multi-phases combinant plusieurs formats (élimination directe, poules, ronde suisse) afin d'organiser un championnat structuré.
+    \item En tant qu'utilisateur, je peux définir que le top~2 d'une phase se qualifie directement pour une phase ultérieure (saut d'étape) afin de récompenser les meilleurs participants.
+    \item En tant qu'utilisateur, je peux planifier des matchs en séries et saisir leurs scores, puis valider le match afin de mettre à jour automatiquement le classement de la phase.
+    \item En tant qu'utilisateur, je peux configurer une règle de départage des égalités afin de départager les participants à égalité.
+    \item En tant qu'utilisateur, je peux consulter le classement et le bracket d'une phase afin de suivre l'avancement du tournoi.
+    \item En tant qu'utilisateur, je peux consulter les statistiques du tournoi et de chaque équipe afin d'analyser les performances.
+    \item En tant que nouvel utilisateur, je suis guidé à la première connexion afin de prendre l'application en main rapidement.
 \end{itemize}
 
-\todo{Une fois le code développé~: confirmer pour chaque user story qu'elle est effectivement implémentée et la rattacher au scénario de recette correspondant (voir C2.3.1).}
+\todo{Rattacher chaque user story au scénario de recette correspondant (voir C2.3.1) et confirmer le périmètre exact à la date du rendu.}
 
 \livrable{une architecture maintenable, la présentation d'un prototype et l'utilisation de frameworks et de paradigmes de développement}

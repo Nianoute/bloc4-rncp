@@ -1,15 +1,15 @@
 \section*{Bilan de l'état d'avancement}
-Le PMV (prototype fonctionnel) couvre les fonctionnalités principales validées en COPIL~: authentification et gestion des rôles, création de tournois multi-phases, configuration des qualifications inter-phases avec saut d'étape, saisie des résultats avec mise à jour automatique des classements, affichage des brackets et bibliothèque de templates. Certains éléments de la V1 sont engagés~. La finalisation de la V1 et la mise en production sont planifiées pour août-septembre 2026.
+Le PMV (prototype fonctionnel) couvre les fonctionnalités principales validées en COPIL~: authentification avec onboarding, création de tournois multi-phases combinant plusieurs formats (élimination directe, poules, ronde suisse), configuration des qualifications inter-phases avec saut d'étape, planification et saisie des matchs avec mise à jour automatique des classements, affichage des brackets et statistiques (par tournoi et par équipe). Certains éléments de la V1 sont engagés~. La finalisation de la V1 et la mise en production sont planifiées pour août-septembre 2026.
 \todo{Préciser à la date du rendu ce qui est réellement terminé (PMV), en cours (V1) et restant à faire, et les éventuels ajustements de périmètre.}
 
 \section*{Points forts techniques}
-Deux éléments se distinguent par la complexité métier surmontée~: la gestion des égalités en cascade avec détection de cycle dans le \texttt{TiebreakService}, qui traite proprement les triples égalités circulaires, et l'architecture modulaire NestJS, qui a facilité l'isolation et le test unitaire de la logique métier. La réutilisation prévue d'un unique \texttt{docker-compose.yml} du développement à la production vise par ailleurs à réduire fortement le risque d'erreur lors de la future mise en production.
+Deux éléments se distinguent par la complexité métier surmontée~: le moteur de tournoi (génération des matchs et des brackets pour trois formats --- élimination directe, poules, ronde suisse ---, propagation des qualifiés entre phases et calcul des classements avec départage des égalités) et le moteur de statistiques par tournoi et par équipe. Leur extraction en fonctions utilitaires pures a facilité leur test unitaire et l'isolation de la logique métier. La réutilisation prévue d'un unique \texttt{docker-compose.yml} du développement à la production vise par ailleurs à réduire fortement le risque d'erreur lors de la future mise en production.
 
 \section*{Points d'amélioration identifiés}
 \todo{Être honnête sur un ou deux points à renforcer en V2~: par exemple, la couverture des tests du frontend Angular reste à compléter, ou la gestion des erreurs côté API pourrait être plus granulaire pour améliorer l'expérience utilisateur.}
 
 \section*{Perspectives et évolutions planifiées}
-Cinq évolutions sont documentées et planifiées~: export statistique, partage public d'un tournoi, notifications temps réel, application mobile et commentaires de match. L'architecture mise en place les supporte sans refonte, comme détaillé dans la partie évolutivité (C2.2.3).
+Quatre évolutions sont documentées et planifiées~: partage public d'un tournoi, notifications temps réel, application mobile et commentaires de match. L'architecture mise en place les supporte sans refonte, comme détaillé dans la partie évolutivité (C2.2.3).
 
 \section*{Retour d'expérience personnel}
 \todo{Conclure par deux à trois phrases personnelles sur les apports du projet en termes de montée en compétences~: gestion de la complexité métier, architecture NestJS, conduite d'un développement complet en autonomie.}
