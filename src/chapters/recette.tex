@@ -6,7 +6,7 @@
 \section{Cahier de recettes}
 \competence{C2.3.1}{Le cahier de recettes}{OUI}
 
-Cette section formalise un plan de tests fonctionnels couvrant l'ensemble des fonctionnalités attendues, avec des résultats attendus explicites. Le cahier de recettes complet est fourni en annexe C ; le corps du dossier en présente la structure et quelques exemples représentatifs.
+Cette section formalise un plan de tests fonctionnels couvrant l'ensemble des fonctionnalités attendues, avec des résultats attendus explicites. Le cahier de recettes complet est fourni en annexe C. Le corps du dossier en présente la structure et quelques exemples représentatifs.
 
 \subsection{Structure d'un scénario de test}
 Chaque scénario est structuré autour de sept champs~: un identifiant (par exemple \texttt{CR-AUTH-01}), la fonctionnalité testée, les pré-conditions (état initial de l'application), les étapes de test (actions de l'utilisateur), le résultat attendu, le résultat obtenu et le statut (Succès, Échec ou Bloquant).
@@ -17,7 +17,7 @@ Les tests fonctionnels valident les user stories de la V1. L'authentification es
 
 Les tests structurels portent sur la navigation au clavier complète des formulaires principaux, le comportement en cas de perte de connexion réseau et celui en cas de session expirée (redirection vers la connexion).
 
-Les tests de sécurité comprennent la tentative d'accès à une route protégée sans session valide (vérification du rejet 401), la tentative d'injection dans les champs de formulaire (vérification du rejet par la validation DTO) et la vérification que les mots de passe ne sont jamais retournés dans les réponses de l'API. Un scénario complémentaire \emph{reste à implémenter}~: la tentative d'accès à un endpoint d'administration avec un compte non administrateur (rejet 403), une fois l'autorisation par rôle développée côté backend (voir l'exemple ci-dessous).
+Les tests de sécurité comprennent la tentative d'accès à une route protégée sans session valide (vérification du rejet 401), la tentative d'injection dans les champs de formulaire (vérification du rejet par la validation DTO) et la vérification que les mots de passe ne sont jamais retournés dans les réponses de l'API. Un scénario dédié vérifie enfin la tentative d'accès à un endpoint d'administration avec un compte non administrateur, qui doit être rejetée par le guard \texttt{GardeRoles} avec un code 403 (voir l'exemple ci-dessous).
 
 \subsection{Exemple de scénario}
 \begin{table}[H]
@@ -34,14 +34,14 @@ Les tests de sécurité comprennent la tentative d'accès à une route protégé
         \hline
         Étapes & Appeler un endpoint de configuration de tournoi réservé à l'administrateur \\
         \hline
-        Résultat attendu & L'API retourne une erreur 403 et aucune donnée de configuration n'est exposée \\
+        Résultat attendu & L'API retourne une erreur 403 (guard \texttt{GardeRoles}) et aucune donnée de configuration n'est exposée \\
         \hline
-        Statut & \textit{à implémenter~: l'autorisation par rôle (guard dédié) n'est pas encore développée côté backend} \\
+        Statut & \textit{à exécuter lors de la recette (le guard \texttt{GardeRoles} est en place côté backend)} \\
         \hline
     \end{tabular}
 \end{table}
 
-Ce scénario illustre la structure cible du cahier de recettes. À ce stade, seule l'authentification (rejet d'une requête sans session valide, code 401) est effective~; le contrôle d'accès \emph{par rôle} (rejet 403 d'un compte non administrateur sur les routes d'administration) reste à implémenter via un guard de rôle dédié, le rôle étant déjà présent en base.
+Ce scénario illustre la structure cible du cahier de recettes. Le contrôle d'accès est effectif à deux niveaux, l'authentification (rejet d'une requête sans session valide, code 401) assurée par \texttt{GardeAuthentification}, et l'autorisation par rôle (rejet 403 d'un compte non administrateur sur les routes d'administration) assurée par le guard \texttt{GardeRoles}.
 
 \subsection{Résultats de la recette}
 \begin{table}[H]

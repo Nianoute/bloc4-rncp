@@ -1,11 +1,11 @@
 % Annexe B — Extraits de code et de configuration commentés
 \label{chap:annexe-code}
 
-Cette annexe rassemble les éléments de configuration et de code les plus représentatifs du projet. Chacun renvoie à la section du dossier qui l'exploite.
+Cette annexe rassemble les extraits de code et les éléments de configuration les plus représentatifs du projet. Chacun renvoie à la partie du dossier qui l'exploite.
 
 \section*{Composition Docker de l'environnement local}
 \phantomsection\label{ann:docker-local}
-Schéma simplifié des services orchestrés par \texttt{docker-compose.yml} en développement, référencé au \hyperref[subsec:env-local]{\S\,\ref*{subsec:env-local}}.
+Schéma simplifié des services orchestrés par \texttt{docker-compose.yml} en développement, référencé à la \hyperref[subsec:env-local]{partie~\ref*{subsec:env-local}}.
 
 \begin{figure}[H]
     \centering
@@ -13,11 +13,11 @@ Schéma simplifié des services orchestrés par \texttt{docker-compose.yml} en d
     \caption{Environnement Docker local simplifié de BrackX.}
 \end{figure}
 
-\noindent\hyperref[subsec:env-local]{$\hookleftarrow$ Retour au \S\,\ref*{subsec:env-local} (Environnement de développement local).}
+\noindent\hyperref[subsec:env-local]{$\hookleftarrow$ Retour à la partie~\ref*{subsec:env-local} (Environnement de développement local).}
 
 \section*{Pipeline d'intégration continue (\texttt{.gitlab-ci.yml})}
 \phantomsection\label{ann:ci-extract}
-Extrait du modèle commun \texttt{.ci} (règle de déclenchement, image, couverture) et du job \texttt{ci:backend}, suivi d'une exécution réussie du pipeline. Éléments référencés au \hyperref[subsec:ci-pipeline]{\S\,\ref*{subsec:ci-pipeline}}.
+Extrait du modèle commun \texttt{.ci} (règle de déclenchement, image, couverture) et du job \texttt{ci:backend}, suivi d'une exécution réussie du pipeline. Éléments référencés à la \hyperref[subsec:ci-pipeline]{partie~\ref*{subsec:ci-pipeline}}.
 
 \begin{figure}[H]
     \centering
@@ -31,19 +31,48 @@ Extrait du modèle commun \texttt{.ci} (règle de déclenchement, image, couvert
     \caption{Exécution réussie du pipeline~: couverture (82,81~\% de statements), 208 tests passés et jobs \texttt{ci:backend}, \texttt{ci:frontend} et \texttt{ci:docker-build} au vert.}
 \end{figure}
 
-\noindent\hyperref[subsec:ci-pipeline]{$\hookleftarrow$ Retour au \S\,\ref*{subsec:ci-pipeline} (Description du pipeline).}
+\noindent\hyperref[subsec:ci-pipeline]{$\hookleftarrow$ Retour à la partie~\ref*{subsec:ci-pipeline} (Description du pipeline).}
 
-\section*{Cœur métier — extraits de code commentés}
-Cette partie regroupe les briques les plus représentatives de la logique métier du module tournois, dont les tests sont détaillés au \hyperref[sec:tests-unitaires]{\S\,\ref*{sec:tests-unitaires}}.
+\section*{Extraits de code du cœur métier}
+\phantomsection\label{ann:code-metier}
+Briques les plus représentatives de la logique du module tournois, exploitées au chapitre~2 et testées comme le décrit la partie~\ref*{sec:tests-unitaires}. Le contrat commun des formats est défini par l'interface \texttt{GenerateurFormat}, que chaque format implémente, une fabrique associant le type de phase à la bonne classe. La logique de classement départage les égalités par confrontation directe puis par une cascade scalaire.
 
-\subsection*{\texttt{TournoisService} — cycle de vie du tournoi}
-\todo{Insérer l'extrait commenté du \texttt{TournoisService} (création, démarrage verrouillant la configuration, déroulement puis clôture des phases).}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.58\linewidth]{tournoi-interface}
+    \caption{Interface \texttt{GenerateurFormat}, contrat commun à tous les formats.}
+\end{figure}
 
-\subsection*{\texttt{classement.util} — cascade de départage}
-\todo{Insérer l'extrait commenté de \texttt{classement.util} (calcul du classement et cascade de départage~: points, confrontation directe, différentiel).}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.58\linewidth]{tournoi-generateur-roundrobin}
+    \caption{Générateur du format poules (round-robin) implémentant l'interface.}
+\end{figure}
 
-\subsection*{\texttt{apparier-ronde-suisse} — appariement sans réaffrontement}
-\todo{Insérer l'extrait commenté de \texttt{apparier-ronde-suisse} (appariement des participants de score voisin sans réaffrontement).}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\linewidth]{tournoi-generateur}
+    \caption{Fabrique associant chaque type de phase à son générateur (\texttt{generateur-format.factory}).}
+\end{figure}
 
-\subsection*{Extrait du schéma Prisma}
-\todo{Insérer un extrait de \texttt{schema.prisma} illustrant les entités \texttt{Tournoi}, \texttt{Phase} et \texttt{RegleQualification}.}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.58\linewidth]{classement-utils}
+    \caption{Cascade de départage des classements (\texttt{classement.util}).}
+\end{figure}
+
+\section*{Schéma de données et migration Prisma}
+\phantomsection\label{ann:prisma}
+Extrait du \texttt{schema.prisma} (approche schéma-first) et d'une migration versionnée, en complément du chapitre~2.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{prisma}
+    \caption{Extrait du schéma Prisma décrivant une partie des entités du domaine.}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{prisma-migration}
+    \caption{Exemple de migration Prisma versionnée dans le dépôt.}
+\end{figure}

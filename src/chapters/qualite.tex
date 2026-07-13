@@ -9,10 +9,12 @@
 Cette section montre la mise en place d'un harnais de tests unitaires couvrant les fonctionnalités principales, permettant de détecter automatiquement les régressions.
 
 \subsection{Frameworks de test retenus}
-Le backend NestJS est testé avec Jest, intégré nativement via \texttt{@nestjs/testing} ; le frontend Angular est testé avec Jasmine et Karma (outils natifs). Jest est le standard de l'écosystème Node.js et facilite le \emph{mocking} des dépendances injectées.
+Le backend NestJS est testé avec Jest, intégré nativement via \texttt{@nestjs/testing}, tandis que le frontend Angular est testé avec Jasmine et Karma (outils natifs). Jest est le standard de l'écosystème Node.js et facilite le \emph{mocking} des dépendances injectées.
 
 \subsection{Stratégie de test}
-La logique métier des tournois est en grande partie extraite dans des fonctions utilitaires pures (calcul du classement, détermination du résultat d'un match, appariements, générateurs de format, statistiques)~: sans état ni dépendance injectée, elles sont testables directement, sans mock. Le service d'orchestration \texttt{TournoisService} est quant à lui couvert par des tests ciblant chaque cas d'usage. Les contrôleurs, qui se contentent de déléguer, ne sont pas testés unitairement.
+La logique métier des tournois est en grande partie extraite dans des fonctions utilitaires pures (calcul du classement, détermination du résultat d'un match, appariements, générateurs de format, statistiques)~: sans état ni dépendance injectée, elles sont testables directement, sans mock.
+
+Le service d'orchestration \texttt{TournoisService} est quant à lui couvert par des tests ciblant chaque cas d'usage, tandis que les contrôleurs, qui se contentent de déléguer, ne sont pas testés unitairement.
 
 \begin{table}[H]
     \centering
@@ -71,13 +73,13 @@ Chaque risque de l'OWASP Top 10 (2025) est adressé par une mesure concrète dan
     \hline
     A05 --- Injection & Prisma génère des requêtes paramétrées nativement, rendant les injections SQL impossibles. Le \texttt{ValidationPipe} global de NestJS (\texttt{whitelist}, \texttt{forbidNonWhitelisted}, \texttt{transform}) valide les DTO et rejette tout champ non attendu. \\
     \hline
-    A06 --- Insecure Design & Architecture pensée selon le principe du moindre privilège dès le cadrage~: le rôle par défaut est \texttt{USER} et ne peut être modifié par le client. Le rôle est déjà stocké en base~; la restriction effective des endpoints d'administration par rôle (guard dédié) reste à implémenter côté backend. \\
+    A06 --- Insecure Design & Architecture pensée selon le principe du moindre privilège dès le cadrage~: le rôle par défaut est \texttt{USER} et ne peut être modifié par le client. Les endpoints d'administration sont effectivement restreints par le guard \texttt{GardeRoles} (décorateur \texttt{@Roles('ADMIN')}), qui renvoie un code 403 lorsque le rôle \texttt{ADMIN} fait défaut. \\
     \hline
     A07 --- Authentication Failures & Authentification déléguée à better-auth~: session à durée limitée (7 jours) avec prolongement glissant (au plus une fois par jour), politique de mot de passe imposée (au moins 8 caractères, une majuscule, une minuscule et un caractère spécial), vérifiée côté client et côté serveur, et réinitialisation par token à usage unique envoyé par email (table \texttt{verification}). \\
     \hline
     A08 --- Software or Data Integrity Failures & Seul le pipeline CI/CD déploie en production~: les images Docker sont versionnées par tag (\texttt{:vX.Y.Z}) et tirées d'un registre maîtrisé, sans mise à jour automatique depuis une source non vérifiée. \\
     \hline
-    A09 --- Security Logging and Alerting Failures & La gestion des sessions et des échecs d'authentification est assurée par better-auth et remontée par NestJS. La centralisation des journaux, les alertes et la supervision (Grafana) sont prévues~; un middleware de journalisation des erreurs 4xx/5xx reste à ajouter. \\
+    A09 --- Security Logging and Alerting Failures & La gestion des sessions et des échecs d'authentification est assurée par better-auth et remontée par NestJS. La centralisation des journaux, les alertes et la supervision (Grafana) sont prévues, un middleware de journalisation des erreurs 4xx/5xx restant à ajouter. \\
     \hline
     A10 --- Mishandling of Exceptional Conditions & Les erreurs sont traitées de manière contrôlée plutôt que renvoyées brutes~: le \texttt{ValidationPipe} global renvoie des réponses 400 structurées sur les entrées invalides et le guard d'authentification un 401 explicite, sans exposer de détail interne. En production (\texttt{NODE\_ENV=production}), la verbosité des messages d'erreur est réduite. La généralisation d'un filtre d'exception NestJS centralisant le format des erreurs (sans fuite de \emph{stack trace}) reste à mettre en place. \\
     \hline
@@ -91,6 +93,8 @@ Le référentiel retenu est le RGAA 4.1 (Référentiel Général d'Amélioration
 Une limite a toutefois été identifiée pour la V1~: la vue bracket en arbre (visualisation des phases d'élimination) est complexe à rendre entièrement accessible. Une alternative textuelle sous forme de tableau de résultats est donc proposée en complément du bracket visuel.
 
 \subsection{Évolutivité}
-L'architecture modulaire permet d'ajouter des fonctionnalités sans refonte, ce que le développement a déjà confirmé~: les statistiques (par tournoi et par équipe) ont été ajoutées à partir des données déjà structurées en base (entités \texttt{Tournoi}, \texttt{Match}, \texttt{ClassementJoueur}), via de nouveaux endpoints et des fonctions utilitaires dédiées, sans modifier le cœur existant. Les évolutions encore planifiées suivent le même principe~: le partage public d'un tournoi ne nécessitera que l'ajout d'un champ \texttt{isPublic} sur l'entité \texttt{Tournoi} et d'un guard autorisant l'accès non authentifié aux routes de lecture~; les notifications temps réel s'appuieront sur le support natif des WebSockets par NestJS via des gateways dédiées (\texttt{@WebSocketGateway}), sans impacter les modules existants.
+L'architecture modulaire permet d'ajouter des fonctionnalités sans refonte, ce que le développement a déjà confirmé~: les statistiques (par tournoi et par équipe) ont été ajoutées à partir des données déjà structurées en base (entités \texttt{Tournoi}, \texttt{Match}, \texttt{ClassementJoueur}), via de nouveaux endpoints et des fonctions utilitaires dédiées, sans modifier le cœur existant.
+
+Les évolutions encore planifiées suivent le même principe. Le partage public d'un tournoi ne nécessitera que l'ajout d'un champ \texttt{isPublic} sur l'entité \texttt{Tournoi} et d'un guard autorisant l'accès non authentifié aux routes de lecture. Les notifications temps réel s'appuieront quant à elles sur le support natif des WebSockets par NestJS via des gateways dédiées (\texttt{@WebSocketGateway}), sans impacter les modules existants.
 
 \livrable{la présentation des mesures de sécurité et des actions d'accessibilité aux personnes en situation de handicap}

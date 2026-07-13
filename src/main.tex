@@ -88,6 +88,12 @@
 \setlength{\parskip}{0.5em}
 \newcommand{\smallgap}{\vspace{0.3em}}
 
+% Éviter que les mots techniques et noms de fichiers (souvent en \texttt, non
+% coupables) ne débordent dans la marge de droite : on autorise TeX à étirer
+% la ligne en dernier recours (le mot passe alors à la ligne suivante).
+\setlength{\emergencystretch}{3em}
+\usepackage[htt]{hyphenat} % autorise la césure du texte en \texttt
+
 % Configuration de l'affichage des extraits de code
 \lstset{
     basicstyle=\ttfamily\footnotesize,
