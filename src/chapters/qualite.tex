@@ -14,39 +14,57 @@ Le backend NestJS est testé avec Jest, intégré nativement via \texttt{@nestjs
 \subsection{Stratégie de test}
 La logique métier des tournois est en grande partie extraite dans des fonctions utilitaires pures (calcul du classement, détermination du résultat d'un match, appariements, générateurs de format, statistiques)~: sans état ni dépendance injectée, elles sont testables directement, sans mock.
 
-Le service d'orchestration \texttt{TournoisService} est quant à lui couvert par des tests ciblant chaque cas d'usage, tandis que les contrôleurs, qui se contentent de déléguer, ne sont pas testés unitairement.
+Le service d'orchestration \texttt{TournoisService} est quant à lui couvert par une série de suites ciblant chaque cas d'usage (démarrage, saisie, validation, terminaison, annulation, statistiques). Les points d'entrée sont également vérifiés~: le contrôleur (délégation au service et présence du guard d'authentification), le guard \texttt{GardeAuthentification} lui-même et la validation des DTO.
+
+Cette stratégie se traduit par une couverture backend, mesurée par Jest (\texttt{npm run test:cov}) et publiée comme artefact du pipeline d'intégration continue (format Cobertura), de 82,81~\% des instructions (1479/1786), 76,35~\% des branches, 83,89~\% des fonctions et 83,02~\% des lignes, pour 208 tests répartis sur 29 suites. L'effort ayant porté sur la logique métier sensible, le cœur du module tournois (classement, résultats, statistiques, générateurs et appariements) dépasse 90~\%, au-delà de la cible de 70~\% fixée au chapitre~1, la couverture du frontend Angular restant à compléter avant la mise en production. Le rapport complet, détaillé fichier par fichier, est fourni en \hyperref[chap:annexe-couverture]{annexe~\ref*{chap:annexe-couverture}}.
+
+\newpage
+Le tableau suivant récapitule les unités testées et la logique couverte.
 
 \begin{table}[H]
     \centering
+    \small
+    \renewcommand{\arraystretch}{1.6}
     \begin{tabular}{|>{\raggedright\arraybackslash}p{0.34\linewidth}|>{\raggedright\arraybackslash}p{0.56\linewidth}|}
         \hline
         \textbf{Unité testée} & \textbf{Logique couverte} \\
         \hline
-        \texttt{TournoisService} & Orchestration du cycle de vie~: création, démarrage, saisie et validation des matchs, terminaison de phase, annulation et reprise, statistiques. \\
+        \texttt{TournoisService} & Orchestration du cycle de vie, répartie en plusieurs suites~: création, démarrage, saisie et validation des matchs, terminaison de phase, annulation et reprise, statistiques. \\
         \hline
         \texttt{classement.util} & Calcul du classement (points, victoires, défaites, différentiel) et départage des égalités. \\
         \hline
         \texttt{calculer-resultat-match} & Détermination du vainqueur d'un match à partir des scores de séries. \\
         \hline
-        Générateurs de format & Construction des matchs et du bracket pour l'élimination directe, les poules (round-robin) et la ronde suisse. \\
+        Générateurs de format et bracket & Construction des matchs et du bracket pour l'élimination directe, les poules (round-robin) et la ronde suisse. \\
         \hline
         \texttt{apparier} / \texttt{apparier-ronde-suisse} & Appariement des affrontements (tête de série, aléatoire, ronde suisse). \\
         \hline
         \texttt{statistiques.util} / \texttt{statistiques-equipe.util} & Calcul des statistiques du tournoi et par équipe. \\
         \hline
+        Points d'entrée (\texttt{TournoisController}, \texttt{GardeAuthentification}, DTO) & Délégation du contrôleur au service et présence du guard, rejet 401 du guard en l'absence de session valide, et validation des données entrantes par les DTO. \\
+        \hline
     \end{tabular}
 \end{table}
 
-L'authentification n'apparaît pas dans ce tableau~: elle est déléguée à la librairie tierce better-auth (gestion des comptes, du hachage des mots de passe et des sessions), testée en amont par ses mainteneurs, et ne fait donc pas l'objet de tests unitaires applicatifs.
+Les mécanismes internes de better-auth (comptes, hachage des mots de passe, sessions) ne sont en revanche pas retestés~: ils relèvent de la librairie tierce, testée en amont par ses mainteneurs. Seule son intégration applicative, le guard \texttt{GardeAuthentification}, fait l'objet de tests de notre côté.
 
 \subsection{Cas de test représentatif}
-Le cas suivant illustre la logique de départage des égalités dans \texttt{classement.util}~: étant données plusieurs équipes à égalité de points, le classement applique successivement les critères configurés (confrontation directe, différence de score, nombre de victoires) jusqu'à les départager. Le test suit le pattern Arrange / Act / Assert.
+Le cas suivant, tiré de \texttt{classement.util.spec.ts} et construit selon le pattern Arrange / Act / Assert, illustre le départage des égalités dans \texttt{classement.util} (confrontation directe, puis différence de score, puis nombre de victoires). Quatre équipes sont à égalité de points par deux~: la différence favoriserait l'équipe~2, mais l'équipe~1 l'a battue en confrontation directe, critère prioritaire que vérifie l'assertion finale.
 
-\todo{Insérer ici un extrait de 15 à 20 lignes d'un test représentatif (par exemple \texttt{classement.util.spec.ts} ou \texttt{apparier-ronde-suisse.spec.ts}), commenté, mettant en évidence les phases Arrange / Act / Assert. Reporter le fichier complet en annexe A.}
-
-\subsection{Rapport de couverture}
-Le rapport de couverture est généré par Jest (\texttt{npm run test:cov}) et publié comme artefact du pipeline d'intégration continue (format Cobertura). Il est fourni en annexe E.
-\todo{Indiquer ici le taux de couverture global réellement obtenu et commenter les fichiers situés sous le seuil cible. En cas d'écart, expliquer la raison (par exemple couverture du frontend à compléter) plutôt que de la passer sous silence.}
+\begin{lstlisting}
+// Arrange : 1 et 2 totalisent 6 points, 3 et 4 en totalisent 3.
+// La difference de score favorise 2, mais 1 a battu 2 en direct.
+const classement = calculerClassement(participants4, [
+  matchTermine(1, 2, 3, 2),
+  matchTermine(1, 3, 3, 2),
+  matchTermine(4, 1, 5, 0),
+  matchTermine(2, 3, 5, 0),
+  matchTermine(2, 4, 5, 0),
+  matchTermine(3, 4, 5, 0),
+]);
+// Act + Assert : la confrontation directe place 1 devant 2.
+expect(classement.map((l) => l.participantId)).toEqual([1, 2, 3, 4]);
+\end{lstlisting}
 
 \livrable{un jeu de tests unitaires couvrant une fonctionnalité demandée}
 
@@ -85,8 +103,30 @@ Chaque risque de l'OWASP Top 10 (2025) est adressé par une mesure concrète dan
     \hline
 \end{longtable}
 
-\todo{Pour appuyer une ou deux mesures clés (par exemple le guard \texttt{GardeAuthentification} ou la configuration better-auth de l'authentification), insérer un court extrait de code commenté.}
+Pour illustrer concrètement la première ligne de défense (A01), l'extrait suivant présente le guard \texttt{GardeAuthentification} appliqué aux routes protégées de l'API. Il interroge better-auth à partir des cookies de la requête et rejette tout accès dépourvu de session valide par un code 401, avant d'attacher l'utilisateur courant à la requête pour la suite du traitement.
 
+\begin{lstlisting}
+@Injectable()
+export class GardeAuthentification implements CanActivate {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const requete = context.switchToHttp().getRequest();
+    // Recupere la session aupres de better-auth (cookie httpOnly)
+    const session = await authentification.api.getSession({
+      headers: fromNodeHeaders(requete.headers),
+    });
+    // Sans session valide : acces refuse (401)
+    if (!session) {
+      throw new UnauthorizedException('Non authentifie');
+    }
+    // Session valide : on attache l'utilisateur courant a la requete
+    requete.user = session.user;
+    requete.session = session.session;
+    return true;
+  }
+}
+\end{lstlisting}
+
+\newpage
 \subsection{Accessibilité — RGAA 4.1}
 Le référentiel retenu est le RGAA 4.1 (Référentiel Général d'Amélioration de l'Accessibilité), référence officielle française compatible avec les exigences légales applicables aux services numériques. Plusieurs mesures sont mises en œuvre dans le prototype pour s'en rapprocher. Tous les éléments interactifs (boutons, liens, inputs) disposent d'attributs \texttt{aria-label} ou \texttt{aria-labelledby} décrivant clairement leur fonction pour les lecteurs d'écran, et les formulaires de configuration de phases associent explicitement chaque label à son champ via l'attribut \texttt{for}/\texttt{id}. Le contraste des textes respecte le ratio minimum de 4.5:1 préconisé par le WCAG AA pour le texte normal. La navigation au clavier est fonctionnelle sur l'ensemble de l'application, avec une tabulation logique et un focus visible. Enfin, les messages d'erreur de formulaire sont annoncés aux lecteurs d'écran via \texttt{aria-live}.
 
