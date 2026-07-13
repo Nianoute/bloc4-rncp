@@ -1,15 +1,49 @@
-% Annexe A — Extraits de code commentés
-\section*{Objet de l'annexe}
-Cette annexe regroupe les extraits de code les plus représentatifs de la complexité métier du projet. La priorité est donnée au \texttt{QualificationService} (logique de saut d'étape) et au \texttt{TiebreakService} (cascade d'égalité), qui constituent les briques les plus différenciantes de BrackX.
+% Annexe B — Extraits de code et de configuration commentés
+\label{chap:annexe-code}
 
-\section*{QualificationService — passage inter-phases et saut d'étape}
-\todo{Insérer l'extrait commenté du QualificationService (calcul des qualifiés, gestion du saut d'étape).}
+Cette annexe rassemble les éléments de configuration et de code les plus représentatifs du projet. Chacun renvoie à la section du dossier qui l'exploite.
 
-\section*{TiebreakService — cascade des critères d'égalité}
-\todo{Insérer l'extrait commenté du TiebreakService (head-to-head, différentiel, détection de cycle).}
+\section*{Composition Docker de l'environnement local}
+\phantomsection\label{ann:docker-local}
+Schéma simplifié des services orchestrés par \texttt{docker-compose.yml} en développement, référencé au \hyperref[subsec:env-local]{\S\,\ref*{subsec:env-local}}.
 
-\section*{Extrait du schéma Prisma}
-\todo{Insérer un extrait de schema.prisma illustrant les entités Tournament, Phase et QualificationRule.}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{dockercomposelocal-simplifié}
+    \caption{Environnement Docker local simplifié de BrackX.}
+\end{figure}
 
-\section*{Pipeline d'intégration continue (ci.yml)}
-\todo{Insérer l'extrait commenté de .gitlab-ci.yml (15 à 20 lignes représentatives).}
+\noindent\hyperref[subsec:env-local]{$\hookleftarrow$ Retour au \S\,\ref*{subsec:env-local} (Environnement de développement local).}
+
+\section*{Pipeline d'intégration continue (\texttt{.gitlab-ci.yml})}
+\phantomsection\label{ann:ci-extract}
+Extrait du modèle commun \texttt{.ci} (règle de déclenchement, image, couverture) et du job \texttt{ci:backend}, suivi d'une exécution réussie du pipeline. Éléments référencés au \hyperref[subsec:ci-pipeline]{\S\,\ref*{subsec:ci-pipeline}}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{cigitlab-simplifié}
+    \caption{Extrait commenté du pipeline d'intégration continue (\texttt{.gitlab-ci.yml}).}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{cireussi}
+    \caption{Exécution réussie du pipeline~: couverture (82,81~\% de statements), 208 tests passés et jobs \texttt{ci:backend}, \texttt{ci:frontend} et \texttt{ci:docker-build} au vert.}
+\end{figure}
+
+\noindent\hyperref[subsec:ci-pipeline]{$\hookleftarrow$ Retour au \S\,\ref*{subsec:ci-pipeline} (Description du pipeline).}
+
+\section*{Cœur métier — extraits de code commentés}
+Cette partie regroupe les briques les plus représentatives de la logique métier du module tournois, dont les tests sont détaillés au \hyperref[sec:tests-unitaires]{\S\,\ref*{sec:tests-unitaires}}.
+
+\subsection*{\texttt{TournoisService} — cycle de vie du tournoi}
+\todo{Insérer l'extrait commenté du \texttt{TournoisService} (création, démarrage verrouillant la configuration, déroulement puis clôture des phases).}
+
+\subsection*{\texttt{classement.util} — cascade de départage}
+\todo{Insérer l'extrait commenté de \texttt{classement.util} (calcul du classement et cascade de départage~: points, confrontation directe, différentiel).}
+
+\subsection*{\texttt{apparier-ronde-suisse} — appariement sans réaffrontement}
+\todo{Insérer l'extrait commenté de \texttt{apparier-ronde-suisse} (appariement des participants de score voisin sans réaffrontement).}
+
+\subsection*{Extrait du schéma Prisma}
+\todo{Insérer un extrait de \texttt{schema.prisma} illustrant les entités \texttt{Tournoi}, \texttt{Phase} et \texttt{RegleQualification}.}

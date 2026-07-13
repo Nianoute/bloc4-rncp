@@ -10,7 +10,7 @@ Le tableau ci-dessous réunit les neuf compétences du Bloc 2~: pour chacune, so
     \textbf{Compétence} & \textbf{Couverture dans le dossier (preuves)} & \textbf{Reste à compléter} \\
     \hline
     \endhead
-    \textbf{C2.1.1} --- Environnement de déploiement et de test & Environnement standardisé et reproductible (Docker Compose, version Node figée, trois environnements séparés). \textit{Chapitre~1.} Preuves~: \texttt{docker-compose.yml}, \texttt{.nvmrc}, ESLint/Husky, tableau des critères de qualité. & \todo{Citer les captures réellement fournies (docker compose ps, hook pre-commit, tests Postman) et confirmer les valeurs de couverture et de temps de réponse mesurées.} \\
+    \textbf{C2.1.1} --- Environnement de déploiement et de test & Environnement standardisé et reproductible (Docker Compose, version Node figée, trois environnements séparés). \textit{Chapitre~1.} Preuves~: \texttt{docker-compose.yml}, \texttt{docker-compose.prod.yml}, \texttt{.nvmrc}, configuration ESLint, tableau des critères de qualité. & \todo{Citer les captures réellement fournies (docker compose ps, pipeline CI, tests Postman) et confirmer les valeurs de couverture et de temps de réponse mesurées.} \\
     \hline
     \textbf{C2.1.2} --- Intégration continue & Pipeline CI détectant les régressions avant toute fusion en branche principale. \textit{Chapitre~1.} Preuves~: \texttt{.gitlab-ci.yml}, protection de la branche \texttt{main}, exécutions GitLab CI/CD. & \todo{Joindre la capture d'une exécution réussie du pipeline et l'extrait commenté du \texttt{.gitlab-ci.yml}.} \\
     \hline
