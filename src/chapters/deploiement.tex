@@ -4,7 +4,7 @@
 
 \competence{C2.2.4}{Historique des versions et dernière version fonctionnelle, fiable et viable}{Non}
 
-Cette section montre que l'application est déployable de manière reproductible et que les versions sont tracées. La mise en production effective n'a pas encore eu lieu~: elle est planifiée pour août-septembre 2026. Le processus décrit ci-dessous a été préparé et testé en local. Il sera appliqué lors de la première mise en production.
+Cette section montre que l'application est déployable de manière reproductible et que les versions sont tracées. Le pipeline de déploiement est déjà opérationnel~: chaque version est construite et publiée automatiquement, la dernière en date (\texttt{v0.2.0}) ayant été mise en ligne sur la préproduction. La mise en service définitive sur l'infrastructure cible de l'entreprise reste planifiée pour août-septembre 2026.
 
 \section{Système de gestion de versions}
 Le projet utilise Git avec GitLab. La branche \texttt{main} a vocation à contenir la dernière version stable. Chaque version fera l'objet d'un tag Git (\texttt{v1.0.0}, \texttt{v1.0.1}, etc.) suivant le standard de versionnement sémantique (\texttt{major.minor.patch})~: l'incrément \texttt{major} signale une rupture de compatibilité, \texttt{minor} l'ajout d'une fonctionnalité rétrocompatible, et \texttt{patch} une correction.
@@ -17,38 +17,82 @@ C'est cette mécanique qui rend le \emph{rollback} rapide. Comme chaque version 
 
 Pour que cette manœuvre reste fiable, plusieurs bonnes pratiques sont retenues~: conserver sur le registre les dernières images de version (et non uniquement \texttt{:latest}), concevoir les migrations de base de données de façon rétrocompatible (approche \emph{expand/contract}, en évitant les suppressions destructrices dans la même version) pour qu'un retour au code précédent ne casse pas le schéma, et ne déclarer un déploiement réussi qu'après le test de stabilité décrit en section suivante, un échec de ce test déclenchant immédiatement le rollback vers le tag précédent.
 
-\section{Processus de déploiement prévu en production}
-\begin{enumerate}
-    \item La branche \texttt{develop} est fusionnée dans \texttt{main} via une merge request dont le pipeline CI doit être au vert.
-    \item Un tag de version est créé sur le commit de merge.
-    \item Le pipeline CD se déclenche sur ce tag (et uniquement sur un tag au format \texttt{vX.Y.Z}) et construit les images Docker de production de l'API et du frontend à partir de leurs \texttt{Dockerfile.prod}.
-    \item Les images sont poussées sur Docker Hub, taguées à la fois \texttt{:vX.Y.Z} (version figée) et \texttt{:latest}.
-    \item Sur le serveur de production, \texttt{docker compose -f docker-compose.prod.yml pull} récupère les nouvelles images et \texttt{docker compose -f docker-compose.prod.yml up -d} redémarre les conteneurs.
-    \item Au démarrage du conteneur de l'API, les migrations de base de données en attente sont appliquées automatiquement via \texttt{prisma migrate deploy} (commande lancée par le \texttt{Dockerfile.prod}) avant que l'application ne serve les requêtes.
-\end{enumerate}
-
-Ce processus a été préparé et testé en environnement local via Docker Compose, l'infrastructure de production prévue étant une transposition directe de cet environnement (voir C2.1.1). La mise en production réelle interviendra lors de la phase d'août-septembre 2026.
-
-Une fois les conteneurs redémarrés, la stabilité de la version déployée est vérifiée par un \emph{smoke test} manuel reprenant les scénarios critiques du cahier de recettes~: connexion, création d'un tournoi simple, saisie d'un résultat et vérification du classement. Ce test de fumée prend moins de dix minutes et garantit que les fonctionnalités essentielles sont opérationnelles~. En cas d'échec, le déploiement n'est pas validé et le rollback vers le tag de version précédent est déclenché immédiatement (voir la section précédente).
-
-\todo{Une fois la première release publiée, insérer une capture d'une exécution réussie du pipeline CD (jobs \texttt{cd:backend} / \texttt{cd:frontend}) ou de la page Docker Hub montrant les images \texttt{rncp-backend} / \texttt{rncp-frontend} et leurs tags \texttt{vX.Y.Z}.}
-
-\section{Traçabilité des évolutions}
-Les commits suivent la convention Conventional Commits (\texttt{feat:}, \texttt{fix:}, \texttt{chore:}, \texttt{docs:}, \texttt{test:}), ce qui rend l'historique lisible et exploitable pour générer un journal des changements. Le journal complet (\texttt{git log --oneline --decorate}) est fourni en \hyperref[chap:annexe-versions]{annexe~\ref*{chap:annexe-versions}}.
+\section{Processus de déploiement automatisé}
+Le déploiement est entièrement automatisé par le pipeline GitLab CI/CD. L'étape \texttt{cd} ne comporte qu'un seul job, \texttt{cd:image}, déclenché uniquement par la création d'un tag de version au format \texttt{vX.Y.Z}. Les étapes ci-dessous décrivent le cycle complet, de la fusion vers \texttt{main} jusqu'au redémarrage des conteneurs en production.
 
 \begin{table}[H]
     \centering
-    \begin{tabular}{|>{\raggedright\arraybackslash}p{0.14\linewidth}|>{\raggedright\arraybackslash}p{0.16\linewidth}|>{\raggedright\arraybackslash}p{0.50\linewidth}|}
+    \small
+    \renewcommand{\arraystretch}{1.35}
+    \begin{tabular}{|>{\centering\arraybackslash}p{0.10\linewidth}|>{\raggedright\arraybackslash}p{0.76\linewidth}|}
         \hline
-        \textbf{Version} & \textbf{Date} & \textbf{Principales évolutions} \\
+        \textbf{Étape} & \textbf{Action} \\
         \hline
-        v1.0.0 & \textit{à renseigner} & Première version V1~: authentification, création de tournois, qualifications, saisie des résultats, brackets et classements. \\
+        1 & La branche \texttt{dev} est fusionnée dans \texttt{main} via une merge request dont le pipeline CI doit être au vert. \\
         \hline
-        v1.0.1 & \textit{à renseigner} & Corrections issues de la recette (voir C2.3.2). \\
+        2 & Un tag de version \texttt{vX.Y.Z} est créé sur le commit de fusion, puis poussé. \\
+        \hline
+        3 & Le job \texttt{cd:image} se déclenche et construit l'image Docker de production unique à partir du \texttt{Dockerfile} racine, un build multi-étapes regroupant le frontend servi par nginx et l'API NestJS. \\
+        \hline
+        4 & L'image est publiée sur le registre de conteneurs GitLab, taguée à la fois \texttt{:vX.Y.Z} (version figée) et \texttt{:latest}. \\
+        \hline
+        5 & Sur le serveur de production, \texttt{docker compose -f docker-compose.prod.yml pull} récupère la nouvelle image et \texttt{up -d} redémarre les conteneurs. \\
+        \hline
+        6 & Au démarrage du conteneur, le script d'entrée (\texttt{entrypoint.sh}) applique les migrations en attente via \texttt{prisma migrate deploy}, puis lance l'API et nginx. \\
         \hline
     \end{tabular}
 \end{table}
 
-\todo{Compléter le tableau des versions avec les dates et le contenu réels une fois les tags créés (production prévue août-septembre 2026).}
+Ce pipeline est déjà opérationnel~: il a été exercé jusqu'à la mise en ligne sur la préproduction, la dernière version publiée étant \texttt{v0.2.0}. L'infrastructure de production cible de l'entreprise étant une transposition directe de cet environnement (voir C2.1.1), sa mise en service définitive interviendra à l'horizon août-septembre 2026.
+
+Une fois les conteneurs redémarrés, la stabilité de la version déployée est vérifiée par un \emph{smoke test} manuel reprenant les scénarios critiques du cahier de recettes~: connexion, création d'un tournoi simple, saisie d'un résultat et vérification du classement. Ce test de fumée prend moins de dix minutes et garantit que les fonctionnalités essentielles sont opérationnelles. En cas d'échec, le déploiement n'est pas validé et le rollback vers le tag de version précédent est déclenché immédiatement (voir la partie précédente).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.78\linewidth]{cdreussi}
+    \caption{Exécution réussie du job \texttt{cd:image} pour le tag \texttt{v0.2.0}~: l'image est construite puis publiée sur le registre GitLab, le pipeline se terminant au vert.}
+\end{figure}
+
+\section{Traçabilité des évolutions}
+Les commits suivent la convention Conventional Commits (\texttt{feat:}, \texttt{fix:}, \texttt{chore:}, \texttt{docs:}, \texttt{test:}), ce qui rend l'historique lisible et exploitable pour générer un journal des changements. Chaque commit porte en outre le statut de son pipeline, ce qui permet de repérer immédiatement une intégration en échec. Le journal complet (\texttt{git log --oneline --decorate}) est fourni en \hyperref[chap:annexe-versions]{annexe~\ref*{chap:annexe-versions}}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{githistory}
+    \caption{Extrait de l'historique Git~: commits conventionnels (\texttt{feat:}, \texttt{fix:}), fusion d'une branche de fonctionnalité et statut du pipeline attaché à chaque commit.}
+\end{figure}
+
+Les versions sont livrées de façon incrémentale selon le versionnement sémantique. Le tableau ci-dessous retrace les versions déjà publiées et celles planifiées jusqu'à la V1 (échéances 2026).
+
+\begin{table}[H]
+    \centering
+    \small
+    \renewcommand{\arraystretch}{1.4}
+    \begin{tabular}{|>{\raggedright\arraybackslash}p{0.10\linewidth}|>{\raggedright\arraybackslash}p{0.56\linewidth}|>{\raggedright\arraybackslash}p{0.20\linewidth}|}
+        \hline
+        \textbf{Version} & \textbf{Évolution principale} & \textbf{Statut} \\
+        \hline
+        v0.0.1 & Première configuration de la chaîne de déploiement (test) & Échec \\
+        \hline
+        v0.0.2 & Première mise en production & Réussi \\
+        \hline
+        v0.1.0 & Prototype fonctionnel & Réussi \\
+        \hline
+        v0.2.0 & Prototype avec amélioration de l'interface & Réussi \\
+        \hline
+        v0.2.1 & Correction du classement en ronde suisse & Prévu le 15/07 \\
+        \hline
+        v0.2.2 & Amélioration de l'UI/UX de la saisie des matchs et des équipes par poules & Prévu le 17/07 \\
+        \hline
+        v0.3.0 & Intégration de l'ensemble des retours de recette & Prévu le 20/07 \\
+        \hline
+        v0.4.0 & PMV avec restructuration du code & Prévu le 23/07 \\
+        \hline
+        v0.x.x & Intégration continue des fonctionnalités pour la V1 & Prévu du 27/07 au 01/09 \\
+        \hline
+        v1.0.0 & V1 de l'application après confirmation de la recette & Prévu le 14/09 \\
+        \hline
+    \end{tabular}
+\end{table}
 
 \livrable{l'historique des différentes versions et la dernière version du logiciel fonctionnel, fiable et viable}

@@ -85,7 +85,7 @@ Chaque risque de l'OWASP Top 10 (2025) est adressé par une mesure concrète dan
     \hline
     A02 --- Security Misconfiguration & Variables d'environnement externalisées et non versionnées (\texttt{.env}). CORS configuré explicitement (origine limitée au frontend, \texttt{credentials: true}, méthodes et en-têtes restreints) et \texttt{trustedOrigins} better-auth aligné sur la même origine. \\
     \hline
-    A03 --- Software Supply Chain Failures & Versions des dépendances figées dans \texttt{package-lock.json} et installées via \texttt{npm ci} (builds reproductibles). Les images de production ne sont construites et publiées que par le pipeline CI/CD GitLab, à partir des \texttt{Dockerfile.prod} versionnés dans le dépôt. La mise en place du Dependency Scanning GitLab est prévue pour automatiser la détection des dépendances vulnérables. \\
+    A03 --- Software Supply Chain Failures & Versions des dépendances figées dans \texttt{package-lock.json} et installées via \texttt{npm ci} (builds reproductibles). L'image de production n'est construite et publiée que par le pipeline CI/CD GitLab, à partir du \texttt{Dockerfile} versionné dans le dépôt. La mise en place du Dependency Scanning GitLab est prévue pour automatiser la détection des dépendances vulnérables. \\
     \hline
     A04 --- Cryptographic Failures & Mots de passe hachés par better-auth et stockés dans la table \texttt{account} (provider \texttt{credential}), jamais en clair. Les sessions sont signées avec un secret (\texttt{BETTER\_AUTH\_SECRET}) externalisé en variable d'environnement, et l'identifiant de session est transporté par un cookie \texttt{httpOnly} + \texttt{SameSite=Lax}, inaccessible au JavaScript de la page. \\
     \hline

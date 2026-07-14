@@ -17,49 +17,55 @@ Les tests fonctionnels valident les user stories de la V1. L'authentification es
 
 Les tests structurels portent sur la navigation au clavier complète des formulaires principaux, le comportement en cas de perte de connexion réseau et celui en cas de session expirée (redirection vers la connexion).
 
-Les tests de sécurité comprennent la tentative d'accès à une route protégée sans session valide (vérification du rejet 401), la tentative d'injection dans les champs de formulaire (vérification du rejet par la validation DTO) et la vérification que les mots de passe ne sont jamais retournés dans les réponses de l'API. Un scénario dédié vérifie enfin la tentative d'accès à un endpoint d'administration avec un compte non administrateur, qui doit être rejetée par le guard \texttt{GardeRoles} avec un code 403 (voir l'exemple ci-dessous).
+Les tests de sécurité comprennent la tentative d'accès à une route protégée sans session valide (vérification du rejet 401), la tentative d'injection dans les champs de formulaire (vérification du rejet par la validation DTO) et la vérification que les mots de passe ne sont jamais retournés dans les réponses de l'API. Un scénario dédié vérifie enfin la tentative d'accès à un endpoint d'administration avec un compte non administrateur, qui doit être rejetée par le guard \texttt{GardeRoles} avec un code 403.
 
 \subsection{Exemple de scénario}
 \begin{table}[H]
     \centering
+    \small
+    \renewcommand{\arraystretch}{1.4}
     \begin{tabular}{|>{\raggedright\arraybackslash}p{0.24\linewidth}|>{\raggedright\arraybackslash}p{0.64\linewidth}|}
         \hline
         \textbf{Champ} & \textbf{Valeur} \\
         \hline
-        Identifiant & CR-AUTH-03 \\
+        Identifiant & CR-SUISSE-02 \\
         \hline
-        Fonctionnalité & Authentification --- contrôle d'accès par rôle \\
+        Fonctionnalité & Ronde suisse, classement final et départage à égalité de points \\
         \hline
-        Pré-conditions & Utilisateur connecté avec le rôle « utilisateur » \\
+        Pré-conditions & Une ronde suisse terminée où deux participants totalisent le même nombre de victoires, l'un sans défaite (2-0), l'autre avec une défaite (2-1) \\
         \hline
-        Étapes & Appeler un endpoint de configuration de tournoi réservé à l'administrateur \\
+        Étapes & Consulter le classement final de la phase \\
         \hline
-        Résultat attendu & L'API retourne une erreur 403 (guard \texttt{GardeRoles}) et aucune donnée de configuration n'est exposée \\
+        Résultat attendu & À nombre de victoires égal, le participant sans défaite (2-0) est classé devant celui ayant une défaite (2-1) \\
         \hline
-        Statut & \textit{à exécuter lors de la recette (le guard \texttt{GardeRoles} est en place côté backend)} \\
+        Résultat obtenu & Le participant 2-1 apparaissait devant le participant 2-0 \\
+        \hline
+        Statut & Échec (bloquant), anomalie corrigée puis rejouée avec succès \\
         \hline
     \end{tabular}
 \end{table}
 
-Ce scénario illustre la structure cible du cahier de recettes. Le contrôle d'accès est effectif à deux niveaux, l'authentification (rejet d'une requête sans session valide, code 401) assurée par \texttt{GardeAuthentification}, et l'autorisation par rôle (rejet 403 d'un compte non administrateur sur les routes d'administration) assurée par le guard \texttt{GardeRoles}.
+Ce scénario illustre à la fois la structure du cahier de recettes et le rôle de la recette dans la détection des anomalies. Exécuté sur le prototype, il a mis en évidence une erreur bloquante du classement en ronde suisse, dont la correction est détaillée dans la \hyperref[sec:plan-correction]{partie~\ref*{sec:plan-correction}}.
 
 \subsection{Résultats de la recette}
+La recette a été conduite en deux passes complémentaires~: une recette technique, menée avec un développeur et centrée sur la conformité fonctionnelle, et une recette métier, menée avec le commanditaire et centrée sur l'ergonomie et la clarté des parcours. Le périmètre correspond au PMV~: les fonctionnalités d'administration, développées par anticipation mais pas encore finalisées, n'y sont pas intégrées et ont donc été exclues de cette recette.
+
 \begin{table}[H]
     \centering
     \begin{tabular}{|c|c|c|c|}
         \hline
-        \textbf{Scénarios exécutés} & \textbf{Succès} & \textbf{Échecs} & \textbf{Bloquants} \\
+        \textbf{Scénarios exécutés} & \textbf{Réussis} & \textbf{En échec} & \textbf{dont bloquants} \\
         \hline
-        \textit{N} & \textit{N} & \textit{N} & \textit{N} \\
+        26 & 18 & 8 & 2 \\
         \hline
     \end{tabular}
 \end{table}
 
-\todo{Compléter le tableau de synthèse avec les chiffres réels une fois la recette exécutée. Pour les tests en échec, préciser s'ils sont corrigés avant livraison ou reportés en TMA.}
+Au total, dix-huit anomalies ont été remontées~: les huit échecs de scénarios (deux bloquantes et six majeures) ainsi que dix observations d'ergonomie relevées principalement lors de la recette métier (six mineures et quatre cosmétiques). Leur qualification et leur traitement sont détaillés dans la partie suivante.
 
 \livrable{le cahier de recettes}
 
-\section{Plan de correction des bogues}
+\section{Plan de correction des bogues}\label{sec:plan-correction}
 \competence{C2.3.2}{Le plan de correction des bogues}{Non}
 
 Cette section présente la démarche structurée de qualification, de priorisation et de correction des anomalies détectées lors de la recette.
@@ -84,11 +90,60 @@ Les anomalies sont consignées sous forme d'issues GitLab avec un label de sév�
     \end{tabular}
 \end{table}
 
-\subsection{Bogues rencontrés et corrigés}
+\subsection{Bogues rencontrés et traités}
+Les dix-huit anomalies remontées lors des deux passes de recette sont récapitulées ci-dessous, classées par sévérité, avec leur traitement. Les corrections des anomalies bloquantes et majeures sont intégrées à la version v0.3.0, qui regroupe les retours de recette (voir chapitre~4).
 
-\todo{Une fois la recette exécutée, documenter ici les bogues réellement rencontrés (deux ou trois cas représentatifs). Pour chacun, présenter~: le symptôme observé, l'analyse de la cause racine, la correction apportée (service ou fichier concerné) et la référence du commit Git de correction. Privilégier des cas illustrant la logique métier sensible (cascade des critères d'égalité, calcul du classement) et un cas lié à l'authentification ou à la gestion de session.}
+{\small
+\renewcommand{\arraystretch}{1.3}
+\begin{longtable}{|>{\raggedright\arraybackslash}p{0.15\linewidth}|>{\raggedright\arraybackslash}p{0.55\linewidth}|>{\raggedright\arraybackslash}p{0.18\linewidth}|}
+    \hline
+    \textbf{Sévérité} & \textbf{Anomalie} & \textbf{Traitement} \\
+    \hline
+    \endhead
+    Bloquant & Classement en ronde suisse erroné~: un participant 2-1 passe devant un 2-0 à égalité de victoires. & Corrigé (v0.3.0) \\
+    \hline
+    Bloquant & Validation d'une série impossible à l'état une manche partout (1-1), la majorité étant mal calculée. & Corrigé (v0.3.0) \\
+    \hline
+    Majeur & Le guide d'onboarding ne s'ouvre pas à la première connexion. & Corrigé (v0.3.0) \\
+    \hline
+    Majeur & Onboarding défaillant sur Safari (navigation entre les étapes). & Corrigé (v0.3.0) \\
+    \hline
+    Majeur & Matchs futurs d'une élimination directe affichés « Match avec l'id » au lieu des qualifiés attendus. & Corrigé (v0.3.0) \\
+    \hline
+    Majeur & Lisibilité insuffisante de la vue des matchs à élimination directe. & Corrigé (v0.3.0) \\
+    \hline
+    Majeur & Statistiques~: le perdant du \emph{lower bracket} est placé devant le perdant de la grande finale. & Corrigé (v0.3.0) \\
+    \hline
+    Majeur & Simulation rapide des résultats d'une phase (fonctionnalité manquante). & Reporté en V1 \\
+    \hline
+    Mineur & Curseur perturbé lorsqu'un caractère non numérique est saisi dans un score. & Planifié en TMA \\
+    \hline
+    Mineur & Confusion entre affichage mobile et bureau au redimensionnement de la fenêtre. & Planifié en TMA \\
+    \hline
+    Mineur & Étapes « saisie des équipes » et « génération des affrontements » peu claires. & Planifié en TMA \\
+    \hline
+    Mineur & Affectation des équipes aux poules peu lisible (« qui tombe où »). & Planifié en TMA \\
+    \hline
+    Mineur & Départage (tie-break) configurable attendu en round-robin. & Planifié en TMA \\
+    \hline
+    Mineur & Choix du niveau de connaissance à l'inscription pour adapter le vocabulaire. & Évolution (TMA) \\
+    \hline
+    Cosmétique & Renommage « élimination directe : 1 vie » en « élimination directe et lower bracket ». & Planifié en TMA \\
+    \hline
+    Cosmétique & Validation d'un match nécessitant un double-clic peu ergonomique. & Planifié en TMA \\
+    \hline
+    Cosmétique & Vainqueur absent du tableau de bord. & Planifié en TMA \\
+    \hline
+    Cosmétique & Survol des victoires et défaites souhaité sur le classement. & Planifié en TMA \\
+    \hline
+\end{longtable}
+}
+
+Les deux anomalies bloquantes ont fait l'objet d'une correction prioritaire. La première concernait le classement en ronde suisse~: à égalité de victoires, le départage ne pénalisait pas les défaites, si bien qu'un participant 2-1 pouvait passer devant un 2-0 invaincu. Le calcul de départage (fonction \texttt{classement.util}) a été corrigé et un test unitaire dédié verrouille désormais ce cas. La seconde portait sur la validation des séries en \emph{best-of}~: la règle de majorité empêchait d'enregistrer un état intermédiaire à une manche partout (1-1), pourtant légitime avant la manche décisive. La condition de clôture a été corrigée pour ne s'appliquer qu'à l'atteinte effective de la majorité, et le scénario correspondant a été rejoué avec succès.
 
 \subsection{Bilan de la recette}
-\todo{Récapituler les anomalies détectées, qualifiées et traitées avant livraison, ainsi que celles reportées en TMA avec leur justification (impact limité, correction ne remettant pas en cause la stabilité globale).}
+Sur les dix-huit anomalies remontées, les deux bloquantes et cinq des six majeures ont été corrigées et intégrées à la version v0.3.0. La sixième anomalie majeure, la simulation rapide des résultats d'une phase, relève d'une fonctionnalité nouvelle et non d'un défaut~: elle est reportée à la V1. Les six anomalies mineures et les quatre cosmétiques, sans impact sur la stabilité, sont planifiées en TMA, certaines rejoignant des évolutions déjà prévues (départage configurable, adaptation du vocabulaire au niveau de l'utilisateur).
+
+Après correction des anomalies bloquantes et majeures, le PMV est jugé fonctionnel, fiable et conforme aux attentes du commanditaire sur son périmètre. Les fonctionnalités d'administration, encore incomplètes, feront l'objet d'une recette dédiée avant leur ouverture.
 
 \livrable{le plan de correction des bogues}
