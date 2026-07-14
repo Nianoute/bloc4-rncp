@@ -4,44 +4,24 @@
 
 \competence{C2.4.1}{Manuel de déploiement, manuel d'utilisation, manuel de mise à jour}{Non}
 
-Cette section montre que l'application est documentée de façon à permettre à l'équipe CDS d'en assurer la TMA sans intervention de l'auteur. La documentation complète est placée dans le dépôt Git (dossier \texttt{/docs}). Le corps du dossier présente la structure et les points clés de chacun des trois manuels.
+L'objectif est de permettre à l'équipe CDS d'exploiter et de faire évoluer l'application sans l'intervention de l'auteur. La documentation d'exploitation ne repose pas sur un manuel figé, mais sur trois supports complémentaires et maintenus avec le code~: l'infrastructure versionnée, qui rend le déploiement reproductible et auto-documenté, la documentation d'API générée automatiquement, et le guide d'accompagnement intégré à l'application.
 
-\section{Manuel de déploiement}
-Ce manuel couvre l'installation de l'application depuis zéro sur un nouveau serveur. Il doit permettre à un développeur connaissant Docker de déployer l'application sans aide.
-\begin{itemize}
-    \item Prérequis système (Docker, Docker Compose, Git, versions minimales).
-    \item Clonage du dépôt et configuration des variables d'environnement (\texttt{.env} à créer depuis \texttt{.env.example}).
-    \item Commandes de démarrage (\texttt{docker compose up -d}) et vérification du bon démarrage des conteneurs.
-    \item Application des migrations Prisma au premier démarrage.
-    \item Vérification post-déploiement via les smoke tests.
-\end{itemize}
-\todo{Manuel de déploiement à compléter au fur et à mesure de l'avancement du code~: confirmer les prérequis, les commandes exactes et les vérifications réellement effectuées lors de la première mise en production (prévue août-septembre 2026).}
+\section{Manuels de déploiement et de mise à jour}
+Le déploiement et la montée de version ne s'appuient sur aucune étape manuelle non tracée. Toute la configuration est décrite dans des fichiers versionnés à la racine du dépôt (\texttt{docker-compose.prod.yml}, \texttt{Dockerfile}, \texttt{entrypoint.sh} et \texttt{.gitlab-ci.yml}), ce qui constitue une documentation exécutable et toujours synchronisée avec le code.
 
-\section{Manuel d'utilisation}
-Ce manuel est destiné à l'administrateur non technique. Il explique l'utilisation de l'application pas à pas.
-\begin{itemize}
-    \item Création d'un compte administrateur.
-    \item Création d'un tournoi depuis un template existant.
-    \item Configuration des phases et des qualifications.
-    \item Ajout des participants.
-    \item Saisie des résultats au fil du tournoi.
-    \item Consultation des classements et du bracket.
-\end{itemize}
-\todo{Manuel d'utilisation à enrichir au fur et à mesure que les écrans sont développés~: détailler chaque étape, captures à l'appui, une fois l'interface finalisée.}
+Le déploiement initial suppose Docker et Docker Compose installés sur le serveur. Après récupération des variables d'environnement (fichier \texttt{.env} dérivé de \texttt{.env.example}), la commande \texttt{docker compose -f docker-compose.prod.yml up -d} récupère l'image publiée sur le registre GitLab et démarre le conteneur. Au démarrage, le script \texttt{entrypoint.sh} applique automatiquement les migrations Prisma (\texttt{prisma migrate deploy}) avant de servir les requêtes, ce qui évite toute intervention manuelle sur la base.
 
-\section{Manuel de mise à jour}
-Ce manuel couvre la procédure de montée de version de l'application.
-\begin{itemize}
-    \item Procédure de mise à jour (\texttt{git pull}, \texttt{docker compose pull}, \texttt{docker compose up -d}).
-    \item Gestion des migrations de base de données lors d'une mise à jour (\texttt{prisma migrate deploy}).
-    \item Procédure de rollback vers la version précédente en cas de problème (redémarrage avec l'image précédente taguée).
-    \item Fréquence recommandée des mises à jour de sécurité des dépendances.
-\end{itemize}
-\todo{Manuel de mise à jour à affiner au fur et à mesure de l'avancement du code~: valider la procédure de montée de version et de rollback sur un cas réel après la première release.}
+La mise à jour suit la même logique. Une nouvelle version est livrée sous forme d'image taguée \texttt{vX.Y.Z}, récupérée par \texttt{docker compose pull} puis appliquée par \texttt{up -d}. En cas de problème, le retour arrière consiste à réépingler le tag précédent, sans recompilation. Le détail de cette chaîne, déjà éprouvée jusqu'à la préproduction, est présenté au chapitre~4.
 
-\section{Documentation de l'API (Swagger)}
-NestJS génère automatiquement une documentation Swagger à partir des décorateurs des contrôleurs. Elle est accessible à l'URL de l'environnement de développement (par exemple \url{http://localhost:3000/api}) et permet de consulter et de tester chaque endpoint. Une capture est fournie en \hyperref[chap:annexe-swagger]{annexe~\ref*{chap:annexe-swagger}}.
-\todo{Confirmer l'URL d'accès à la documentation Swagger (\url{http://localhost:3000/api}) et insérer la capture correspondante en annexe G.}
-\todo{Documentation Swagger à mettre à jour au fur et à mesure que les endpoints sont développés.}
+\section{Manuel d'utilisation et documentation de l'API}\label{sec:doc-api}
+Côté utilisateur final, la prise en main est assurée directement dans l'application par un guide d'onboarding déclenché à la première connexion, qui accompagne pas à pas la création d'un premier tournoi. Réaffichable à la demande, il tient lieu de manuel d'utilisation intégré. Un manuel pas-à-pas illustré sera complété une fois l'interface stabilisée, les évolutions d'ergonomie issues de la recette étant en cours d'intégration.
+
+Côté développeur, l'API REST est documentée automatiquement par Swagger, généré par NestJS à partir des décorateurs \texttt{@Api*} des contrôleurs. Accessible à l'URL \url{http://localhost:3000/api} en environnement de développement, cette documentation liste chaque endpoint avec ses paramètres et ses schémas de réponse, permet de les tester directement et reste synchronisée avec le code sans maintenance manuelle. La figure ci-dessous en présente l'interface, avec une version pleine page en \hyperref[chap:annexe-swagger]{annexe~\ref*{chap:annexe-swagger}}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{api-docs}
+    \caption{Interface Swagger de l'API BrackX (\url{http://localhost:3000/api})~: endpoints regroupés par module (authentification, tournois, administration, tournois publics, utilisateurs) et schémas de données.}
+\end{figure}
 
 \livrable{le manuel de déploiement, le manuel d'utilisation et le manuel de mise à jour}
