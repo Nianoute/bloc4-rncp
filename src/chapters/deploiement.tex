@@ -53,7 +53,7 @@ Une fois les conteneurs redémarrés, la stabilité de la version déployée est
     \caption{Exécution réussie du job \texttt{cd:image} pour le tag \texttt{v0.2.0}~: l'image est construite puis publiée sur le registre GitLab, le pipeline se terminant au vert.}
 \end{figure}
 
-\section{Traçabilité des évolutions}
+\section{Traçabilité des évolutions}\label{sec:versions-git}
 Les commits suivent la convention Conventional Commits (\texttt{feat:}, \texttt{fix:}, \texttt{chore:}, \texttt{docs:}, \texttt{test:}), ce qui rend l'historique lisible et exploitable pour générer un journal des changements. Chaque commit porte en outre le statut de son pipeline, ce qui permet de repérer immédiatement une intégration en échec. Le journal complet (\texttt{git log --oneline --decorate}) est fourni en \hyperref[chap:annexe-versions]{annexe~\ref*{chap:annexe-versions}}.
 
 \begin{figure}[H]

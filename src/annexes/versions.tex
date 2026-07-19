@@ -1,7 +1,15 @@
 % Annexe E — Journal des versions Git
 \label{chap:annexe-versions}
 \section*{Objet de l'annexe}
-Cette annexe présente l'historique des versions du projet, obtenu via la commande \texttt{git log --oneline --decorate}. Les commits suivent la convention Conventional Commits (\texttt{feat:}, \texttt{fix:}, \texttt{chore:}, \texttt{docs:}, \texttt{test:}), et les versions livrées sont identifiées par des tags sémantiques.
+Cette annexe présente l'historique des versions du projet, obtenu via la commande \texttt{git log --oneline --decorate}. Les commits suivent la convention Conventional Commits (\texttt{feat:}, \texttt{fix:}, \texttt{chore:}, \texttt{docs:}, \texttt{test:}), et les versions livrées sont identifiées par des tags sémantiques. Elle est référencée à la \hyperref[sec:versions-git]{partie~\ref*{sec:versions-git}}.
 
 \section*{Journal des commits taggés}
-\todo{Insérer l'export de \texttt{git log --oneline --decorate} mettant en évidence les commits taggés (v1.0.0, v1.0.1, etc.).}
+L'extrait ci-dessous montre l'état du dépôt à date. La dernière version publiée porte le tag \texttt{v0.2.0} (fusionnée sur \texttt{main}), précédée du tag \texttt{v0.1.0} qui marquait le prototype fonctionnel. Chaque fonctionnalité a été intégrée par une branche dédiée (\texttt{feat/*}) fusionnée dans \texttt{dev} puis dans \texttt{main}, ce qui rend la traçabilité des évolutions immédiate.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.62\linewidth]{gitlog}
+    \caption{Extrait de \texttt{git log --oneline --decorate}~: commits conventionnels et tags sémantiques (\texttt{v0.1.0}, \texttt{v0.2.0}), fusions successives des branches \texttt{feat/*} vers \texttt{dev} puis \texttt{main}.}
+\end{figure}
+
+\noindent\hyperref[sec:versions-git]{$\hookleftarrow$ Retour à la partie~\ref*{sec:versions-git} (Gestion des versions).}

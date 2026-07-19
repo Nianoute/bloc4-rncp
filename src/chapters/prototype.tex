@@ -55,7 +55,7 @@ L'extensibilité des formats découle de ces choix. Chaque format de tournoi imp
 
 Le calcul des résultats suit la même discipline de fonctions pures. Le classement regroupe les participants par points, puis départage les égalités par confrontation directe et, à défaut, par une cascade scalaire (différence de buts, victoires, score marqué, nom). Les extraits de code correspondants, interface des formats, générateur et départage, sont fournis en \hyperref[ann:code-metier]{annexe~\ref*{chap:annexe-code}}.
 
-\section{Fonctionnalités du prototype}
+\section{Fonctionnalités du prototype}\label{sec:fonctionnalites}
 Le prototype couvre les fonctionnalités ci-dessous, identifiées lors du cadrage et aujourd'hui implémentées. Il est en outre déployé sur une préproduction accessible en ligne (\url{https://demo-enzo.chevrier.dev/}), qui permet au jury de le manipuler directement. Pour chacune, une capture annotée est renvoyée en \hyperref[chap:annexe-screens]{annexe~\ref*{chap:annexe-screens}}.
 
 \subsection{Comptes, accès et administration}
@@ -71,6 +71,11 @@ L'utilisateur crée un tournoi en définissant son nom et sa description, puis e
 La qualification entre phases est ensuite paramétrée. Pour chaque phase, l'utilisateur précise combien de participants se qualifient, vers quelle phase ils vont, et s'il existe un saut d'étape pour certains rangs (par exemple, le premier se qualifie directement pour la phase 3 en sautant la phase 2). À la clôture d'une phase, les équipes qualifiées sont résolues et propagées automatiquement vers les phases suivantes.
 
 Les équipes d'une poule sont définies manuellement ou générées, puis les affrontements sont produits par tête de série (seed) ou de façon aléatoire, tant que la phase est encore en attente de création, ce qui garantit la cohérence de la structure une fois le tournoi démarré.
+
+\subsection{Arbitrage de conception : templates plutôt que configuration libre}
+Le choix de conception le plus discuté a porté sur la création des tournois. Une première option laissait à l'utilisateur une liberté totale~: définir lui-même chaque match, ses conditions de victoire et d'élimination, et l'issue vers laquelle il mène. Très puissante, cette liberté rendait toutefois la création complexe et décourageante, au risque de fermer l'application aux organisateurs occasionnels, qui constituent le cœur de cible.
+
+L'option retenue repose sur des templates de format (élimination directe, poules, ronde suisse) qui génèrent automatiquement les matchs et leurs liaisons, rendant la création rapide et guidée. Ce choix a réorienté la proposition de valeur, de « simuler un tournoi exactement comme je veux » vers « simuler rapidement l'efficacité d'un format ». Il est prolongé par la simulation automatique des résultats et par des statistiques centrées sur le volume de matchs et de séries par équipe, davantage que sur le détail des confrontations, ce dernier restant disponible mais moins mis en avant. Cette liberté totale n'est pas abandonnée pour autant~: la partie évolutivité (C2.2.3) montre que l'architecture peut la réintroduire plus tard, l'effort portant alors sur l'expérience utilisateur et non sur le back-end.
 
 \subsection{Déroulement, saisie collaborative et résultats}
 Les matchs se planifient par séries (\emph{best-of}~: nombre de manches, dates et règle de victoire). L'appariement initial se fait par tête de série ou de façon aléatoire, un participant surnuméraire recevant un \emph{bye}. La saisie enregistre les scores manche par manche, puis la validation d'un match fixe le résultat, clôture le match et, en élimination directe, propage automatiquement le vainqueur au tour suivant.

@@ -1,4 +1,4 @@
-% Annexe F — Rapport de couverture des tests
+% Annexe D — Rapport de couverture des tests
 \label{chap:annexe-couverture}
 \section*{Objet de l'annexe}
 \phantomsection\label{ann:couverture}
@@ -9,9 +9,9 @@ La couverture backend mesurée est de 82,81~\% de statements (1479/1786), 76,35~
 
 La capture ci-après montre l'exécution complète du harnais avec \texttt{npm run test}~: les 29 suites et les 208 tests passent au vert, couvrant l'ensemble des unités du module tournois (\texttt{TournoisService}, \texttt{classement.util}, générateurs de format et appariements, \texttt{statistiques.util}) ainsi que le contrôleur et le guard d'authentification. Elle atteste que la logique métier ne présente pas de régression détectée.
 
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.95\linewidth]{testbackend}
+    \includegraphics[width=0.48\linewidth]{testbackend}
     \caption{Exécution du harnais de tests unitaires du backend (\texttt{npm run test})~: 29 suites et 208 tests au vert.}
 \end{figure}
 

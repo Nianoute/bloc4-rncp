@@ -39,6 +39,16 @@
 \usepackage{biblatex}
 \addbibresource{main.bib}
 \usepackage{float}
+\usepackage{placeins} % \FloatBarrier : empêche les figures de dériver au-delà de leur section
+% Autoriser les pages à contenir davantage de figures (annexes riches en captures)
+% afin de limiter les demi-pages blanches provoquées par des images hautes.
+\renewcommand{\topfraction}{0.92}
+\renewcommand{\bottomfraction}{0.92}
+\renewcommand{\textfraction}{0.06}
+\renewcommand{\floatpagefraction}{0.85}
+\setcounter{topnumber}{4}
+\setcounter{bottomnumber}{4}
+\setcounter{totalnumber}{6}
 
 \usepackage[explicit]{titlesec}
 
@@ -149,14 +159,14 @@
     \chapter{Captures d'écran de l'interface}
     \input{annexes/screenshots}
 
-    \chapter{Cahier de recettes complet}
-    \input{annexes/recette}
+    \chapter{Rapport de couverture des tests}
+    \input{annexes/couverture}
 
     \chapter{Journal des versions Git}
     \input{annexes/versions}
 
-    \chapter{Rapport de couverture des tests}
-    \input{annexes/couverture}
+    \chapter{Cahier de recettes complet}
+    \input{annexes/recette}
 
     \chapter{Documentation Swagger de l'API}
     \input{annexes/swagger}

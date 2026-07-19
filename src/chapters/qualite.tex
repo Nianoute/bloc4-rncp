@@ -66,15 +66,20 @@ const classement = calculerClassement(participants4, [
 expect(classement.map((l) => l.participantId)).toEqual([1, 2, 3, 4]);
 \end{lstlisting}
 
+\subsection{Portée et limites de la couverture}
+Un taux de couverture élevé ne constitue pas à lui seul une preuve de qualité. Une couverture importante peut coexister avec des défauts si les tests n'éprouvent pas la logique métier réellement sensible. L'effort a donc porté en priorité sur des tests orientés métier plutôt que sur la recherche d'un pourcentage. Chaque générateur de format est par exemple vérifié sur le nombre de matchs qu'il doit produire~: une phase de poules (round-robin) à dix participants doit générer neuf journées de cinq matchs, soit quarante-cinq matchs, et toute autre valeur fait échouer le test.
+
+La valeur de cette approche s'est confirmée lors de la recette. Le commanditaire a rejoué de vrais tournois (championnats esport de type LFL), et le seul défaut métier rencontré concernait le classement de la ronde suisse, qui réutilisait à tort la logique de départage des poules. Ce cas avait échappé aux tests en raison d'une assertion mal écrite, ce qui illustre qu'un logiciel testé peut malgré tout comporter un défaut. Depuis, ce scénario est verrouillé par un test dédié (voir la \hyperref[sec:plan-correction]{partie~\ref*{sec:plan-correction}}), et toute régression future est détectée automatiquement, sans nouvelle sollicitation du commanditaire. La couverture prend ainsi tout son sens combinée à la recette~: les tests rejouent en continu un besoin métier déjà validé par le client.
+
 \livrable{un jeu de tests unitaires couvrant une fonctionnalité demandée}
 
 \section{Sécurité, accessibilité et évolutivité}
 \competence{C2.2.3}{Mesures de sécurité et actions d'accessibilité}{OUI}
 
-Cette section démontre que l'application respecte les standards de sécurité OWASP, prend en compte l'accessibilité, et que son architecture autorise des évolutions futures sans refonte.
+Cette section présente les mesures de sécurité de l'application, les actions d'accessibilité engagées et l'évolutivité de son architecture. Le référentiel OWASP y sert de grille de lecture pour couvrir les principaux risques, sans que ces mesures aient encore fait l'objet d'un audit de sécurité ou d'un test d'intrusion externe.
 
 \subsection{Sécurité — OWASP Top 10}
-Chaque risque de l'OWASP Top 10 (2025) est adressé par une mesure concrète dans BrackX.
+Chaque risque de l'OWASP Top 10 (2025) est associé à une mesure concrète mise en place dans BrackX. Ces mesures relèvent de bonnes pratiques appliquées au niveau applicatif~: elles réduisent la surface d'exposition sans prétendre à une conformité certifiée, qui supposerait un audit dédié.
 
 \begin{longtable}{|>{\raggedright\arraybackslash}p{0.30\linewidth}|>{\raggedright\arraybackslash}p{0.60\linewidth}|}
     \hline
@@ -126,15 +131,21 @@ export class GardeAuthentification implements CanActivate {
 }
 \end{lstlisting}
 
-\newpage
-\subsection{Accessibilité — RGAA 4.1}
-Le référentiel retenu est le RGAA 4.1 (Référentiel Général d'Amélioration de l'Accessibilité), référence officielle française compatible avec les exigences légales applicables aux services numériques. Plusieurs mesures sont mises en œuvre dans le prototype pour s'en rapprocher. Tous les éléments interactifs (boutons, liens, inputs) disposent d'attributs \texttt{aria-label} ou \texttt{aria-labelledby} décrivant clairement leur fonction pour les lecteurs d'écran, et les formulaires de configuration de phases associent explicitement chaque label à son champ via l'attribut \texttt{for}/\texttt{id}. Le contraste des textes respecte le ratio minimum de 4.5:1 préconisé par le WCAG AA pour le texte normal. La navigation au clavier est fonctionnelle sur l'ensemble de l'application, avec une tabulation logique et un focus visible. Enfin, les messages d'erreur de formulaire sont annoncés aux lecteurs d'écran via \texttt{aria-live}.
+\subsection{Données personnelles et conformité RGPD}
+La seule donnée personnelle collectée à ce stade est l'adresse email, qui sert d'identifiant de connexion~: aucune autre information nominative n'est demandée, ce qui limite d'emblée l'exposition au regard du RGPD. Le volet conformité proprement dit reste toutefois à développer et constitue un chantier identifié avant la mise en production, et non une fonctionnalité déjà livrée. Deux mesures sont prévues~: la purge ou l'anonymisation des tournois laissés inactifs, par exemple l'anonymisation des équipes au bout d'un mois sans connexion du propriétaire, et la désactivation des comptes inactifs après une période de deux à six mois sans connexion. Ce point est assumé comme un risque à traiter, cohérent avec la trajectoire de mise en production.
 
-Une limite a toutefois été identifiée pour la V1~: la vue bracket en arbre (visualisation des phases d'élimination) est complexe à rendre entièrement accessible. Une alternative textuelle sous forme de tableau de résultats est donc proposée en complément du bracket visuel.
+\subsection{Accessibilité — RGAA 4.1}
+Le référentiel retenu est le RGAA 4.1 (Référentiel Général d'Amélioration de l'Accessibilité), référence officielle française compatible avec les exigences légales applicables aux services numériques. Plusieurs mesures rapprochent le prototype de ce référentiel. Tous les éléments interactifs (boutons, liens, champs) portent un attribut \texttt{aria-label} ou \texttt{aria-labelledby} décrivant leur fonction, et les formulaires de configuration associent explicitement chaque label à son champ (\texttt{for}/\texttt{id}). Le contraste des textes vise le ratio minimum de 4.5:1 préconisé par le WCAG AA. La navigation au clavier est fonctionnelle sur l'ensemble de l'application, avec une tabulation logique et un focus visible, et les messages d'erreur de formulaire sont annoncés aux lecteurs d'écran via \texttt{aria-live}.
+
+Ces éléments constituent un rapprochement du référentiel, non une conformité mesurée. La navigation au clavier a été éprouvée lors des tests structurels de la recette (compétence C2.3.1), mais aucun audit RGAA formel, ni déclaration de conformité, ni test avec lecteur d'écran n'ont encore été conduits. Un audit outillé (par exemple Lighthouse ou axe-core) reste à mener pour objectiver et chiffrer le niveau réellement atteint. Une limite est par ailleurs déjà identifiée~: la vue bracket en arbre (visualisation des phases d'élimination) est difficile à rendre pleinement accessible, ce pour quoi une alternative textuelle sous forme de tableau de résultats est proposée en complément du bracket visuel.
 
 \subsection{Évolutivité}
 L'architecture modulaire permet d'ajouter des fonctionnalités sans refonte, ce que le développement a déjà confirmé~: les statistiques (par tournoi et par équipe) ont été ajoutées à partir des données déjà structurées en base (entités \texttt{Tournoi}, \texttt{Match}, \texttt{ClassementJoueur}), via de nouveaux endpoints et des fonctions utilitaires dédiées, sans modifier le cœur existant.
 
-Les évolutions encore planifiées suivent le même principe. Le partage public d'un tournoi ne nécessitera que l'ajout d'un champ \texttt{isPublic} sur l'entité \texttt{Tournoi} et d'un guard autorisant l'accès non authentifié aux routes de lecture. Les notifications temps réel s'appuieront quant à elles sur le support natif des WebSockets par NestJS via des gateways dédiées (\texttt{@WebSocketGateway}), sans impacter les modules existants.
+Cette évolutivité tient surtout à la conception du cœur métier. Les trois formats disponibles (élimination directe, poules et ronde suisse) couvrent la grande majorité des tournois. Les cas restants s'ajoutent de façon incrémentale, car le back-end sait déjà créer les matchs, propager les qualifiés et calculer les classements~: un match de départage à égalité, une petite finale ou un tableau des perdants (lower bracket) ne demandent qu'un match supplémentaire et sa visualisation, sans toucher à la logique existante. Le coût principal de ces ajouts porte donc sur l'affichage côté front, non sur le back-end.
+
+Le point le plus structurant est que le schéma de données porte déjà les liaisons entre matchs~: le vainqueur d'un match alimente automatiquement le match suivant. Aujourd'hui, un template génère ces liaisons selon des règles prédéfinies, mais rien n'empêche techniquement de les définir librement, à la main, par exemple par glisser-déposer. Une telle édition libre des tournois ne remettrait pas en cause le back-end, dont la logique de propagation resterait identique~: l'effort se concentrerait sur l'expérience de construction côté front. Les évolutions planifiées suivent d'ailleurs ce principe. Le partage public d'un tournoi ne nécessite que l'ajout d'un champ \texttt{isPublic} sur l'entité \texttt{Tournoi} et d'un guard autorisant la lecture non authentifiée, et les notifications temps réel s'appuieront sur le support natif des WebSockets par NestJS (\texttt{@WebSocketGateway}), sans impacter les modules existants.
+
+L'évolutivité fonctionnelle ne doit pas être confondue avec la montée en charge. L'architecture actuelle regroupe le frontend, le back-end et la base de données dans une même image, ce qui convient au volume attendu mais n'est pas dimensionné pour une très forte charge simultanée~: le point de rupture serait le couple back-end et base de données. Une montée à grande échelle passerait par la segmentation des services et une orchestration (Kubernetes) capable de dimensionner chaque service indépendamment selon des seuils de charge. Ce chantier est volontairement écarté à ce stade, où il serait surdimensionné pour le nombre d'utilisateurs visé, et relève de la supervision étudiée au Bloc 4.
 
 \livrable{la présentation des mesures de sécurité et des actions d'accessibilité aux personnes en situation de handicap}

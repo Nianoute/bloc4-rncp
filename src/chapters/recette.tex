@@ -3,7 +3,7 @@
 %               + Plan de correction des bogues (C2.3.2)
 % =====================================================================
 
-\section{Cahier de recettes}
+\section{Cahier de recettes}\label{sec:cahier-recettes}
 \competence{C2.3.1}{Le cahier de recettes}{OUI}
 
 Cette section formalise un plan de tests fonctionnels couvrant l'ensemble des fonctionnalités attendues, avec des résultats attendus explicites. Le cahier de recettes complet est fourni en \hyperref[chap:annexe-recette-complet]{annexe~\ref*{chap:annexe-recette-complet}}. Le corps du dossier en présente la structure et quelques exemples représentatifs.
@@ -13,11 +13,11 @@ Chaque scénario est structuré autour de sept champs~: un identifiant (par exem
 
 \subsection{Catégories de tests couvertes}
 
-Les tests fonctionnels valident les user stories de la V1. L'authentification est couverte par quatre scénarios (inscription, connexion, accès refusé sans session valide, accès refusé avec un rôle non autorisé). La gestion des tournois compte cinq scénarios (création, configuration des phases, définition des équipes d'une poule, génération des affrontements, démarrage et cycle de vie du tournoi). Les qualifications inter-phases en comptent quatre (qualification normale, saut d'étape, nombre insuffisant de qualifiés, qualification avec critère d'égalité activé). La saisie des résultats en compte trois (saisie d'un score, mise à jour du classement, gestion d'un forfait), de même que la ronde suisse (configuration du barème, calcul des points, déclenchement des critères d'égalité).
+Les tests fonctionnels valident les user stories de la V1, organisés par domaine. L'authentification est couverte par quatre scénarios (inscription, connexion, accès refusé sans session valide avec rejet 401, accès refusé avec un rôle non autorisé avec rejet 403). Le guide d'onboarding en compte deux (ouverture à la première connexion, navigation entre les étapes). La création et la configuration d'un tournoi en comptent quatre (création, configuration des phases, définition des équipes d'une poule, génération des affrontements). Les qualifications inter-phases en comptent quatre (qualification normale, saut d'étape, nombre insuffisant de qualifiés, affichage des matchs à venir). La saisie et la validation des résultats en comptent quatre (saisie d'un score, validation d'une série \emph{best-of}, mise à jour du classement, gestion d'un forfait). L'affichage en compte deux (bracket à élimination directe, lisibilité de la vue des matchs), la ronde suisse deux (calcul des points, départage à égalité), les statistiques deux (statistiques de tournoi, statistiques par équipe) et la simulation rapide des résultats un.
 
 Les tests structurels portent sur la navigation au clavier complète des formulaires principaux, le comportement en cas de perte de connexion réseau et celui en cas de session expirée (redirection vers la connexion).
 
-Les tests de sécurité comprennent la tentative d'accès à une route protégée sans session valide (vérification du rejet 401), la tentative d'injection dans les champs de formulaire (vérification du rejet par la validation DTO) et la vérification que les mots de passe ne sont jamais retournés dans les réponses de l'API. Un scénario dédié vérifie enfin la tentative d'accès à un endpoint d'administration avec un compte non administrateur, qui doit être rejetée par le guard \texttt{GardeRoles} avec un code 403.
+Les tests de sécurité comprennent la tentative d'injection dans les champs de formulaire (vérification du rejet par la validation DTO) et la vérification que les mots de passe ne sont jamais retournés dans les réponses de l'API. Le contrôle des accès, avec les rejets 401 (session absente) et 403 (rôle non autorisé, guard \texttt{GardeRoles}), est quant à lui couvert par les scénarios d'authentification.
 
 \subsection{Exemple de scénario}
 \begin{table}[H]
@@ -56,7 +56,7 @@ La recette a été conduite en deux passes complémentaires~: une recette techni
         \hline
         \textbf{Scénarios exécutés} & \textbf{Réussis} & \textbf{En échec} & \textbf{dont bloquants} \\
         \hline
-        26 & 18 & 8 & 2 \\
+        30 & 22 & 8 & 2 \\
         \hline
     \end{tabular}
 \end{table}

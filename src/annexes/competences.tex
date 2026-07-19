@@ -1,32 +1,30 @@
 % Annexe — Validation des compétences du Bloc 2
 \section*{Objet de l'annexe}
-Cette annexe reprend, compétence par compétence, la grille du Bloc 2 (RNCP 39583). Pour chacune, elle explique \textbf{pourquoi} la compétence est couverte par le projet BrackX et \textbf{comment} elle est validée, en renvoyant à la section du dossier et aux livrables correspondants. Les compétences marquées \textbf{éliminatoires} font l'objet d'une attention particulière.
+Cette annexe reprend, compétence par compétence, la grille du Bloc 2 (RNCP 39583). Pour chacune, elle explique comment la compétence est validée par le projet BrackX, en renvoyant à la partie du dossier qui la traite, aux livrables produits et aux preuves déposées en annexe. Les compétences \textbf{éliminatoires} font l'objet d'une attention particulière. À la date de rédaction, le prototype est publié en version \texttt{v0.2.0} sur la préproduction en ligne, et les versions suivantes (jusqu'à la V1) sont planifiées comme détaillé au chapitre~4.
 
-Le tableau ci-dessous réunit les neuf compétences du Bloc 2~: pour chacune, son caractère éliminatoire, la façon dont le projet BrackX la couvre (chapitre et preuves) et ce qui reste à compléter d'ici le rendu final.
+\subsection*{C2.1.1 --- Environnement de déploiement et de test}
+La compétence est validée par un environnement standardisé et reproductible, décrit au chapitre~1. Toute la pile (base PostgreSQL, API NestJS, frontend Angular) est orchestrée par Docker Compose, la version de Node est figée par un fichier \texttt{.nvmrc} et trois environnements distincts sont définis~: développement, préproduction et production cible. Les critères de qualité mesurables (zéro erreur ESLint bloquant à la fusion, temps de réponse des endpoints principaux) y sont formalisés. La composition Docker de l'environnement local est reproduite en \hyperref[chap:annexe-code]{annexe~\ref*{chap:annexe-code}}.
 
-\small
-\begin{longtable}{|>{\raggedright\arraybackslash}p{0.17\linewidth}|>{\raggedright\arraybackslash}p{0.40\linewidth}|>{\raggedright\arraybackslash}p{0.30\linewidth}|}
-    \hline
-    \textbf{Compétence} & \textbf{Couverture dans le dossier (preuves)} & \textbf{Reste à compléter} \\
-    \hline
-    \endhead
-    \textbf{C2.1.1} --- Environnement de déploiement et de test & Environnement standardisé et reproductible (Docker Compose, version Node figée, trois environnements séparés). \textit{Chapitre~1.} Preuves~: \texttt{docker-compose.yml}, \texttt{docker-compose.prod.yml}, \texttt{.nvmrc}, configuration ESLint, tableau des critères de qualité. & \todo{Citer les captures réellement fournies (docker compose ps, pipeline CI, tests Postman) et confirmer les valeurs de couverture et de temps de réponse mesurées.} \\
-    \hline
-    \textbf{C2.1.2} --- Intégration continue & Pipeline CI détectant les régressions avant toute fusion en branche principale. \textit{Chapitre~1.} Preuves~: \texttt{.gitlab-ci.yml}, protection de la branche \texttt{main}, exécutions GitLab CI/CD. & \todo{Joindre la capture d'une exécution réussie du pipeline et l'extrait commenté du \texttt{.gitlab-ci.yml}.} \\
-    \hline
-    \textbf{C2.2.1} --- Prototype de l'application \newline \textit{(éliminatoire)} & PMV démontrant la couverture des fonctionnalités principales et le respect des exigences ergonomiques et de sécurité. \textit{Chapitre~2.} Preuves~: architecture Angular/NestJS/Prisma, captures annotées, user stories couvertes. & \todo{Lister les fonctionnalités réellement implémentées dans le PMV au moment du rendu, et distinguer ce qui relève déjà de la V1 partielle.} \\
-    \hline
-    \textbf{C2.2.2} --- Tests unitaires \newline \textit{(éliminatoire)} & Harnais de tests sur la logique métier sensible, prévenant les régressions. \textit{Chapitre~3.} Preuves~: tests Jest du module tournois (\texttt{TournoisService}, classement, appariements, générateurs de format, statistiques), rapport de couverture. & \todo{Indiquer les tests réellement écrits et le taux de couverture obtenu. Joindre l'extrait d'un test représentatif (Arrange/Act/Assert).} \\
-    \hline
-    \textbf{C2.2.3} --- Sécurité, accessibilité et évolutivité \newline \textit{(éliminatoire)} & Conformité OWASP, accessibilité RGAA et évolutivité sans refonte. \textit{Chapitre~3.} Preuves~: tableau OWASP Top 10, mesures RGAA, pistes d'évolutivité. & \todo{Confirmer les mesures réellement en place dans le code (guard de session better-auth, hachage des mots de passe par better-auth, CORS/trustedOrigins, aria-*) et joindre un extrait de code.} \\
-    \hline
-    \textbf{C2.2.4} --- Déploiement et gestion des versions & Déploiement reproductible et versions tracées. \textit{Chapitre~4.} Preuves~: tags sémantiques, journal Git, procédure docker-compose. & \todo{Production prévue août-septembre 2026 : décrire le processus validé en local et préciser le statut réel au rendu (PMV livré, V1 partielle, production non encore effectuée).} \\
-    \hline
-    \textbf{C2.3.1} --- Cahier de recettes \newline \textit{(éliminatoire)} & Plan de tests fonctionnels avec résultats attendus explicites. \textit{Chapitre~5.} Preuves~: cahier de recettes complet, tableau de synthèse. & \todo{Compléter le cahier avec les scénarios réellement exécutés et leurs résultats (succès/échec/bloquant).} \\
-    \hline
-    \textbf{C2.3.2} --- Plan de correction des bogues & Démarche structurée de qualification et de priorisation des anomalies. \textit{Chapitre~5.} Preuves~: issues GitLab avec niveaux de sévérité, bogues documentés. & \todo{Documenter les bogues réellement rencontrés avec le hash du commit de correction.} \\
-    \hline
-    \textbf{C2.4.1} --- Documentation technique d'exploitation & Documentation permettant à l'équipe CDS d'assurer la TMA sans l'auteur. \textit{Chapitre~6.} Preuves~: dossier \texttt{/docs} (manuels), documentation Swagger auto-générée. & \todo{Confirmer que les trois manuels sont rédigés et joindre la capture de l'interface Swagger réelle.} \\
-    \hline
-\end{longtable}
-\normalsize
+\subsection*{C2.1.2 --- Intégration continue}
+La compétence est validée par le pipeline d'intégration continue GitLab (\texttt{.gitlab-ci.yml}), présenté au chapitre~1. À chaque proposition de fusion, trois jobs s'exécutent en parallèle (\texttt{ci:backend}, \texttt{ci:frontend} et \texttt{ci:docker-build}), et la branche \texttt{main} est protégée~: aucune fusion n'est possible tant que le pipeline n'est pas au vert. L'extrait commenté du pipeline et la capture d'une exécution réussie (couverture et tests au vert) sont fournis en \hyperref[chap:annexe-code]{annexe~\ref*{chap:annexe-code}}.
+
+\subsection*{C2.2.1 --- Prototype de l'application \textnormal{\textit{(éliminatoire)}}}
+Le prototype fonctionnel (PMV) constitue le livrable central et couvre les fonctionnalités validées en cadrage~: authentification avec onboarding, création de tournois multi-phases combinant trois formats (élimination directe, poules, ronde suisse), qualifications inter-phases avec saut d'étape, saisie des matchs par séries avec mise à jour automatique des classements, affichage des brackets et statistiques par tournoi et par équipe. Il repose sur la pile Angular, NestJS et Prisma décrite au chapitre~2 et est déployé sur une préproduction accessible en ligne (\url{https://demo-enzo.chevrier.dev/}), que le jury peut manipuler directement. Les captures annotées des écrans sont regroupées en \hyperref[chap:annexe-screens]{annexe~\ref*{chap:annexe-screens}}.
+
+\subsection*{C2.2.2 --- Tests unitaires \textnormal{\textit{(éliminatoire)}}}
+La logique métier sensible est couverte par un harnais de tests unitaires Jest, détaillé au chapitre~3. Les tests portent sur le module tournois (\texttt{TournoisService}), sur les fonctions utilitaires pures de classement et de départage (\texttt{classement.util}), sur les générateurs de format et les appariements, ainsi que sur les statistiques. La couverture backend mesurée atteint 82,81~\% des instructions pour 208 tests répartis sur 29 suites, tous au vert. Le rapport de couverture et la capture de l'exécution complète des suites sont déposés en \hyperref[chap:annexe-couverture]{annexe~\ref*{chap:annexe-couverture}}.
+
+\subsection*{C2.2.3 --- Sécurité, accessibilité et évolutivité \textnormal{\textit{(éliminatoire)}}}
+La compétence est validée sur trois plans au chapitre~3. Côté sécurité, l'application est confrontée au Top~10 de l'OWASP~2025~: authentification et sessions gérées par la librairie \texttt{better-auth} (cookie \texttt{httpOnly}, hachage des mots de passe), autorisation par rôle contrôlée par le guard \texttt{GardeRoles} (rejet 403) et validation systématique des entrées par DTO. Côté accessibilité, les mesures RGAA (navigation au clavier, attributs \texttt{aria}, alternative textuelle au bracket visuel) sont mises en place. Côté évolutivité, l'architecture modulaire permet d'intégrer les évolutions prévues sans refonte. Des extraits de code correspondants figurent en \hyperref[chap:annexe-code]{annexe~\ref*{chap:annexe-code}}.
+
+\subsection*{C2.2.4 --- Déploiement et gestion des versions}
+Le déploiement est reproductible et les versions sont tracées, comme le montre le chapitre~4. Une image conteneurisée unique est construite et publiée sur le registre GitLab par le job \texttt{cd:image}, déclenché par un tag sémantique \texttt{vX.Y.Z}, les migrations Prisma étant appliquées automatiquement au démarrage par \texttt{entrypoint.sh}. Le pipeline a été exercé jusqu'à la mise en ligne de la version \texttt{v0.2.0} sur la préproduction~; la mise en service sur l'infrastructure cible de l'entreprise reste planifiée pour août-septembre 2026. Le journal des versions Git est fourni en \hyperref[chap:annexe-versions]{annexe~\ref*{chap:annexe-versions}}.
+
+\subsection*{C2.3.1 --- Cahier de recettes \textnormal{\textit{(éliminatoire)}}}
+Un cahier de recettes formalise un plan de tests fonctionnels couvrant les fonctionnalités attendues, avec des résultats attendus explicites, comme présenté au chapitre~5. Chaque scénario est structuré (identifiant, pré-conditions, étapes, résultat attendu, résultat obtenu, statut). La recette a été conduite en deux passes~: une recette technique avec un développeur et une recette métier avec le commanditaire. Le cahier complet constitue le livrable et est fourni en \hyperref[chap:annexe-recette-complet]{annexe~\ref*{chap:annexe-recette-complet}}.
+
+\subsection*{C2.3.2 --- Plan de correction des bogues}
+La compétence est validée par une démarche structurée de qualification, de priorisation et de correction des anomalies, détaillée au chapitre~5. Les dix-huit anomalies remontées lors de la recette sont consignées en issues GitLab avec un niveau de sévérité (bloquant, majeur, mineur, cosmétique) et un traitement associé. Les anomalies bloquantes et majeures sont corrigées et intégrées à la version \texttt{v0.3.0}, tandis que les anomalies sans impact sur la stabilité sont planifiées en TMA.
+
+\subsection*{C2.4.1 --- Documentation technique d'exploitation}
+La documentation permettant à l'équipe CDS d'assurer l'exploitation et la TMA sans l'auteur repose sur trois supports maintenus avec le code, décrits au chapitre~6. L'infrastructure versionnée (\texttt{docker-compose.prod.yml}, \texttt{Dockerfile}, \texttt{entrypoint.sh}, \texttt{.gitlab-ci.yml}) constitue une documentation de déploiement et de mise à jour exécutable et toujours synchronisée. La documentation de l'API REST est générée automatiquement par Swagger à partir des décorateurs NestJS, et un guide d'onboarding intégré à l'application tient lieu de manuel d'utilisation. La capture de l'interface Swagger est fournie en \hyperref[chap:annexe-swagger]{annexe~\ref*{chap:annexe-swagger}}.
