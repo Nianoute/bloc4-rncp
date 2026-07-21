@@ -4,89 +4,99 @@
 Cette annexe rassemble les captures d'écran commentées de l'interface de BrackX, illustrant les fonctionnalités principales décrites au chapitre consacré au prototype (C2.2.1). Chaque légende met en évidence les éléments d'interface pertinents. L'ensemble est également manipulable en ligne sur la préproduction (\url{https://demo-enzo.chevrier.dev/}). Cette annexe est référencée à la \hyperref[sec:fonctionnalites]{partie~\ref*{sec:fonctionnalites}}.
 
 \section*{Connexion et inscription}
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.44\linewidth]{interface/connexion}
+    \includegraphics[width=0.68\linewidth]{interface/connexion}
     \caption{Page de connexion~: authentification par email et mot de passe, lien de réinitialisation (« Mot de passe oublié~? ») et accès à l'inscription. La session est portée par un cookie \texttt{httpOnly} (better-auth), sans jeton stocké côté client.}
 \end{figure}
+\clearpage
 
-\FloatBarrier
-\section*{Guide d'onboarding (première connexion)}
-\begin{figure}[htbp]
+\section*{Guide d'onboarding --- accueil}
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.52\linewidth]{interface/onboarding1}
+    \includegraphics[width=0.72\linewidth]{interface/onboarding1}
     \caption{Première étape du guide d'onboarding affiché à la première connexion~: présentation de l'objectif et du vocabulaire (ici la définition de « Tournoi »). Le guide reste réaffichable à la demande.}
 \end{figure}
+\clearpage
 
-\begin{figure}[htbp]
+\section*{Guide d'onboarding --- création guidée}
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.62\linewidth]{interface/onboarding2}
+    \includegraphics[width=0.86\linewidth]{interface/onboarding2}
     \caption{Étape guidée sur l'écran de création~: l'infobulle accompagne pas à pas la saisie du nom du tournoi, seul champ obligatoire.}
 \end{figure}
+\clearpage
 
-\FloatBarrier
-\section*{Création et configuration d'un tournoi}
-\begin{figure}[htbp]
+\section*{Configuration des phases d'un tournoi}
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\linewidth]{interface/creationtournoi}
+    \includegraphics[width=0.66\linewidth]{interface/creationtournoi}
     \caption{Configuration des phases d'un tournoi multi-phases~: Phase~1 en ronde suisse (participants par poule, nombre de poules, seuils de victoires et de défaites) et Phase~2 en élimination directe (nombre de vies). Les matchs de la structure sont générés dès la création.}
 \end{figure}
+\clearpage
 
-\begin{figure}[htbp]
+\section*{Gestion des équipes d'une poule}
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.66\linewidth]{interface/gestionphase_equipe}
+    \includegraphics[width=0.92\linewidth]{interface/gestionphase_equipe}
     \caption{Gestion des équipes d'une poule~: remplissage automatique des qualifiés à partir d'une poule source et répartition des têtes de série (séquentielle ou entrelacée).}
 \end{figure}
+\clearpage
 
-\begin{figure}[htbp]
+\section*{Gestion des matchs d'une poule}
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.88\linewidth]{interface/gestionphase_match}
+    \includegraphics[width=0.92\linewidth]{interface/gestionphase_match}
     \caption{Gestion des matchs d'une poule~: édition en masse par journée, définition du nombre de séries et de la règle de victoire (majorité des séries), et planification des dates.}
 \end{figure}
+\clearpage
 
-\FloatBarrier
 \section*{Vue bracket (élimination directe)}
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.72\linewidth]{interface/vueliminationdirect}
+    \includegraphics[width=0.86\linewidth]{interface/vueliminationdirect}
     \caption{Vue en arbre d'une phase à élimination directe~: quarts, demi-finales et finale. Chaque match affiche son numéro, ses participants (ou « Vainqueur~\#n » pour les matchs à venir) et le nombre de séries.}
 \end{figure}
+\clearpage
 
-\FloatBarrier
 \section*{Tableau de classement (poules / ronde suisse)}
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.74\linewidth]{interface/classement_robinstage}
+    \includegraphics[width=0.86\linewidth]{interface/classement_robinstage}
     \caption{Tableau de classement d'une poule~: points, journées, victoires, nuls, défaites, séries et différentiel, complété par une grille des confrontations (affichage compact ou détaillé).}
 \end{figure}
+\clearpage
 
-\FloatBarrier
-\section*{Saisie et validation d'un match}
-\begin{figure}[htbp]
+\section*{Saisie d'un match --- contrôle de cohérence}
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\linewidth]{interface/saisiematch_erreur}
+    \includegraphics[width=0.82\linewidth]{interface/saisiematch_erreur}
     \caption{Saisie des scores d'un match par séries~: la validation empêche une série nulle (« Une série ne peut pas être nulle »), garantissant la cohérence du résultat avant clôture.}
 \end{figure}
+\clearpage
 
-\begin{figure}[htbp]
+\section*{Validation d'un match}
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\linewidth]{interface/saisiematch_validation}
+    \includegraphics[width=0.82\linewidth]{interface/saisiematch_validation}
     \caption{Validation d'un match~: une confirmation explicite précède la clôture définitive, qui fige le résultat et calcule le vainqueur.}
 \end{figure}
+\clearpage
 
-\FloatBarrier
-\section*{Statistiques du tournoi et par équipe}
-\begin{figure}[htbp]
+\section*{Statistiques du tournoi}
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.52\linewidth]{interface/statistique_tournoi}
+    \includegraphics[width=0.66\linewidth]{interface/statistique_tournoi}
     \caption{Statistiques au niveau du tournoi~: podium, classement final et faits marquants (plus de victoires, match le plus serré, plus gros écart, plus gros \emph{upset}).}
 \end{figure}
+\clearpage
 
-\begin{figure}[htbp]
+\section*{Statistiques par équipe}
+\begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\linewidth]{interface/statistique_equipe}
+    \includegraphics[width=0.82\linewidth]{interface/statistique_equipe}
     \caption{Statistiques par équipe~: bilan des matchs et des séries, scores marqués et encaissés, adversaires remarquables (« cible facile », « rival ») et détail des matchs joués.}
 \end{figure}
 
-\FloatBarrier
+\vspace{1em}
 \noindent\hyperref[sec:fonctionnalites]{$\hookleftarrow$ Retour à la partie~\ref*{sec:fonctionnalites} (Fonctionnalités du prototype).}

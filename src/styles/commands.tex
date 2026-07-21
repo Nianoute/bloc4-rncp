@@ -7,6 +7,12 @@
 % À remplacer par le contenu réel (capture, extrait, chiffre) le moment venu.
 \newcommand{\todo}[1]{{\normalfont\color{red}\itshape[TODO : ~: #1]}}
 
+% Neutralise, pour la prochaine section numérotée uniquement, le saut de page
+% inséré automatiquement avant chaque section. La section enchaîne alors dans
+% la continuité de la précédente, ce qui évite de laisser une page à moitié
+% vide en fin de section.
+\newcommand{\sanssautdesection}{\global\brackxfirstsectiontrue}
+
 % Les bandeaux de compétence/livrable ne sont plus affichés dans le corps du
 % dossier : la justification de chaque compétence est reportée en annexe.
 % Les macros sont neutralisées pour ne pas avoir à retirer chaque appel.

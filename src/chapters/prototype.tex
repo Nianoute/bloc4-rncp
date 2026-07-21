@@ -72,7 +72,7 @@ La qualification entre phases est ensuite paramétrée. Pour chaque phase, l'uti
 
 Les équipes d'une poule sont définies manuellement ou générées, puis les affrontements sont produits par tête de série (seed) ou de façon aléatoire, tant que la phase est encore en attente de création, ce qui garantit la cohérence de la structure une fois le tournoi démarré.
 
-\subsection{Arbitrage de conception : templates plutôt que configuration libre}
+\subsection{Arbitrage de conception~: templates plutôt que configuration libre}
 Le choix de conception le plus discuté a porté sur la création des tournois. Une première option laissait à l'utilisateur une liberté totale~: définir lui-même chaque match, ses conditions de victoire et d'élimination, et l'issue vers laquelle il mène. Très puissante, cette liberté rendait toutefois la création complexe et décourageante, au risque de fermer l'application aux organisateurs occasionnels, qui constituent le cœur de cible.
 
 L'option retenue repose sur des templates de format (élimination directe, poules, ronde suisse) qui génèrent automatiquement les matchs et leurs liaisons, rendant la création rapide et guidée. Ce choix a réorienté la proposition de valeur, de « simuler un tournoi exactement comme je veux » vers « simuler rapidement l'efficacité d'un format ». Il est prolongé par la simulation automatique des résultats et par des statistiques centrées sur le volume de matchs et de séries par équipe, davantage que sur le détail des confrontations, ce dernier restant disponible mais moins mis en avant. Cette liberté totale n'est pas abandonnée pour autant~: la partie évolutivité (C2.2.3) montre que l'architecture peut la réintroduire plus tard, l'effort portant alors sur l'expérience utilisateur et non sur le back-end.
