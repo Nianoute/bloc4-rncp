@@ -4,7 +4,7 @@
 
 \competence{C2.2.4}{Historique des versions et dernière version fonctionnelle, fiable et viable}{Non}
 
-Cette section montre que l'application est déployable de manière reproductible et que les versions sont tracées. Le pipeline de déploiement est déjà opérationnel~: chaque version est construite et publiée automatiquement, la dernière en date (\texttt{v0.2.0}) ayant été mise en ligne sur la préproduction. La mise en service définitive sur l'infrastructure cible de l'entreprise reste planifiée pour août-septembre 2026.
+Cette section montre que l'application est déployable de manière reproductible et que les versions sont tracées. Le pipeline de déploiement est déjà opérationnel~: chaque version est construite et publiée automatiquement, la dernière en date (\texttt{v0.3.0}) ayant été mise en ligne sur la préproduction. La mise en service définitive sur l'infrastructure cible de l'entreprise reste planifiée pour août-septembre 2026.
 
 \section{Système de gestion de versions}
 Le projet utilise Git avec GitLab. La branche \texttt{main} a vocation à contenir la dernière version stable. Chaque version fera l'objet d'un tag Git (\texttt{v1.0.0}, \texttt{v1.0.1}, etc.) suivant le standard de versionnement sémantique (\texttt{major.minor.patch})~: l'incrément \texttt{major} signale une rupture de compatibilité, \texttt{minor} l'ajout d'une fonctionnalité rétrocompatible, et \texttt{patch} une correction.
@@ -43,14 +43,14 @@ Le déploiement est entièrement automatisé par le pipeline GitLab CI/CD. L'ét
     \end{tabular}
 \end{table}
 
-Ce pipeline est déjà opérationnel~: il a été exercé jusqu'à la mise en ligne sur la préproduction, la dernière version publiée étant \texttt{v0.2.0}. L'infrastructure de production cible de l'entreprise étant une transposition directe de cet environnement (voir C2.1.1), sa mise en service définitive interviendra à l'horizon août-septembre 2026.
+Ce pipeline est déjà opérationnel~: il a été exercé jusqu'à la mise en ligne sur la préproduction, la dernière version publiée étant \texttt{v0.3.0}. L'infrastructure de production cible de l'entreprise étant une transposition directe de cet environnement (voir C2.1.1), sa mise en service définitive interviendra à l'horizon août-septembre 2026.
 
 Une fois les conteneurs redémarrés, la stabilité de la version déployée est vérifiée par un \emph{smoke test} manuel reprenant les scénarios critiques du cahier de recettes~: connexion, création d'un tournoi simple, saisie d'un résultat et vérification du classement. Ce test de fumée prend moins de dix minutes et garantit que les fonctionnalités essentielles sont opérationnelles. En cas d'échec, le déploiement n'est pas validé et le rollback vers le tag de version précédent est déclenché immédiatement (voir la partie précédente).
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.78\linewidth]{cdreussi}
-    \caption{Exécution réussie du job \texttt{cd:image} pour le tag \texttt{v0.2.0}~: l'image est construite puis publiée sur le registre GitLab, le pipeline se terminant au vert.}
+    \caption{Exemple d'exécution réussie du job \texttt{cd:image}, ici pour le tag \texttt{v0.2.0}~: l'image est construite puis publiée sur le registre GitLab, le pipeline se terminant au vert.}
 \end{figure}
 
 \section{Traçabilité des évolutions}\label{sec:versions-git}
@@ -72,25 +72,23 @@ Les versions sont livrées de façon incrémentale selon le versionnement séman
         \hline
         \textbf{Version} & \textbf{Évolution principale} & \textbf{Statut} \\
         \hline
-        v0.0.1 & Première configuration de la chaîne de déploiement (test) & Échec \\
+        v0.0.1 & Première configuration de la chaîne de déploiement (test) & Échec, le 08/07 \\
         \hline
-        v0.0.2 & Première mise en production & Réussi \\
+        v0.0.2 & Première mise en production réussie & Réussie le 08/07 \\
         \hline
-        v0.1.0 & Prototype fonctionnel & Réussi \\
+        v0.1.0 & Prototype initial & Réussie le 11/07 \\
         \hline
-        v0.2.0 & Prototype avec amélioration de l'interface & Réussi \\
+        v0.2.0 & Ajout de l'UX et de l'UI, version support de la recette (réalisée le 13/07) & Réussie le 12/07 \\
         \hline
-        v0.2.1 & Correction du classement en ronde suisse & Prévu le 15/07 \\
+        v0.2.1 & Correction du classement en ronde suisse & Réussie le 18/07 \\
         \hline
-        v0.2.2 & Amélioration de l'UI/UX de la saisie des matchs et des équipes par poules & Prévu le 17/07 \\
+        v0.3.0 & Refonte importante du code, correction de l'onboarding et ajout de la simulation des matchs & Version actuelle, le 23/07 \\
         \hline
-        v0.3.0 & Intégration de l'ensemble des retours de recette & Prévu le 20/07 \\
+        v0.4.0 & Refonte de l'UX de la gestion des phases et des équipes par poules (PMV) & Prévue le 01/08 \\
         \hline
-        v0.4.0 & PMV avec restructuration du code & Prévu le 23/07 \\
+        v0.x.x & Montée en charge continue du projet vers la V1 & Prévue du 01/08 au 01/09 \\
         \hline
-        v0.x.x & Intégration continue des fonctionnalités pour la V1 & Prévu du 27/07 au 01/09 \\
-        \hline
-        v1.0.0 & V1 de l'application après confirmation de la recette & Prévu le 14/09 \\
+        v1.0.x & V1 de l'application après confirmation de la recette & Prévue le 10/09 \\
         \hline
     \end{tabular}
 \end{table}

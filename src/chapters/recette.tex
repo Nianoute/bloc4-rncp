@@ -114,7 +114,7 @@ Les dix-huit anomalies remontées lors des deux passes de recette sont récapitu
     \hline
     Majeur & Statistiques~: le perdant du \emph{lower bracket} est placé devant le perdant de la grande finale. & Corrigé (v0.3.0) \\
     \hline
-    Majeur & Simulation rapide des résultats d'une phase (fonctionnalité manquante). & Reporté en V1 \\
+    Majeur & Simulation rapide des résultats d'une phase (fonctionnalité manquante). & Ajouté (v0.3.0) \\
     \hline
     Mineur & Curseur perturbé lorsqu'un caractère non numérique est saisi dans un score. & Planifié en TMA \\
     \hline
@@ -142,7 +142,7 @@ Les dix-huit anomalies remontées lors des deux passes de recette sont récapitu
 Les deux anomalies bloquantes ont fait l'objet d'une correction prioritaire. La première concernait le classement en ronde suisse~: à égalité de victoires, le départage ne pénalisait pas les défaites, si bien qu'un participant 2-1 pouvait passer devant un 2-0 invaincu. Le calcul de départage (fonction \texttt{classement.util}) a été corrigé et un test unitaire dédié verrouille désormais ce cas. La seconde portait sur la validation des séries en \emph{best-of}~: la règle de majorité empêchait d'enregistrer un état intermédiaire à une manche partout (1-1), pourtant légitime avant la manche décisive. La condition de clôture a été corrigée pour ne s'appliquer qu'à l'atteinte effective de la majorité, et le scénario correspondant a été rejoué avec succès.
 
 \subsection{Bilan de la recette}
-Sur les dix-huit anomalies remontées, les deux bloquantes et cinq des six majeures ont été corrigées et intégrées à la version v0.3.0. La sixième anomalie majeure, la simulation rapide des résultats d'une phase, relève d'une fonctionnalité nouvelle et non d'un défaut~: elle est reportée à la V1. Les six anomalies mineures et les quatre cosmétiques, sans impact sur la stabilité, sont planifiées en TMA, certaines rejoignant des évolutions déjà prévues (départage configurable, adaptation du vocabulaire au niveau de l'utilisateur).
+Sur les dix-huit anomalies remontées, les deux bloquantes et les six majeures ont été traitées dans la version v0.3.0~: cinq correspondaient à des défauts corrigés, et la sixième, la simulation rapide des résultats d'une phase, relevait d'une fonctionnalité nouvelle et non d'un défaut, intégrée à cette version plutôt que reportée à la V1. Les six anomalies mineures et les quatre cosmétiques, sans impact sur la stabilité, sont planifiées en TMA, certaines rejoignant des évolutions déjà prévues (départage configurable, adaptation du vocabulaire au niveau de l'utilisateur).
 
 Après correction des anomalies bloquantes et majeures, le PMV est jugé fonctionnel, fiable et conforme aux attentes du commanditaire sur son périmètre. Les fonctionnalités d'administration, encore incomplètes, feront l'objet d'une recette dédiée avant leur ouverture.
 
