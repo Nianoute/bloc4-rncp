@@ -1,0 +1,19 @@
+\section{Système de supervision et d'alerte}
+\label{sec:supervision}
+\competence{C4.1.2}{Concevoir un système de supervision et d'alerte}{La description du système de supervision}
+\livrable{La description du système de supervision : périmètre, sondes et finalité, critères de qualité/performance, surveillance de la disponibilité.}
+
+\subsection{Périmètre de supervision}
+\todo{Adapté à la typologie « application web conteneurisée » : disponibilité HTTP du frontend et de l'API, base PostgreSQL, ressources du conteneur (CPU/mémoire). Justifier le périmètre.}
+
+\subsection{Sondes mises en place et leur finalité}
+\todo{Healthcheck applicatif (\texttt{/health}), healthcheck base de données, sonde d'uptime externe (UptimeRobot), collecte des logs applicatifs. Expliciter la finalité de chaque sonde.}
+
+\subsection{Indicateurs et critères de qualité/performance}
+\todo{Disponibilité (uptime \%), temps de réponse des endpoints principaux, taux d'erreurs 5xx, consommation CPU/mémoire. Donner les seuils cibles adaptés au projet.}
+
+\subsection{Modalités de signalement}
+\todo{Alerte e-mail / webhook déclenchée sur indisponibilité ou dépassement de seuil ; destinataire et délai de réaction. Renvoyer vers les captures en annexe~C.}
+
+\subsection{Garantie de disponibilité}
+\todo{Comment l'ensemble sonde + alerte garantit une disponibilité permanente et permet de réagir avant impact utilisateur.}

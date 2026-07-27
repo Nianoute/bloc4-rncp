@@ -20,7 +20,7 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhead{}
-\fancyhead[RO,LE]{BrackX --- Dossier Bloc 2}
+\fancyhead[RO,LE]{BrackX --- Dossier Bloc 4}
 \fancyfoot{}
 \fancyfoot[LE,RO]{\thepage}
 \fancyfoot[LO,CE]{Chapitre \thechapter}
@@ -122,54 +122,49 @@
     \input{title}
     \tableofcontents
 
-    \chapter*{Introduction et contexte du développement}
-    \addcontentsline{toc}{chapter}{Introduction et contexte du développement}
+    \chapter*{Introduction et contexte du maintien en condition opérationnelle}
+    \addcontentsline{toc}{chapter}{Introduction et contexte du maintien en condition opérationnelle}
     \input{chapters/introduction}
 
-    \chapter{Environnement de développement, de test et d'intégration continue}
-    \input{chapters/environnement}
+    \chapter{Maintien en condition opérationnelle}
+    \input{chapters/dependances}
+    \input{chapters/supervision}
 
-    \chapter{Conception et développement du prototype}
-    \input{chapters/prototype}
+    \chapter{Détection et correction des anomalies}
+    \input{chapters/consignation}
+    \input{chapters/correctif}
 
-    \chapter{Qualité, sécurité et accessibilité du logiciel}
-    \input{chapters/qualite}
+    \chapter{Amélioration continue et suivi des versions}
+    \input{chapters/amelioration}
+    \input{chapters/versions}
+    \input{chapters/support}
 
-    \chapter{Déploiement et gestion des versions}
-    \input{chapters/deploiement}
-
-    \chapter{Recette et correction des anomalies}
-    \input{chapters/recette}
-
-    \chapter{Documentation technique d'exploitation}
-    \input{chapters/documentation}
-
-    \chapter*{Conclusion et bilan technique}
-    \addcontentsline{toc}{chapter}{Conclusion et bilan technique}
+    \chapter*{Conclusion et bilan du maintien en condition opérationnelle}
+    \addcontentsline{toc}{chapter}{Conclusion et bilan du maintien en condition opérationnelle}
     \input{chapters/conclusion}
 
 %TC:ignore
     \appendix
-    \chapter{Validation des compétences du Bloc 2}
+    \chapter{Validation des compétences du Bloc 4}
     \input{annexes/competences}
 
-    \chapter{Extraits de code commentés}
-    \input{annexes/code}
+    \chapter{Processus de mise à jour des dépendances}
+    \input{annexes/dependances}
 
-    \chapter{Captures d'écran de l'interface}
-    \input{annexes/screenshots}
+    \chapter{Système de supervision}
+    \input{annexes/supervision}
 
-    \chapter{Rapport de couverture des tests}
-    \input{annexes/couverture}
+    \chapter{Fiche de consignation d'une anomalie}
+    \input{annexes/fiche-anomalie}
 
-    \chapter{Journal des versions Git}
+    \chapter{Traitement d'un correctif}
+    \input{annexes/correctif}
+
+    \chapter{Journal des versions déployées}
     \input{annexes/versions}
 
-    \chapter{Cahier de recettes complet}
-    \input{annexes/recette}
-
-    \chapter{Documentation Swagger de l'API}
-    \input{annexes/swagger}
+    \chapter{Échange avec le support client}
+    \input{annexes/support}
 
     \chapter{Glossaire des termes techniques et métier}
     \input{annexes/glossaire}

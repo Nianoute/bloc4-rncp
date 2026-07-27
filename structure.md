@@ -1,141 +1,114 @@
-# Structure du dossier — Bloc 2
+# Structure du dossier — Bloc 4
 
 **RNCP 39583 — Expert en Développement Logiciel**
-**Bloc 2 : Concevoir et développer des applications logicielles**
-Projet *TournaBracket* — Agence CDS (fictif) — Candidat : Enzo ANGOT
+**Bloc 4 : Maintenir l'application logicielle en condition opérationnelle**
+Projet *BrackX* — Agence CDS (fictif) — Candidat : Enzo ANGOT
 
-> Logique du dossier : chaque section correspond à une compétence de la grille,
-> présentées dans l'ordre du cycle de développement
-> (environnement → prototype → tests → sécurité → déploiement → recette → documentation).
-> Limite : 30 pages hors annexes. Cible : ~26 pages.
-> Compétences **éliminatoires** : C2.2.1, C2.2.2, C2.2.3, C2.3.1.
+> Logique du dossier : chaque section correspond à une compétence de la grille du Bloc 4,
+> présentées dans l'ordre du cycle de maintien en condition opérationnelle
+> (surveiller → détecter/corriger → améliorer et tracer).
+> Le dossier prend le relais du Bloc 2 : la V1 de BrackX est livrée et exploitée,
+> ce dossier documente son maintien en conditions opérationnelles (MCO).
+> Limite : **20 pages hors annexes**. Cible : ~18 pages. Aucune compétence éliminatoire au Bloc 4.
 
 ---
 
-## Introduction et contexte du développement (1 page)
-- Rappel synthétique du projet TournaBracket (application web de tournois multi-phases configurables)
-- Rappel du périmètre V1/PMV validé en COPIL (commanditaire : Paul-Lucas Estrada, agence CDS)
-- Rappel de la stack technique retenue (NestJS, Angular, PostgreSQL, Prisma, Docker) — validée au Bloc 1, non rejustifiée
-- Lien vers le dépôt Git livré au jury + période de développement
-- Pont entre le Bloc 1 (cadrage) et le Bloc 2 (réalisation), annonce du plan
+## Introduction et contexte du maintien en condition opérationnelle (1,5 page)
+- Rappel synthétique du projet BrackX (application web de tournois multi-phases configurables)
+- Pont Bloc 2 → Bloc 4 : la V1 est livrée, déployée et exploitée ; on passe de la *réalisation* au *maintien en condition opérationnelle*
+- Rappel très bref de la stack et de la chaîne CI/CD héritées du Bloc 2 (GitLab CI, image Docker, tags sémantiques) — non rejustifiée
+- Périmètre du MCO : dépendances, supervision, anomalies, améliorations, versions, support
+- Lien vers le dépôt Git + préproduction en ligne, annonce du plan
 
-## Chapitre 1 : Environnement de développement, de test et d'intégration continue (4 pages)
+## Chapitre 1 : Maintien en condition opérationnelle (6 pages)
 
-### 1.1 — C2.1.1 — Environnement de déploiement et de test (2 pages)
-- Environnement de développement local (VS Code + extensions, Node LTS via .nvmrc, npm + package-lock)
-- Les trois environnements distincts (développement / test / production)
-- Outils de qualité et de performance (ESLint, Prettier, Husky, Jest, Jasmine/Karma)
-- Critères de qualité et de performance retenus (couverture ≥ 70 %, zéro erreur ESLint, temps de réponse API)
-- *Livrable grille : protocole de déploiement continu + critères de qualité et de performance*
+### 1.1 — C4.1.1 — Gestion des mises à jour des dépendances (3 pages)
+- Processus de veille : surveillance régulière des nouvelles versions (Dependabot / Renovate, `npm outdated`, avis de sécurité GitLab)
+- **Fréquence** des mises à jour (ex : hebdomadaire pour la sécurité, mensuelle pour les mineures, trimestrielle pour les majeures)
+- **Périmètre logiciel concerné** (dépendances back NestJS/Prisma, front Angular, image Docker de base, actions/outils CI)
+- **Type de mise à jour** : automatique (patch/mineure via PR auto + CI verte) vs manuelle (majeure, breaking changes) avec évaluation d'impact
+- Intégration sécurisée : `npm audit`, passage obligatoire par la CI (lint + tests + build) avant fusion
+- *Livrable grille : la description du processus de mise à jour des dépendances (fréquence, périmètre, type)*
 
-### 1.2 — C2.1.2 — Intégration continue (2 pages)
-- Outil retenu : GitHub Actions (justification)
-- Description du pipeline CI (.github/workflows/ci.yml) : checkout → install → lint → build → test → couverture
-- Stratégie de branches (main protégée, develop, feature/xxx)
-- Garantie de non-régression avant fusion
-- *Livrable grille : protocole d'intégration continue*
+### 1.2 — C4.1.2 — Système de supervision et d'alerte (3 pages)
+- Périmètre de supervision adapté à la typologie (application web conteneurisée : disponibilité HTTP, base PostgreSQL, ressources conteneur)
+- **Sondes** mises en place et leur finalité : healthcheck applicatif (`/health`), healthcheck base, uptime externe (UptimeRobot), logs applicatifs
+- **Indicateurs de suivi** pertinents et **critères de qualité/performance** : disponibilité (uptime %), temps de réponse API, taux d'erreurs 5xx, usage CPU/mémoire
+- Modalités de **signalement** (alerte e-mail / webhook en cas d'indisponibilité ou de seuil dépassé)
+- Garantie de disponibilité permanente du logiciel
+- *Livrable grille : la description du système de supervision (sondes, critères, disponibilité)*
 
-## Chapitre 2 : Conception et développement du prototype (5 pages) — **ÉLIMINATOIRE**
+## Chapitre 2 : Détection et correction des anomalies (6 pages)
 
-### 2.1 — C2.2.1 — Prototype de l'application
-- Architecture applicative mise en œuvre (rappel bref du schéma validé en C1.5)
-- Paradigmes et frameworks : NestJS (modules/DI/Controller-Service-DTO), Angular (composants/Reactive Forms), Prisma (schema-first, migrations, client typé)
-- Présentation des fonctionnalités principales (avec captures annotées en annexe) :
-  1. Authentification et gestion des rôles (JWT, interceptor Angular, admin/utilisateur)
-  2. Création d'un tournoi multi-phases (formats, glisser-déposer)
-  3. Configuration des qualifications inter-phases (saut d'étape)
-  4. Saisie des résultats et mise à jour du classement (cascade de critères d'égalité)
-  5. Affichage du bracket et des classements
-  6. Bibliothèque de templates
-- Respect des exigences de sécurité visibles dans le prototype (court — détaillé au chap. 3)
-- User stories couvertes (5 à 8, format « En tant que… je peux… afin de… »)
-- *Livrable grille : architecture maintenable + présentation d'un prototype + frameworks et paradigmes*
+### 2.1 — C4.2.1 — Consignation des anomalies (3 pages)
+- Processus de **collecte** structuré et adapté à la typologie du logiciel (canaux : supervision, retours utilisateurs/support, logs)
+- Outil de consignation (issues GitLab, gabarit de ticket de bogue)
+- Contenu d'une **fiche de consignation** : identifiant, environnement, étapes de reproduction, résultat attendu/obtenu, sévérité, logs/captures
+- Présentation d'une **fiche complète d'une anomalie réelle** rencontrée au cours du projet (avec analyse et préconisations de correction)
+- *Livrable grille : la description du processus de collecte/consignation + une fiche de consignation d'une anomalie*
 
-## Chapitre 3 : Qualité, sécurité et accessibilité du logiciel (5 pages) — **ÉLIMINATOIRE**
+### 2.2 — C4.2.2 — Création et déploiement d'un correctif (3 pages)
+- Reprise de l'anomalie consignée en 2.1 : de la reproduction au correctif
+- **Traitement tirant profit du CI/CD** : branche `fix/…`, commit conventionnel, PR, pipeline CI (lint + tests de non-régression), déploiement par tag correctif (ex : `v1.0.1`)
+- **Description du correctif** mis en place (cause racine, modification apportée, test ajouté) et vérification de la résolution
+- Retour à un état stable, traçabilité du hotfix
+- *Livrable grille : la présentation du traitement d'une anomalie détectée au cours du projet*
 
-### 3.1 — C2.2.2 — Tests unitaires (2 pages) — **ÉLIMINATOIRE**
-- Frameworks de test (Jest backend, Jasmine frontend) et justification
-- Stratégie de test (priorité à la logique métier des services)
-- Services testés et taux de couverture cible (QualificationService, TiebreakService, MatchesService, AuthService)
-- Cas de test représentatif commenté (pattern Arrange/Act/Assert, mocks @nestjs/testing)
-- Rapport de couverture (annexe) + analyse honnête des écarts
-- *Livrable grille : jeu de tests unitaires couvrant une fonctionnalité demandée*
+## Chapitre 3 : Amélioration continue et suivi des versions (6 pages)
 
-### 3.2 — C2.2.3 — Sécurité, accessibilité et évolutivité (3 pages) — **ÉLIMINATOIRE**
-- **Sécurité — OWASP Top 10** : tableau des 10 failles et mesure mise en place (RoleGuard, bcrypt, Prisma/class-validator, Helmet/CORS, Dependabot, logging…)
-- **Accessibilité — RGAA 4.1** : aria-label, labels associés, contraste 4.5:1, navigation clavier, aria-live + limites (vue bracket)
-- **Évolutivité** : ajout export statistique, partage public, notifications WebSocket sans refonte
-- *Livrable grille : présentation des mesures de sécurité + des actions d'accessibilité (handicap)*
+### 3.1 — C4.3.1 — Axes d'amélioration (2,5 pages)
+- Analyse des **indicateurs de performance** (issus de la supervision) et des **retours utilisateurs** (support, recette)
+- **Recommandations argumentées** d'amélioration, chacune évaluée : gain attendu, coût, délai de mise en œuvre, faisabilité au regard du projet
+- Priorisation (ex : matrice valeur/effort) et lien avec l'attractivité du logiciel
+- *Livrable grille : la présentation des recommandations argumentées d'amélioration*
 
-## Chapitre 4 : Déploiement et gestion des versions (2 pages)
+### 3.2 — C4.3.2 — Journal des versions déployées (2 pages)
+- Tenue d'un **journal des versions** (`CHANGELOG.md`) suivant les tags sémantiques
+- Contenu par version : anomalies corrigées, nouvelles fonctionnalités, correctifs **documentés**
+- Lien avec les Conventional Commits et le processus de déploiement (traçabilité des évolutions)
+- Extrait d'un exemplaire du journal de version
+- *Livrable grille : la présentation d'un exemplaire du journal de version*
 
-### 4.1 — C2.2.4 — Déploiement et gestion des versions
-- Gestion des versions : Git + GitHub, tags sémantiques (vX.Y.Z)
-- Processus de déploiement en production (merge → tag → CD → images Docker → docker-compose → migrations Prisma)
-- Traçabilité des évolutions (Conventional Commits, tableau synthétique des versions)
-- Vérification de stabilité à chaque déploiement (smoke tests < 10 min)
-- *Livrable grille : historique des versions + dernière version fonctionnelle, fiable et viable*
+### 3.3 — C4.3.3 — Collaboration avec le support (2 pages)
+- Contexte d'un **retour client** réel (via l'équipe support / le commanditaire) et explication du problème à résoudre
+- **Résolution apportée** en fournissant une expertise technique
+- Explication de la **contribution des différentes parties prenantes** (support, développeur, commanditaire)
+- *Livrable grille : un exemple de problème résolu en collaboration avec le support client*
 
-## Chapitre 5 : Recette et correction des anomalies (5 pages)
-
-### 5.1 — C2.3.1 — Cahier de recettes (3 pages) — **ÉLIMINATOIRE**
-- Structure d'un scénario (identifiant, pré-conditions, étapes, résultat attendu/obtenu, statut)
-- Catégories couvertes : tests fonctionnels (auth, tournois, qualifications, résultats, robin stage), tests structurels, tests de sécurité
-- Cahier complet en annexe C + tableau synthétique des résultats de recette
-- *Livrable grille : le cahier de recettes*
-
-### 5.2 — C2.3.2 — Plan de correction des bogues (2 pages)
-- Processus de gestion des anomalies (issues GitHub, 4 niveaux de sévérité)
-- 2 à 3 bogues réels documentés (description / analyse / correction / commit)
-- Bilan de la recette (anomalies traitées avant livraison, reports en TMA justifiés)
-- *Livrable grille : le plan de correction des bogues*
-
-## Chapitre 6 : Documentation technique d'exploitation (3 pages)
-
-### 6.1 — C2.4.1 — Documentation technique d'exploitation
-- Manuel de déploiement (prérequis, clonage, .env, docker-compose, migrations, smoke tests)
-- Manuel d'utilisation (administrateur non technique : compte, template, phases, participants, résultats, classements)
-- Manuel de mise à jour (git pull / docker-compose pull / migrate deploy / rollback)
-- Documentation d'API auto-générée (Swagger NestJS)
-- *Livrable grille : manuel de déploiement + manuel d'utilisation + manuel de mise à jour*
-
-## Conclusion et bilan technique (1 page)
-- Bilan de la V1 livrée par rapport au périmètre validé en COPIL
-- Points forts techniques (ex : gestion des égalités en cascade, architecture modulaire NestJS)
-- Points d'amélioration identifiés (honnêteté : couverture frontend, granularité des erreurs API…)
-- Perspectives et évolutions planifiées (export, partage public, notifications, mobile, commentaires)
-- Retour d'expérience personnel (montée en compétences)
+## Conclusion et bilan du maintien en condition opérationnelle (1 page)
+- Bilan du MCO : disponibilité tenue, anomalies traitées, versions livrées
+- Points forts (chaîne CI/CD réutilisée pour les correctifs, supervision légère mais efficace)
+- Points d'amélioration et perspectives (industrialisation de la supervision, automatisation accrue des mises à jour)
+- Retour d'expérience personnel sur la posture de mainteneur
 
 ---
 
 ## Annexes (hors comptage des pages)
-- **A.** Extraits de code commentés (priorité : QualificationService, TiebreakService)
-- **B.** Captures d'écran de l'interface (connexion, création de tournoi, configuration des phases, bracket, classement) — annotées
-- **C.** Cahier de recettes complet (scénarios et résultats)
-- **D.** Journal des versions Git (`git log --oneline --decorate`)
-- **E.** Rapport de couverture des tests (Jest `--coverage`)
-- **F.** Documentation Swagger générée par NestJS (optionnel)
+- **A.** Validation des compétences du Bloc 4 (mapping compétence → section → preuve)
+- **B.** Processus de mise à jour des dépendances (config Dependabot/Renovate, rapport `npm audit`, `npm outdated`)
+- **C.** Système de supervision (configuration des sondes / healthchecks, captures du tableau de bord d'uptime)
+- **D.** Fiche de consignation complète d'une anomalie (gabarit rempli)
+- **E.** Traitement d'un correctif (issue → branche `fix/…` → merge request → pipeline CD → tag)
+- **F.** Journal des versions déployées (`CHANGELOG.md` complet + `git tag`)
+- **G.** Échange avec le support client (fil de la demande et de sa résolution)
 - Glossaire des termes techniques et métier
 
 ---
 
-## Repères de pagination (cible 26 pages, marge 4 pages)
+## Repères de pagination (cible 18 pages, marge 2 pages)
 
-| Section | Compétence | Pages | Éliminatoire |
-|---|---|---|---|
-| Introduction | — | 1 | — |
-| 1.1 | C2.1.1 | 2 | Non |
-| 1.2 | C2.1.2 | 2 | Non |
-| 2.1 | C2.2.1 | 5 | **Oui** |
-| 3.1 | C2.2.2 | 2 | **Oui** |
-| 3.2 | C2.2.3 | 3 | **Oui** |
-| 4.1 | C2.2.4 | 2 | Non |
-| 5.1 | C2.3.1 | 3 | **Oui** |
-| 5.2 | C2.3.2 | 2 | Non |
-| 6.1 | C2.4.1 | 3 | Non |
-| Conclusion | — | 1 | — |
-| **Total** | | **26** | |
+| Section | Compétence | Pages |
+|---|---|---|
+| Introduction | — | 1,5 |
+| 1.1 | C4.1.1 | 3 |
+| 1.2 | C4.1.2 | 3 |
+| 2.1 | C4.2.1 | 3 |
+| 2.2 | C4.2.2 | 3 |
+| 3.1 | C4.3.1 | 2,5 |
+| 3.2 | C4.3.2 | 2 |
+| 3.3 | C4.3.3 | 2 |
+| Conclusion | — | 1 |
+| **Total** | | **~20** |
 
-> Concentrer l'espace et l'effort sur les sections éliminatoires (2.1, 3.1, 3.2, 5.1).
-> Ne pas dépasser 2 pages sur les sections non éliminatoires 1.1, 1.2, 4.1 et 5.2.
-> Utiliser la marge de 4 pages en priorité sur le prototype (2.1) et l'OWASP (3.2).
+> Cible réelle ~18 pages : viser 2,5 pages sur 1.1/1.2/2.1/2.2 seulement si le contenu le justifie.
+> Reporter en annexe tout élément volumineux (configs, captures, changelog complet, fils de discussion).

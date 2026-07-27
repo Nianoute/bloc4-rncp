@@ -1,15 +1,10 @@
-% Annexe E — Journal des versions Git
+% Annexe F — Journal des versions déployées
 \label{chap:annexe-versions}
 \section*{Objet de l'annexe}
-Cette annexe présente l'historique des versions du projet, obtenu via la commande \texttt{git log --oneline --decorate}. Les commits suivent la convention Conventional Commits (\texttt{feat:}, \texttt{fix:}, \texttt{chore:}, \texttt{docs:}, \texttt{test:}), et les versions livrées sont identifiées par des tags sémantiques. Elle est référencée à la \hyperref[sec:versions-git]{partie~\ref*{sec:versions-git}}.
+Cette annexe présente le journal des versions déployées de BrackX (\texttt{CHANGELOG.md}) et les tags sémantiques associés. Elle est référencée depuis la section~\ref*{sec:journal-versions}.
 
-\section*{Journal des commits taggés}
-L'extrait ci-dessous illustre la discipline de versionnement du dépôt. On y voit les tags sémantiques (\texttt{v0.1.0}, qui marquait le prototype fonctionnel, puis \texttt{v0.2.0}) portés sur \texttt{main}, chaque fonctionnalité étant intégrée par une branche dédiée (\texttt{feat/*}) fusionnée dans \texttt{dev} puis dans \texttt{main}. Les versions ultérieures (\texttt{v0.2.1} et \texttt{v0.3.0}) suivent la même convention, comme le récapitule le tableau des versions au chapitre~4. Cette organisation rend la traçabilité des évolutions immédiate.
+\section*{CHANGELOG.md}
+\todo{Reproduire le \texttt{CHANGELOG.md} complet (format Keep a Changelog) : pour chaque version \texttt{vX.Y.Z}, la date, les rubriques Ajouté / Corrigé / Modifié / Sécurité, avec les anomalies corrigées et correctifs documentés.}
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.62\linewidth]{gitlog}
-    \caption{Extrait de \texttt{git log --oneline --decorate}~: commits conventionnels et tags sémantiques (\texttt{v0.1.0}, \texttt{v0.2.0}), fusions successives des branches \texttt{feat/*} vers \texttt{dev} puis \texttt{main}.}
-\end{figure}
-
-\noindent\hyperref[sec:versions-git]{$\hookleftarrow$ Retour à la partie~\ref*{sec:versions-git} (Gestion des versions).}
+\section*{Tags de version}
+\todo{Extrait de \texttt{git tag --list} ou \texttt{git log --oneline --decorate} montrant les versions déployées et leurs correctifs (ex : \texttt{v1.0.0}, \texttt{v1.0.1}).}

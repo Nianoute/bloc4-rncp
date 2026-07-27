@@ -1,0 +1,19 @@
+\section{Gestion des mises à jour des dépendances}
+\label{sec:dependances}
+\competence{C4.1.1}{Gérer les mises à jour des dépendances et bibliothèques tierces}{La description du processus de mise à jour des dépendances}
+\livrable{La description du processus de mise à jour des dépendances (fréquence, périmètre, type automatique ou manuel).}
+
+\subsection{Veille sur les nouvelles versions}
+\todo{Surveillance régulière : Dependabot / Renovate, \texttt{npm outdated}, avis de sécurité GitLab et \texttt{npm audit}. Décrire l'outil retenu et sa configuration.}
+
+\subsection{Fréquence des mises à jour}
+\todo{Cadence par type : sécurité (au fil des avis), correctives et mineures (hebdomadaire/mensuelle), majeures (trimestrielle, sur créneau planifié).}
+
+\subsection{Périmètre logiciel concerné}
+\todo{Dépendances backend (NestJS, Prisma), frontend (Angular), image Docker de base, outils et actions de la CI. Préciser ce qui est suivi et ce qui ne l'est pas.}
+
+\subsection{Type de mise à jour et évaluation d'impact}
+\todo{Automatique (patch/mineure : PR ouverte automatiquement, fusion si CI verte) vs manuelle (majeure / breaking change : évaluation d'impact, lecture du changelog, tests ciblés).}
+
+\subsection{Intégration sécurisée}
+\todo{Chaque mise à jour passe par la CI (lint + tests + build) avant fusion sur \texttt{main} ; \texttt{npm audit} bloquant sur les vulnérabilités critiques. Renvoyer vers l'annexe~B.}

@@ -1,17 +1,17 @@
 \section*{Rappel du projet}
-BrackX est une application web permettant de créer des tournois modulables par étapes. Le projet a été commandé par Paul-Lucas Estrada dans le cadre de l'agence CDS, une agence fictive reprenant la structuration et les bonnes pratiques de mon service d'alternance au sein d'Enedis. Le cadrage, l'analyse du besoin et les choix d'architecture ont été réalisés et validés au cours du Bloc 1. Ce dossier se concentre sur la réalisation technique de l'application~: conception, développement, tests et documentation.
+\todo{Rappel synthétique de BrackX (application web de tournois multi-phases configurables), du commanditaire (Paul-Lucas Estrada, agence CDS fictive) et du cadre alternance Enedis. 3 à 4 lignes.}
 
-\section*{Périmètre couvert par ce dossier et état d'avancement}
-Ce dossier porte sur le produit minimum viable (PMV), le prototype fonctionnel. Les fonctionnalités présentées sont celles qui servent la validation des compétences~: authentification avec onboarding (sécurité), création de tournois multi-phases combinant plusieurs formats (élimination directe, poules, ronde suisse) avec calcul des classements et des statistiques (cœur métier et algorithmes testés), configuration des qualifications inter-phases et affichage des brackets. L'application \textbf{n'est pas encore en production}. La finalisation de la V1 et la mise en production sont planifiées pour août-septembre 2026. Les évolutions ultérieures (notifications temps réel, application mobile, commentaires de match) sont hors périmètre.
+\section*{Du Bloc 2 au Bloc 4 : de la réalisation au maintien}
+\todo{Pont : la V1 de BrackX a été conçue, développée et livrée (Bloc 2) ; elle est désormais déployée et exploitée. Ce dossier documente son maintien en condition opérationnelle (MCO), sans rejustifier les choix déjà traités.}
 
-\section*{Stack technique retenue}
-Les restrictions d'Enedis (RGPD et sécurité) m'interdisant de présenter un logiciel d'entreprise, j'ai conçu un projet fictif dont le travail de solution technique est entièrement à mon charge, mais bâti sur les mêmes stacks qu'en entreprise afin de représenter fidèlement les compétences que j'y ai acquises~: NestJS (backend, API REST), Angular (frontend), PostgreSQL, Prisma (ORM) et Docker. Ces choix ont été justifiés au Bloc 1 (C1.3.2 et C1.6) et ne sont pas repris ici.
+\section*{Stack et chaîne CI/CD héritées}
+\todo{Rappel très bref de la stack (NestJS, Angular, PostgreSQL, Prisma, Docker) et de la chaîne CI/CD GitLab (image Docker unique, tags sémantiques) réutilisée pour les correctifs. Non rejustifiée.}
 
-\section*{Dépôt et période de développement}
-Le code source est versionné sur un dépôt GitLab public, accessible en lecture lors de l'évaluation. Une préproduction est également en ligne, uniquement pour faciliter la démonstration du produit et illustrer le processus de mise en production. Elle ne reproduit pas le dispositif de déploiement réel prévu pour la production dans l'entreprise.
+\section*{Périmètre du maintien en condition opérationnelle}
+\todo{Ce que couvre le dossier : mise à jour des dépendances, supervision et alerte, consignation et correction des anomalies, axes d'amélioration, journal des versions, collaboration avec le support.}
 
-\noindent Dépôt GitLab~: \url{https://gitlab.com/enzo.angot/rncp} \\
-\noindent Préproduction~: \url{https://demo-enzo.chevrier.dev/}
+\section*{Dépôt et préproduction}
+\todo{Dépôt GitLab : \url{https://gitlab.com/enzo.angot/rncp} — Préproduction : \url{https://demo-enzo.chevrier.dev/}.}
 
 \section*{Organisation du dossier}
-Ce dossier suit l'ordre logique du cycle de développement, chaque section répondant à une compétence de la grille~: mise en place de l'environnement et de l'intégration continue (C2.1.1 et C2.1.2), conception du prototype (C2.2.1), tests unitaires (C2.2.2), sécurité, accessibilité et évolutivité (C2.2.3), déploiement et gestion des versions (C2.2.4), cahier de recettes (C2.3.1), plan de correction des bogues (C2.3.2) et documentation technique d'exploitation (C2.4.1).
+\todo{Annonce du plan en 3 chapitres : maintien en condition opérationnelle (C4.1.1, C4.1.2), détection et correction des anomalies (C4.2.1, C4.2.2), amélioration continue et suivi des versions (C4.3.1, C4.3.2, C4.3.3).}

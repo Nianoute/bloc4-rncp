@@ -1,16 +1,11 @@
-\section*{Bilan de l'état d'avancement}
-Le PMV (prototype fonctionnel) couvre les fonctionnalités principales validées en COPIL~: authentification avec onboarding, création de tournois multi-phases combinant les trois formats, qualifications inter-phases avec saut d'étape, saisie des matchs avec mise à jour automatique des classements, affichage des brackets et statistiques par tournoi et par équipe. Au moment du rendu de ce dossier, le prototype est stabilisé après la recette~: les retours ont été intégrés et le code restructuré dans la version \texttt{v0.3.0}, la préproduction en ligne permettant au jury de manipuler le produit. La refonte ergonomique (\texttt{v0.4.0}), la V1 et la mise en production sont planifiées pour septembre 2026.
+\section*{Bilan du maintien en condition opérationnelle}
+\todo{Bilan du MCO sur la période : disponibilité tenue (uptime), anomalies consignées et corrigées, versions livrées. S'appuyer sur les indicateurs de supervision.}
 
-\section*{Points forts techniques}
-Deux éléments se distinguent par la complexité métier surmontée~: le moteur de tournoi (génération des matchs et des brackets pour les trois formats, propagation des qualifiés et calcul des classements avec départage des égalités) et le moteur de statistiques par tournoi et par équipe. Leur extraction en fonctions utilitaires pures a facilité leur test et isolé la logique métier, tandis que la réutilisation de la même image conteneurisée, du développement à la production, réduit le risque d'erreur au déploiement.
+\section*{Points forts}
+\todo{Réutilisation de la chaîne CI/CD du Bloc 2 pour livrer les correctifs rapidement et sans régression ; supervision légère mais suffisante pour la typologie du logiciel ; traçabilité des versions.}
 
-\section*{Principaux risques et axes d'amélioration}
-Le principal risque avant la mise en production tient à la structure du code~: menée tôt pour valider rapidement les choix de gestion des tournois, la recette a laissé une dette de conception (répétitions dans la création et l'affichage des matchs, logique de classement à simplifier, comme l'a révélé la ronde suisse). Le sprint suivant le PMV a été gelé pour corriger les points bloquants et majeurs et fiabiliser le code avant le déploiement.
-
-Le second chantier est la conformité RGPD, non encore développée~: seule l'adresse email est collectée, mais la purge ou l'anonymisation des tournois inactifs et la désactivation des comptes dormants restent à mettre en place. Reste enfin à alléger l'interface, dont le poids a imposé d'augmenter le budget Angular.
-
-\section*{Perspectives et évolutions planifiées}
-Trois évolutions sont documentées et planifiées~: notifications temps réel, application mobile et commentaires de match, toutes supportées sans refonte par l'architecture (partie évolutivité, C2.2.3). La montée en charge à grande échelle relèvera, elle, d'une segmentation des services et de la supervision étudiées au Bloc 4.
+\section*{Points d'amélioration et perspectives}
+\todo{Industrialisation de la supervision (métriques centralisées, tableaux de bord), automatisation accrue des mises à jour de dépendances, formalisation du canal support. Lien avec les axes d'amélioration du chapitre 3.}
 
 \section*{Retour d'expérience personnel}
-J'aurais préféré présenter le projet mené en entreprise, mais BrackX s'est révélé une solution de repli solide~: il m'a permis de mettre en œuvre les pratiques essentielles vues en alternance, et la recette avec Paul-Lucas Estrada a été un réel plaisir. Je remercie Roméo Chevrier, alternant de mon entreprise, qui m'a fait monter en compétence sur la mise en production, Farès Sioni pour son aide sur la structure du rapport et du code, ainsi que mon tuteur Fabrice Gascoin pour sa relecture et ses conseils.
+\todo{Posture de mainteneur : passer du développement à l'exploitation, arbitrer entre correctifs et évolutions. Remerciements (Roméo Chevrier, Farès Sioni, Fabrice Gascoin).}
