@@ -63,7 +63,7 @@ Projet *BrackX* — Agence CDS (fictif) — Candidat : Enzo ANGOT
 
 ### 2.2 — C4.2.2 — Création et déploiement d'un correctif (3 pages)
 - Reprise de l'anomalie consignée en 2.1 : de la reproduction au correctif
-- **Traitement tirant profit du CI/CD** : branche `fix/…`, commit conventionnel, PR, pipeline CI (lint + tests de non-régression), déploiement par tag correctif (ex : `v1.0.1`)
+- **Traitement tirant profit du CI/CD** : branche `fix/…`, commit conventionnel, PR, pipeline CI (lint + tests de non-régression), déploiement par tag correctif (ex : `v0.6.1`)
 - **Description du correctif** mis en place (cause racine, modification apportée, test ajouté) et vérification de la résolution
 - Retour à un état stable, traçabilité du hotfix
 - *Livrable grille : la présentation du traitement d'une anomalie détectée au cours du projet*

@@ -1,17 +1,20 @@
 \section*{Rappel du projet}
-\todo{Rappel synthétique de BrackX (application web de tournois multi-phases configurables), du commanditaire (Paul-Lucas Estrada, agence CDS fictive) et du cadre alternance Enedis. 3 à 4 lignes.}
+BrackX est une application web permettant de créer et de gérer des tournois modulables par étapes, combinant plusieurs formats (élimination directe, poules, ronde suisse) avec calcul automatique des classements et des statistiques. Le projet a été commandé par Paul-Lucas Estrada dans le cadre de l'agence CDS, une agence fictive reprenant la structuration et les bonnes pratiques de mon service d'alternance au sein d'Enedis. Le cadrage et l'architecture ont été validés au Bloc~1, la conception et le développement au Bloc~2. Le présent dossier porte sur le Bloc~4~: le maintien de l'application en condition opérationnelle, une fois celle-ci mise en production.
 
-\section*{Du Bloc 2 au Bloc 4 : de la réalisation au maintien}
-\todo{Pont : la V1 de BrackX a été conçue, développée et livrée (Bloc 2) ; elle est désormais déployée et exploitée. Ce dossier documente son maintien en condition opérationnelle (MCO), sans rejustifier les choix déjà traités.}
+\section*{Du Bloc 2 au Bloc 4~: de la réalisation au maintien}
+Là où le Bloc~2 documentait la conception, le développement et la livraison du produit minimum viable (PMV), le Bloc~4 prend le relais à partir de sa mise en service. Après la recette et une phase de fiabilisation (versions \texttt{v0.4.0} à \texttt{v0.6.0}), le PMV a été \textbf{déployé en production le 10~août~2026}. À la date de rédaction de ce dossier, le 20~août~2026, l'application est exploitée en ligne dans sa version \texttt{v0.6.0} et fait l'objet d'un suivi opérationnel. Ce dossier ne rejustifie pas les choix de conception, traités au Bloc~2~: il décrit comment l'application est \emph{surveillée, mise à jour, corrigée et améliorée} une fois en service.
 
-\section*{Stack et chaîne CI/CD héritées}
-\todo{Rappel très bref de la stack (NestJS, Angular, PostgreSQL, Prisma, Docker) et de la chaîne CI/CD GitLab (image Docker unique, tags sémantiques) réutilisée pour les correctifs. Non rejustifiée.}
+\section*{Stack et chaîne de livraison héritées}
+L'application repose sur la pile validée aux Blocs~1 et~2~: NestJS (API REST), Angular (frontend), PostgreSQL et Prisma (ORM), le tout conteneurisé avec Docker. La chaîne d'intégration et de déploiement continus mise en place au Bloc~2 est \textbf{réutilisée telle quelle} pour le maintien~: une image conteneurisée unique est construite et publiée sur le registre GitLab, le déploiement est déclenché par un tag sémantique \texttt{vX.Y.Z} et les migrations Prisma sont appliquées automatiquement au démarrage. Ces éléments ne sont pas redétaillés ici~; ils constituent le socle sur lequel s'appuient les correctifs et les évolutions présentés dans ce dossier.
 
 \section*{Périmètre du maintien en condition opérationnelle}
-\todo{Ce que couvre le dossier : mise à jour des dépendances, supervision et alerte, consignation et correction des anomalies, axes d'amélioration, journal des versions, collaboration avec le support.}
+Le dossier couvre les activités de maintien en condition opérationnelle (MCO) répondant aux compétences du Bloc~4~: la gestion des mises à jour des dépendances (C4.1.1), la conception d'un système de supervision et d'alerte (C4.1.2), la consignation des anomalies (C4.2.1) et le déploiement des correctifs (C4.2.2), puis la proposition d'axes d'amélioration (C4.3.1), la tenue d'un journal des versions déployées (C4.3.2) et la collaboration avec le support (C4.3.3). Le dispositif outillé correspondant a été mis en place dès la mise en production~: supervision et mesure d'audience (Rybbit), mise à jour des dépendances (Renovate), analyse de qualité et de sécurité du code (SonarQube, Semgrep, Trivy). L'analyse de sécurité reprend la démarche pratiquée en entreprise avec Checkmarx, reproduite ici au moyen d'équivalents open-source exécutables sur un dépôt public.
 
-\section*{Dépôt et préproduction}
-\todo{Dépôt GitLab : \url{https://gitlab.com/enzo.angot/rncp} — Préproduction : \url{https://demo-enzo.chevrier.dev/}.}
+\section*{Dépôt et environnement de production}
+Le code source est versionné sur un dépôt GitLab public, accessible en lecture lors de l'évaluation. L'application est déployée en production et accessible en ligne, ce qui permet au jury de manipuler le produit et d'en observer le suivi opérationnel.
+
+\noindent Dépôt GitLab~: \url{https://gitlab.com/enzo.angot/rncp} \\
+\noindent Production~: \url{https://demo-enzo.chevrier.dev/}
 
 \section*{Organisation du dossier}
-\todo{Annonce du plan en 3 chapitres : maintien en condition opérationnelle (C4.1.1, C4.1.2), détection et correction des anomalies (C4.2.1, C4.2.2), amélioration continue et suivi des versions (C4.3.1, C4.3.2, C4.3.3).}
+Le dossier suit l'ordre logique du cycle de maintien, chaque section répondant à une compétence de la grille. Le chapitre~1 traite du maintien en condition opérationnelle proprement dit~: gestion des mises à jour des dépendances et système de supervision. Le chapitre~2 porte sur la détection et la correction des anomalies~: processus de consignation et déploiement d'un correctif via la chaîne CI/CD. Le chapitre~3 aborde l'amélioration continue et le suivi des versions~: axes d'amélioration argumentés, journal des versions déployées et collaboration avec le support. Une annexe récapitule, compétence par compétence, la validation apportée par le projet.
