@@ -3,11 +3,11 @@
 \section*{Objet de l'annexe}
 Cette annexe rassemble les preuves du processus de mise à jour des dépendances décrit à la section~\ref*{sec:dependances}.
 
-\section*{Configuration de la veille automatisée}
-\todo{Fichier de configuration Dependabot / Renovate (\texttt{.gitlab/dependabot.yml} ou \texttt{renovate.json}) : périmètre, planning, règles d'auto-merge.}
-
-\section*{Rapport de vulnérabilités}
-\todo{Sortie de \texttt{npm audit} (back et front) et de \texttt{npm outdated} illustrant l'état des dépendances et les vulnérabilités traitées.}
+\section*{Configuration de Renovate}
+\todo{Fichier \texttt{renovate.json} : périmètre suivi, planning (schedule), règles de groupement et d'auto-merge (patch/mineure si CI verte), gestion des majeures.}
 
 \section*{Exemple de mise à jour intégrée}
-\todo{Capture d'une merge request de mise à jour (PR Dependabot) passée par la CI avant fusion.}
+\todo{Capture d'une merge request Renovate passée par la CI (lint + tests + build au vert) avant fusion.}
+
+\section*{Évaluation de sécurité des dépendances}
+\todo{Sortie de \texttt{npm audit} et rapport \textbf{Trivy} (SCA) illustrant les vulnérabilités détectées et traitées — équivalents open-source de Checkmarx SCA utilisé en entreprise. \texttt{npm outdated} pour l'état des versions.}

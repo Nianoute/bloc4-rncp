@@ -3,11 +3,11 @@
 \section*{Objet de l'annexe}
 Cette annexe rassemble la configuration et les captures du système de supervision décrit à la section~\ref*{sec:supervision}.
 
-\section*{Configuration des sondes}
-\todo{Extraits de configuration : healthcheck applicatif (\texttt{/health} NestJS via \texttt{@nestjs/terminus}), healthcheck Docker (\texttt{HEALTHCHECK} / \texttt{docker-compose}), configuration de la sonde d'uptime externe.}
+\section*{Endpoint de santé et sondes}
+\todo{Extrait de l'endpoint \texttt{/health} (\textbf{@nestjs/terminus} : vérification base via Prisma, mémoire) et configuration du moniteur d'uptime Rybbit (URL surveillée, intervalle, seuils).}
 
-\section*{Tableau de bord de disponibilité}
-\todo{Capture du tableau de bord d'uptime (UptimeRobot ou équivalent) montrant la disponibilité (\%), le temps de réponse et l'historique des incidents.}
+\section*{Tableau de bord Rybbit}
+\todo{Captures du tableau de bord \textbf{Rybbit} : disponibilité (uptime \%), Core Web Vitals (LCP, INP, CLS), et vue analytics/session replay.}
 
 \section*{Exemple d'alerte}
-\todo{Capture d'une alerte reçue (e-mail / webhook) lors d'une indisponibilité ou d'un seuil dépassé.}
+\todo{Capture d'une alerte Rybbit reçue (e-mail / webhook) lors d'une indisponibilité ou d'un seuil dépassé.}

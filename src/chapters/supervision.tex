@@ -3,17 +3,17 @@
 \competence{C4.1.2}{Concevoir un système de supervision et d'alerte}{La description du système de supervision}
 \livrable{La description du système de supervision : périmètre, sondes et finalité, critères de qualité/performance, surveillance de la disponibilité.}
 
-\subsection{Périmètre de supervision}
-\todo{Adapté à la typologie « application web conteneurisée » : disponibilité HTTP du frontend et de l'API, base PostgreSQL, ressources du conteneur (CPU/mémoire). Justifier le périmètre.}
+\subsection{Outil et périmètre de supervision}
+\todo{Outil retenu : \textbf{Rybbit} (auto-hébergé Docker) — uptime, Core Web Vitals et web analytics réunis, adapté à la typologie « application web conteneurisée ». Périmètre : disponibilité HTTP (front + API), santé applicative et base PostgreSQL, ressources du conteneur. Justifier le périmètre.}
 
 \subsection{Sondes mises en place et leur finalité}
-\todo{Healthcheck applicatif (\texttt{/health}), healthcheck base de données, sonde d'uptime externe (UptimeRobot), collecte des logs applicatifs. Expliciter la finalité de chaque sonde.}
+\todo{Moniteur d'uptime Rybbit sur l'URL de production ; endpoint applicatif \texttt{/health} (\textbf{@nestjs/terminus} vérifiant la base via Prisma) pingé par Rybbit ; collecte des Core Web Vitals ; logs applicatifs structurés (\textbf{pino}). Expliciter la finalité de chaque sonde.}
 
 \subsection{Indicateurs et critères de qualité/performance}
-\todo{Disponibilité (uptime \%), temps de réponse des endpoints principaux, taux d'erreurs 5xx, consommation CPU/mémoire. Donner les seuils cibles adaptés au projet.}
+\todo{Disponibilité (uptime \%), temps de réponse et Core Web Vitals (LCP, INP, CLS), taux d'erreurs, consommation ressources. Donner les seuils cibles adaptés au projet.}
 
 \subsection{Modalités de signalement}
-\todo{Alerte e-mail / webhook déclenchée sur indisponibilité ou dépassement de seuil ; destinataire et délai de réaction. Renvoyer vers les captures en annexe~C.}
+\todo{Alerte Rybbit (e-mail / webhook) déclenchée sur indisponibilité ou dépassement de seuil ; destinataire et délai de réaction. Renvoyer vers les captures en annexe~C.}
 
 \subsection{Garantie de disponibilité}
 \todo{Comment l'ensemble sonde + alerte garantit une disponibilité permanente et permet de réagir avant impact utilisateur.}

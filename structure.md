@@ -11,6 +11,19 @@ Projet *BrackX* — Agence CDS (fictif) — Candidat : Enzo ANGOT
 > ce dossier documente son maintien en conditions opérationnelles (MCO).
 > Limite : **20 pages hors annexes**. Cible : ~18 pages. Aucune compétence éliminatoire au Bloc 4.
 
+### Outillage MCO retenu (à mettre en place)
+
+| Rôle | Outil | Preuve → annexe |
+|---|---|---|
+| Supervision (uptime, Core Web Vitals) + analytics utilisateurs | **Rybbit** + endpoint `/health` (@nestjs/terminus) | C |
+| Mise à jour des dépendances | **Renovate** (`renovate.json`) | B |
+| Sécurité code + dépendances | **Semgrep / GitLab SAST** + **Trivy / `npm audit`** — équivalents open-source de **Checkmarx** (SAST/SCA) utilisé en entreprise (Enedis) | B, D, E |
+| Qualité du code (bugs, smells, couverture, dette) | **SonarQube / SonarCloud** | D, E |
+| Journal des versions | **CHANGELOG.md** (Keep a Changelog) + tags sémantiques | F |
+| Consignation / correctifs / support | Issues GitLab (gabarit de bogue) + CI/CD GitLab existante | D, E, G |
+
+> Note de cadrage : Checkmarx étant une solution licenciée non déployable sur le dépôt personnel BrackX, la démarche entreprise (SAST + SCA) est reproduite avec des équivalents open-source exécutés en CI, ce qui garantit des preuves réelles tout en reflétant fidèlement la pratique professionnelle.
+
 ---
 
 ## Introduction et contexte du maintien en condition opérationnelle (1,5 page)
@@ -23,25 +36,26 @@ Projet *BrackX* — Agence CDS (fictif) — Candidat : Enzo ANGOT
 ## Chapitre 1 : Maintien en condition opérationnelle (6 pages)
 
 ### 1.1 — C4.1.1 — Gestion des mises à jour des dépendances (3 pages)
-- Processus de veille : surveillance régulière des nouvelles versions (Dependabot / Renovate, `npm outdated`, avis de sécurité GitLab)
-- **Fréquence** des mises à jour (ex : hebdomadaire pour la sécurité, mensuelle pour les mineures, trimestrielle pour les majeures)
+- Processus de veille : **Renovate** (natif GitLab) surveille les nouvelles versions et ouvre des MR de mise à jour ; complété par `npm outdated` et les avis de sécurité
+- **Fréquence** des mises à jour (ex : sécurité au fil des avis, mineures hebdomadaires groupées, majeures en revue mensuelle planifiée)
 - **Périmètre logiciel concerné** (dépendances back NestJS/Prisma, front Angular, image Docker de base, actions/outils CI)
-- **Type de mise à jour** : automatique (patch/mineure via PR auto + CI verte) vs manuelle (majeure, breaking changes) avec évaluation d'impact
-- Intégration sécurisée : `npm audit`, passage obligatoire par la CI (lint + tests + build) avant fusion
+- **Type de mise à jour** : automatique (patch/mineure : MR Renovate auto-mergée si CI verte) vs manuelle (majeure, breaking changes) avec évaluation d'impact
+- Intégration sécurisée : évaluation de l'impact **sécurité** des dépendances par **Trivy** + `npm audit` (équivalents open-source de **Checkmarx SCA** utilisé en entreprise/Enedis) ; passage obligatoire par la CI (lint + tests + build) avant fusion
 - *Livrable grille : la description du processus de mise à jour des dépendances (fréquence, périmètre, type)*
 
 ### 1.2 — C4.1.2 — Système de supervision et d'alerte (3 pages)
-- Périmètre de supervision adapté à la typologie (application web conteneurisée : disponibilité HTTP, base PostgreSQL, ressources conteneur)
-- **Sondes** mises en place et leur finalité : healthcheck applicatif (`/health`), healthcheck base, uptime externe (UptimeRobot), logs applicatifs
-- **Indicateurs de suivi** pertinents et **critères de qualité/performance** : disponibilité (uptime %), temps de réponse API, taux d'erreurs 5xx, usage CPU/mémoire
-- Modalités de **signalement** (alerte e-mail / webhook en cas d'indisponibilité ou de seuil dépassé)
+- Outil retenu : **Rybbit** (auto-hébergé Docker / cloud) — supervision d'**uptime**, **Core Web Vitals** et **web analytics** dans un même outil, adapté à la typologie « application web »
+- Périmètre de supervision : disponibilité HTTP (front + API), santé applicative et base PostgreSQL, ressources conteneur
+- **Sondes** mises en place et leur finalité : moniteur d'uptime Rybbit sur l'URL de prod, endpoint applicatif `/health` (**@nestjs/terminus** : vérifie la base via Prisma) pingé par Rybbit, collecte des Core Web Vitals, logs applicatifs structurés (**pino**)
+- **Indicateurs de suivi** et **critères de qualité/performance** : disponibilité (uptime %), temps de réponse / Core Web Vitals (LCP, INP, CLS), taux d'erreurs, usage ressources — avec seuils cibles
+- Modalités de **signalement** : alerte Rybbit (e-mail / webhook) en cas d'indisponibilité ou de seuil dépassé
 - Garantie de disponibilité permanente du logiciel
 - *Livrable grille : la description du système de supervision (sondes, critères, disponibilité)*
 
 ## Chapitre 2 : Détection et correction des anomalies (6 pages)
 
 ### 2.1 — C4.2.1 — Consignation des anomalies (3 pages)
-- Processus de **collecte** structuré et adapté à la typologie du logiciel (canaux : supervision, retours utilisateurs/support, logs)
+- Processus de **collecte** structuré et adapté à la typologie du logiciel — canaux : supervision (alertes Rybbit), analyse statique **SonarQube** (qualité) et **Semgrep/Trivy** (sécurité, ≡ Checkmarx en entreprise), retours utilisateurs/support, logs
 - Outil de consignation (issues GitLab, gabarit de ticket de bogue)
 - Contenu d'une **fiche de consignation** : identifiant, environnement, étapes de reproduction, résultat attendu/obtenu, sévérité, logs/captures
 - Présentation d'une **fiche complète d'une anomalie réelle** rencontrée au cours du projet (avec analyse et préconisations de correction)
@@ -57,7 +71,7 @@ Projet *BrackX* — Agence CDS (fictif) — Candidat : Enzo ANGOT
 ## Chapitre 3 : Amélioration continue et suivi des versions (6 pages)
 
 ### 3.1 — C4.3.1 — Axes d'amélioration (2,5 pages)
-- Analyse des **indicateurs de performance** (issus de la supervision) et des **retours utilisateurs** (support, recette)
+- Analyse des **indicateurs de performance** (Core Web Vitals et **analytics/session replay Rybbit**, dette technique **SonarQube**) et des **retours utilisateurs** (support, recette)
 - **Recommandations argumentées** d'amélioration, chacune évaluée : gain attendu, coût, délai de mise en œuvre, faisabilité au regard du projet
 - Priorisation (ex : matrice valeur/effort) et lien avec l'attractivité du logiciel
 - *Livrable grille : la présentation des recommandations argumentées d'amélioration*
@@ -85,8 +99,8 @@ Projet *BrackX* — Agence CDS (fictif) — Candidat : Enzo ANGOT
 
 ## Annexes (hors comptage des pages)
 - **A.** Validation des compétences du Bloc 4 (mapping compétence → section → preuve)
-- **B.** Processus de mise à jour des dépendances (config Dependabot/Renovate, rapport `npm audit`, `npm outdated`)
-- **C.** Système de supervision (configuration des sondes / healthchecks, captures du tableau de bord d'uptime)
+- **B.** Processus de mise à jour des dépendances (config `renovate.json`, MR Renovate, rapports `npm audit` + Trivy, `npm outdated`)
+- **C.** Système de supervision (config Rybbit + endpoint `/health` terminus, captures du tableau de bord uptime / Core Web Vitals, exemple d'alerte)
 - **D.** Fiche de consignation complète d'une anomalie (gabarit rempli)
 - **E.** Traitement d'un correctif (issue → branche `fix/…` → merge request → pipeline CD → tag)
 - **F.** Journal des versions déployées (`CHANGELOG.md` complet + `git tag`)
