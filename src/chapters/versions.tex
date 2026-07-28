@@ -3,11 +3,29 @@
 \competence{C4.3.2}{Établir un journal des versions déployées}{La présentation d'un exemplaire du journal de version}
 \livrable{Un journal de version contenant les améliorations apportées (anomalies corrigées, nouvelles fonctionnalités) et documentant les correctifs déployés.}
 
+Suivre les évolutions d'un logiciel en exploitation suppose de savoir, pour chaque version déployée, ce qu'elle apporte et corrige. BrackX tient à cet effet un \textbf{journal des versions} (\texttt{CHANGELOG.md}) versionné avec le code, qui documente les correctifs et les évolutions livrés.
+
 \subsection{Tenue du journal des versions}
-\todo{\texttt{CHANGELOG.md} aligné sur les tags sémantiques \texttt{vX.Y.Z} ; règle de tenue (Keep a Changelog) et lien avec les Conventional Commits.}
+Le journal suit le format \emph{Keep a Changelog}~: chaque version déployée y figure sous son numéro sémantique et sa date, avec des rubriques normalisées (\emph{Ajouté}, \emph{Modifié}, \emph{Corrigé}, \emph{Sécurité}). Il s'aligne sur les \textbf{tags sémantiques} qui déclenchent le déploiement (chapitre~2)~: à chaque tag \texttt{vX.Y.Z} correspond une entrée du journal. Comme les commits respectent la convention \emph{Conventional Commits}, le journal peut être pré-rempli automatiquement à partir de l'historique (par un outil tel que \texttt{git-cliff} ou \texttt{release-please}) puis relu et complété, ce qui fiabilise la traçabilité sans effort de rédaction manuel.
 
 \subsection{Contenu par version}
-\todo{Pour chaque version : anomalies corrigées, nouvelles fonctionnalités, correctifs documentés. Montrer la traçabilité des évolutions.}
+Chaque entrée relie une version à ses \textbf{améliorations} (nouvelles fonctionnalités, corrections d'anomalies) et, pour les correctifs, renvoie à l'issue traitée. La traçabilité est ainsi complète~: version $\rightarrow$ commits $\rightarrow$ issue. L'extrait ci-dessous illustre le journal, avec la mise en production initiale (\texttt{v0.6.0}) et le correctif de l'anomalie \texttt{\#142} (\texttt{v0.6.1}).
 
-\subsection{Exemplaire du journal de version}
-\todo{Présenter un extrait commenté d'une entrée de version (ex : \texttt{v0.6.1}). Journal complet en annexe~F.}
+\begin{lstlisting}[caption={Extrait du fichier \texttt{CHANGELOG.md}.},captionpos=b]
+## [0.6.1] - 2026-08-14
+### Corrige
+- Ronde suisse : gestion de l'exempt lorsqu'une poule compte un
+  nombre impair d'equipes, qui provoquait une erreur 500 (#142)
+
+## [0.6.0] - 2026-08-10
+### Ajoute
+- Mise en production initiale du produit minimum viable
+- Creation de tournois multi-phases (elimination directe, poules,
+  ronde suisse) avec classements et statistiques
+- Authentification avec onboarding et gestion des roles
+\end{lstlisting}
+
+\subsection{Exploitation du journal}
+Ce journal sert autant à l'équipe qu'aux utilisateurs~: il documente les correctifs déployés pour la traçabilité interne et peut alimenter une communication de type « notes de version ». Le journal complet et la liste des tags sont fournis en \hyperref[chap:annexe-versions]{annexe~\ref*{chap:annexe-versions}}.
+
+\todo{Compléter le \texttt{CHANGELOG.md} réel au fil des déploiements (dates et contenus exacts) et reporter le journal complet en annexe~F.}

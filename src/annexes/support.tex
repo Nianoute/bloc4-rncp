@@ -1,10 +1,18 @@
 % Annexe G — Échange avec le support client
 \label{chap:annexe-support}
 \section*{Objet de l'annexe}
-Cette annexe reproduit l'échange à l'origine du problème résolu en collaboration avec le support, présenté à la section~\ref*{sec:support}.
+Cette annexe reproduit le fil de l'échange à l'origine du problème résolu en collaboration avec le support, présenté à la section~\ref*{sec:support}. Elle constitue le livrable attendu pour la compétence C4.3.3.
 
-\section*{Retour client initial}
-\todo{Fil de la demande : message du client / du support décrivant le problème rencontré (anonymisé si besoin).}
+\section*{Fil de la demande}
+\begin{description}
+    \item[1. Retour client (organisateur $\rightarrow$ support)] « Bonjour, dans mon tournoi, à la fin des poules, l'équipe \emph{Les Comètes} devait être qualifiée mais c'est \emph{Les Faucons} qui passe alors qu'elles ont le même nombre de points. Je pense qu'il y a un bug dans le classement. »
+    \item[2. Qualification (support)] Le support accuse réception, demande l'identifiant du tournoi et reproduit le classement obtenu. Il constate qu'aucune erreur technique n'est survenue~: il ne s'agit pas d'une panne mais d'un résultat jugé inattendu. La demande est transmise au développeur avec le cas reproduit.
+    \item[3. Analyse (développeur)] En cas d'égalité de points, la cascade de départage a tranché sur la différence de scores, critère prioritaire sur la confrontation directe dans la configuration de ce tournoi. \emph{Les Faucons} ayant une meilleure différence de scores, le classement est \textbf{conforme à la spécification}. Le comportement est correct, mais l'ordre des critères, non affiché, rendait la décision opaque pour l'organisateur.
+    \item[4. Arbitrage (commanditaire)] Paul-Lucas Estrada confirme l'ordre des critères de départage comme règle métier de référence.
+    \item[5. Résolution (support $\rightarrow$ client)] Le support explique à l'organisateur le critère ayant départagé les deux équipes, indique la mise à jour de la documentation sur l'ordre des critères, et annonce une amélioration planifiée~: afficher dans l'interface le critère ayant tranché chaque égalité. L'organisateur confirme que la réponse lève son incompréhension.
+\end{description}
 
-\section*{Résolution et clôture}
-\todo{Échanges de qualification, diagnostic technique, correctif apporté et confirmation de résolution par le client. Faire apparaître la contribution de chaque partie prenante.}
+\section*{Contribution des parties prenantes}
+Le \textbf{support} a filtré, reproduit et reformulé un retour flou en cas exploitable, puis assuré la communication~; le \textbf{développeur} a apporté l'expertise établissant la conformité du comportement et proposé l'amélioration de transparence~; le \textbf{commanditaire} a tranché sur la règle métier.
+
+\todo{Remplacer par un échange de support réellement survenu (fil anonymisé, dates réelles).}

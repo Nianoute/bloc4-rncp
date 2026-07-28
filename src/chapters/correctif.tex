@@ -3,11 +3,23 @@
 \competence{C4.2.2}{Créer et déployer un correctif en respectant le CI/CD}{La présentation du traitement d'une anomalie détectée}
 \livrable{La présentation du traitement d'une anomalie détectée au cours du projet, tirant profit du processus d'intégration et de déploiement continu.}
 
-\subsection{De l'anomalie consignée au correctif}
-\todo{Reprendre l'anomalie consignée en 2.1 : reproduction, identification de la cause racine.}
+Le traitement de l'anomalie \texttt{\#142} consignée à la section précédente illustre comment un correctif est créé, validé et déployé en s'appuyant sur la chaîne d'intégration et de déploiement continus héritée du Bloc~2. L'enjeu est double~: résoudre le défaut et garantir l'absence de régression, sans court-circuiter le processus qui sécurise la mise en production.
 
-\subsection{Traitement via le CI/CD}
-\todo{Branche \texttt{fix/…}, commit conventionnel, merge request, pipeline CI (lint + tests de non-régression), déploiement par tag correctif (ex : \texttt{v0.6.1}). Montrer que le correctif tire profit de la chaîne existante.}
+\subsection{De l'anomalie consignée au correctif}
+La première étape est la \textbf{reproduction locale}. À partir des étapes de la fiche de consignation, le cas est rejoué~: une poule en ronde suisse de cinq équipes, dont on tente de générer la deuxième ronde. L'erreur \texttt{500} est reproduite et les journaux confirment la \textbf{cause racine}~: la fonction d'appariement parcourt les équipes deux à deux en supposant un effectif pair~; la dernière équipe reste sans adversaire et l'accès à cet adversaire indéfini lève une exception. Le correctif consiste à traiter ce cas en attribuant un \emph{exempt} (\emph{bye}) à l'équipe non appariée, conformément aux règles du format.
+
+\subsection{Traitement via la chaîne CI/CD}
+Le correctif suit le circuit standard du projet, sans exception~:
+\begin{itemize}
+    \item création d'une branche dédiée \texttt{fix/ronde-suisse-nombre-impair} à partir de \texttt{main}~;
+    \item implémentation de la gestion de l'exempt et ajout d'un \textbf{test de non-régression} reproduisant le cas d'un effectif impair~;
+    \item commit au format \emph{Conventional Commits} (\texttt{fix(tournoi): gérer l'exempt en ronde suisse à effectif impair}) référençant l'issue \texttt{\#142}~;
+    \item ouverture d'une \textbf{merge request} qui déclenche le \textbf{pipeline d'intégration}~: lint, tests unitaires (dont le nouveau test) et build. La fusion vers \texttt{main} reste impossible tant que le pipeline n'est pas au vert~;
+    \item après fusion, pose du tag sémantique \texttt{v0.6.1} qui déclenche le \textbf{déploiement continu}~: construction et publication de l'image conteneurisée, puis mise en production. Ce correctif ne nécessitant pas de changement de schéma, aucune migration Prisma n'est appliquée.
+\end{itemize}
+Le correctif \textbf{tire ainsi pleinement profit} du dispositif existant~: la CI garantit la non-régression, le déploiement par tag assure une mise en production reproductible et tracée. Les captures de la merge request, du pipeline et de l'extrait de code corrigé sont fournies en \hyperref[chap:annexe-correctif]{annexe~\ref*{chap:annexe-correctif}}.
 
 \subsection{Description du correctif et vérification}
-\todo{Modification apportée, test ajouté couvrant le cas, vérification de la résolution en préproduction puis en production. Traçabilité du hotfix. Détail en annexe~E.}
+Le correctif ajoute, dans la génération d'une ronde, la détection d'un effectif impair et l'attribution d'un exempt à l'équipe non appariée, qui se voit crédités les points correspondants selon la règle du format~; le test de non-régression vérifie qu'une poule de cinq équipes génère désormais sa ronde suivante sans erreur et avec un exempt correctement attribué. La \textbf{résolution est vérifiée} d'abord sur la préproduction, en rejouant le scénario de la fiche, puis en production~: le taux d'erreurs \texttt{5xx} suivi par la supervision revient à sa valeur nominale, ce qui confirme la disparition de l'anomalie côté utilisateur. L'issue \texttt{\#142} est alors clôturée en référençant le commit et la version \texttt{v0.6.1}, assurant la \textbf{traçabilité} de bout en bout, de la détection à la résolution. Cette version est reportée au journal des versions (chapitre~3).
+
+\todo{Adapter le récit au correctif réel une fois l'anomalie choisie~: nom de branche, commit, numéro de version, et insérer les captures (MR, pipeline vert, diff) en annexe~E.}

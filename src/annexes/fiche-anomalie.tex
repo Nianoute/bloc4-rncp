@@ -1,10 +1,42 @@
 % Annexe D — Fiche de consignation d'une anomalie
 \label{chap:annexe-fiche-anomalie}
 \section*{Objet de l'annexe}
-Cette annexe présente la fiche de consignation complète d'une anomalie réelle rencontrée au cours du projet, référencée à la section~\ref*{sec:consignation}.
+Cette annexe présente le gabarit de consignation puis la fiche complète de l'anomalie \texttt{\#142}, référencée à la section~\ref*{sec:consignation}. Elle constitue le livrable « fiche de consignation d'une anomalie » attendu pour la compétence C4.2.1.
 
-\section*{Gabarit de fiche de consignation}
-\todo{Reproduire le gabarit de ticket de bogue (issue GitLab) : identifiant, titre, environnement, version, sévérité, étapes de reproduction, résultat attendu, résultat obtenu, logs/captures, analyse, préconisation.}
+\section*{Gabarit de fiche de consignation (\texttt{.gitlab/issue\_templates/Bug.md})}
+Le gabarit impose les rubriques suivantes~: \textbf{identifiant}, \textbf{titre}, \textbf{date}, \textbf{environnement et version}, \textbf{sévérité}, \textbf{composant}, \textbf{étapes de reproduction}, \textbf{résultat attendu}, \textbf{résultat obtenu}, \textbf{journaux/captures}, \textbf{analyse} (cause racine) et \textbf{préconisation} de correction.
 
-\section*{Fiche remplie d'une anomalie du projet}
-\todo{Fiche complète d'une anomalie réelle avec toutes les informations permettant de la reproduire, son analyse et les préconisations de correction. Capture de l'issue GitLab correspondante.}
+\section*{Fiche remplie --- anomalie \texttt{\#142}}
+\begin{description}
+    \item[Identifiant] \texttt{\#142}
+    \item[Titre] Erreur 500 à la génération d'une ronde en ronde suisse avec un effectif impair
+    \item[Date de signalement] 12 août 2026
+    \item[Environnement] Production --- \texttt{v0.6.0}
+    \item[Sévérité] Majeur (empêche la poursuite d'un tournoi dans cette configuration, contournable en ajustant l'effectif)
+    \item[Composant] Moteur de tournoi --- appariement en ronde suisse
+    \item[Canal de détection] Supervision (alerte de hausse du taux d'erreurs \texttt{5xx}) confirmée par un signalement d'un organisateur via le support
+    \item[Étapes de reproduction] \hfill
+        \begin{enumerate}
+            \item créer un tournoi comportant une phase au format ronde suisse~;
+            \item y inscrire cinq équipes (effectif impair)~;
+            \item saisir les résultats de la première ronde~;
+            \item demander la génération de la ronde suivante.
+        \end{enumerate}
+    \item[Résultat attendu] La ronde suivante est générée~; l'équipe non appariée reçoit un exempt.
+    \item[Résultat obtenu] L'API renvoie une erreur \texttt{500}~; la ronde n'est pas générée.
+    \item[Journaux] \hfill
+\end{description}
+
+\begin{lstlisting}
+ERROR [ExceptionsHandler] TypeError: Cannot read properties of
+undefined (reading 'id')
+  at genererAppariementsRondeSuisse (tournoi/appariement.util.ts:58)
+  at RondesService.genererRondeSuivante (rondes.service.ts:112)
+\end{lstlisting}
+
+\begin{description}
+    \item[Analyse (cause racine)] La fonction \texttt{genererAppariementsRondeSuisse} parcourt les équipes classées deux à deux en supposant un effectif pair. Avec un effectif impair, la dernière équipe reste sans adversaire et l'accès à cet adversaire indéfini lève une exception non gérée.
+    \item[Préconisation] Détecter l'effectif impair et attribuer un exempt (\emph{bye}) à l'équipe non appariée selon la règle du format, puis ajouter un test de non-régression couvrant ce cas.
+\end{description}
+
+\todo{Remplacer par la capture de l'issue GitLab réelle et par une anomalie réellement rencontrée (identifiant, dates et journaux réels).}

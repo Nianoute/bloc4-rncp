@@ -3,17 +3,48 @@
 \competence{C4.1.1}{Gérer les mises à jour des dépendances et bibliothèques tierces}{La description du processus de mise à jour des dépendances}
 \livrable{La description du processus de mise à jour des dépendances (fréquence, périmètre, type automatique ou manuel).}
 
+Une application web moderne repose sur un grand nombre de bibliothèques tierces~: le backend NestJS et le frontend Angular de BrackX totalisent, dépendances directes et transitives confondues, plusieurs centaines de paquets. Maintenir ces dépendances à jour est indispensable pour corriger les vulnérabilités de sécurité et bénéficier des correctifs des éditeurs, mais chaque montée de version comporte un risque de régression. Le processus décrit ci-dessous concilie donc réactivité, en priorité sur la sécurité, et stabilité~: il automatise ce qui peut l'être sans risque et encadre les mises à jour sensibles.
+
 \subsection{Veille sur les nouvelles versions}
-\todo{Outil retenu : \textbf{Renovate} (natif GitLab), qui surveille en continu les nouvelles versions et ouvre des merge requests de mise à jour ; complété par \texttt{npm outdated}. Décrire la configuration \texttt{renovate.json} (annexe~B).}
+La surveillance des nouvelles versions est confiée à \textbf{Renovate}, intégré nativement à GitLab, là où Dependabot est spécifique à GitHub. Renovate analyse en continu les fichiers \texttt{package.json} et \texttt{package-lock.json} du dépôt, compare les versions déclarées aux dernières versions publiées sur le registre npm et ouvre automatiquement une merge request pour chaque mise à jour disponible. Une issue dédiée, le \emph{Dependency Dashboard}, recense en permanence l'état des dépendances et les mises à jour en attente, ce qui donne une vue d'ensemble sans effort de veille manuel. La commande \texttt{npm outdated} reste utilisée ponctuellement pour un contrôle indépendant. La configuration \texttt{renovate.json} et une capture du \emph{Dependency Dashboard} sont fournies en \hyperref[chap:annexe-dependances]{annexe~\ref*{chap:annexe-dependances}}.
 
 \subsection{Fréquence des mises à jour}
-\todo{Cadence par type : sécurité (au fil des avis), correctives et mineures (MR Renovate groupées, hebdomadaires), majeures (revue mensuelle planifiée).}
+La cadence est différenciée selon la nature de la mise à jour, afin de traiter la sécurité en priorité sans être submergé par le bruit des montées de version mineures. Renovate est configuré pour regrouper les mises à jour non critiques dans des lots hebdomadaires, tandis que les avis de sécurité déclenchent une merge request immédiate. Le tableau~\ref{tab:renovate} résume la politique retenue.
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|p{3.1cm}|p{3.1cm}|p{8cm}|}
+        \hline
+        \textbf{Nature} & \textbf{Fréquence} & \textbf{Traitement} \\
+        \hline
+        Sécurité (CVE / avis) & Dès publication & Merge request prioritaire, fusion accélérée après validation de la CI \\
+        \hline
+        Correctif (\emph{patch}) & Hebdomadaire, groupé & Merge request auto-fusionnée si la CI est verte \\
+        \hline
+        Mineure (\emph{minor}) & Hebdomadaire, groupé & Merge request auto-fusionnée si la CI est verte \\
+        \hline
+        Majeure (\emph{major}) & Revue mensuelle & Merge request traitée manuellement~: lecture du changelog, évaluation d'impact, tests ciblés \\
+        \hline
+    \end{tabular}
+    \caption{Politique de mise à jour des dépendances par nature de version.}
+    \label{tab:renovate}
+\end{table}
 
 \subsection{Périmètre logiciel concerné}
-\todo{Dépendances backend (NestJS, Prisma), frontend (Angular), image Docker de base, outils et actions de la CI. Préciser ce qui est suivi par Renovate et ce qui ne l'est pas.}
+Le périmètre couvert par le processus englobe l'ensemble des composants versionnés du projet~:
+\begin{itemize}
+    \item les dépendances du \textbf{backend} NestJS, dont Prisma (ORM) et better-auth (authentification)~;
+    \item les dépendances du \textbf{frontend} Angular~;
+    \item l'\textbf{image Docker de base} utilisée pour construire l'image de production~;
+    \item les \textbf{outils et actions de la chaîne d'intégration continue} déclarés dans \texttt{.gitlab-ci.yml}.
+\end{itemize}
+Les mises à jour sont groupées par écosystème (backend, frontend, outillage) pour limiter le nombre de merge requests et faciliter la revue. Les dépendances épinglées pour raison de compatibilité (par exemple une version majeure d'Angular non encore prise en charge par une bibliothèque tierce) sont explicitement exclues de l'automatisation et suivies manuellement.
 
 \subsection{Type de mise à jour et évaluation d'impact}
-\todo{Automatique (patch/mineure : MR Renovate auto-mergée si CI verte) vs manuelle (majeure / breaking change : évaluation d'impact, lecture du changelog, tests ciblés).}
+Deux régimes coexistent selon le risque de régression. Les mises à jour \textbf{automatiques} concernent les correctifs et les versions mineures~: la merge request ouverte par Renovate est fusionnée sans intervention dès lors que la CI est verte (lint, tests unitaires, build). Le risque est faible car le versionnement sémantique garantit l'absence de rupture d'interface, et le filet des tests de non-régression détecte les effets de bord éventuels. Les mises à jour \textbf{manuelles} concernent les versions majeures et toute dépendance sensible~: elles imposent la lecture du \emph{changelog} de l'éditeur, l'évaluation des changements de rupture, l'adaptation du code si nécessaire et une validation sur la préproduction avant fusion. Cette distinction garantit qu'aucune montée de version à risque n'atteint la production sans revue humaine.
 
 \subsection{Intégration sécurisée}
-\todo{Évaluation de l'impact sécurité des dépendances par \textbf{Trivy} + \texttt{npm audit} (équivalents open-source de \textbf{Checkmarx SCA} utilisé en entreprise chez Enedis) ; chaque MR passe par la CI (lint + tests + build) avant fusion sur \texttt{main}. Renvoyer vers l'annexe~B.}
+L'intérêt d'une mise à jour de dépendance étant souvent la correction d'une faille, l'évaluation de sécurité fait partie intégrante du processus. Chaque merge request, y compris celles générées par Renovate, franchit obligatoirement la chaîne d'intégration continue avant fusion~: aucune mise à jour ne rejoint la branche \texttt{main} sans un pipeline vert. La CI exécute une analyse de composition logicielle (\emph{Software Composition Analysis}) avec \textbf{Trivy}, complétée par \texttt{npm audit}, qui signalent les vulnérabilités connues des dépendances et bloquent la fusion en cas de faille critique. En entreprise, chez Enedis, cette étape est réalisée avec \textbf{Checkmarx}~; elle est reproduite ici au moyen d'équivalents open-source exécutables sur un dépôt public, dans la même logique. Les rapports \texttt{npm audit} et Trivy sont fournis en \hyperref[chap:annexe-dependances]{annexe~\ref*{chap:annexe-dependances}}.
+
+\todo{Une fois Renovate posé~: ajuster la fréquence réelle configurée dans \texttt{renovate.json}, confirmer les règles d'auto-merge et insérer les captures (Dependency Dashboard, une MR Renovate fusionnée, rapport Trivy/\texttt{npm audit}) en annexe~B.}

@@ -1,12 +1,39 @@
 \section{Axes d'amélioration}
+\label{sec:amelioration}
 \competence{C4.3.1}{Proposer des axes d'amélioration}{La présentation des recommandations argumentées d'amélioration}
 \livrable{Des recommandations argumentées, évaluant les gains (coût, délai), réalistes et renforçant l'attractivité du logiciel.}
 
+Maintenir un logiciel ne se limite pas à le corriger~: il s'agit aussi de l'améliorer pour préserver son attractivité. Les axes proposés ci-dessous ne sont pas choisis au hasard~; ils découlent des \textbf{indicateurs} collectés en production et des \textbf{retours} recueillis, ce qui garantit des recommandations fondées et réalistes au regard du projet.
+
 \subsection{Analyse des indicateurs et des retours utilisateurs}
-\todo{Exploiter les indicateurs de performance (Core Web Vitals et analytics/session replay \textbf{Rybbit}, dette technique \textbf{SonarQube}) et les retours utilisateurs (support, recette) pour identifier les points d'amélioration.}
+Trois sources alimentent l'analyse~: les \textbf{données d'usage et de performance Rybbit} (Core Web Vitals, parcours et rejeu de session), la \textbf{dette technique mesurée par SonarQube} (duplication et complexité), et les \textbf{retours} issus du support et de la recette du Bloc~2 (dont plusieurs points reportés en TMA). Le croisement de ces sources fait ressortir trois axes prioritaires.
 
 \subsection{Recommandations argumentées}
-\todo{Présenter 3 à 4 recommandations ; pour chacune : problème adressé, gain attendu, coût et délai de mise en œuvre, faisabilité au regard du projet.}
+\textbf{1. Alléger le frontend pour améliorer la performance perçue.} Les Core Web Vitals remontés par Rybbit placent le LCP proche du seuil recommandé de 2,5~s, ce qui est cohérent avec le poids du bundle Angular constaté au Bloc~2. La recommandation est de généraliser le chargement différé (\emph{lazy-loading}) des modules et d'affiner les imports à la carte de ng-zorro. \emph{Gain}~: un chargement plus rapide réduit le taux d'abandon et renforce directement l'attractivité~; \emph{coût} faible, \emph{délai} court.
+
+\textbf{2. Résorber la dette technique du moteur de tournoi.} SonarQube signale de la duplication et une complexité élevée dans la création et l'affichage des matchs et dans la logique de classement — zone dont est précisément issue l'anomalie \texttt{\#142}. La recommandation est d'extraire et de factoriser cette logique et d'élever la couverture de tests associée. \emph{Gain}~: moins d'anomalies et une évolutivité facilitée, donc une fiabilité perçue accrue~; \emph{coût} moyen, \emph{délai} moyen.
+
+\textbf{3. Introduire les notifications de résultats.} Le rejeu de session et les retours montrent que les utilisateurs reviennent fréquemment consulter l'avancement des tournois. La recommandation est d'ajouter des notifications (temps réel via WebSocket, évolution déjà anticipée par l'architecture au Bloc~2). \emph{Gain}~: un engagement et une rétention accrus, au cœur de l'attractivité~; \emph{coût} moyen à élevé, \emph{délai} moyen.
+
+Le tableau~\ref{tab:ameliorations} synthétise ces recommandations et leur priorisation selon une logique valeur/effort.
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|p{3.8cm}|p{5.2cm}|p{1.8cm}|p{1.8cm}|p{1.6cm}|}
+        \hline
+        \textbf{Recommandation} & \textbf{Gain (attractivité)} & \textbf{Coût} & \textbf{Délai} & \textbf{Priorité} \\
+        \hline
+        Allègement du frontend & Chargement plus rapide, moins d'abandon & Faible & Court & Élevée \\
+        \hline
+        Résorption de la dette du moteur & Fiabilité et évolutivité accrues & Moyen & Moyen & Élevée \\
+        \hline
+        Notifications de résultats & Engagement et rétention & Moyen-élevé & Moyen & Moyenne \\
+        \hline
+    \end{tabular}
+    \caption{Recommandations d'amélioration, gains attendus et priorisation valeur/effort.}
+    \label{tab:ameliorations}
+\end{table}
 
 \subsection{Priorisation et attractivité}
-\todo{Prioriser (matrice valeur/effort) et relier chaque recommandation au renforcement de l'attractivité du logiciel.}
+La priorisation privilégie l'allègement du frontend et la résorption de la dette, à fort rapport valeur/effort et réalisables à court ou moyen terme, avant les notifications, plus coûteuses. En parallèle de ces axes d'attractivité, la \textbf{conformité RGPD} (purge et anonymisation des tournois inactifs, reportée en TMA au Bloc~2) reste une obligation à traiter pour sa valeur de conformité. Toutes ces recommandations sont dimensionnées pour le projet~: aucune n'impose de refonte, chacune s'inscrit dans l'architecture existante.

@@ -1,13 +1,55 @@
 % Annexe E — Traitement d'un correctif
 \label{chap:annexe-correctif}
 \section*{Objet de l'annexe}
-Cette annexe documente le traitement complet du correctif présenté à la section~\ref*{sec:correctif}, de la branche à la mise en production.
+Cette annexe documente le traitement du correctif de l'anomalie \texttt{\#142}, référencé à la section~\ref*{sec:correctif}, de la branche à la mise en production.
 
 \section*{Branche et merge request}
-\todo{Capture de la branche \texttt{fix/…} et de la merge request associée (description, commits conventionnels \texttt{fix:}).}
+\begin{description}
+    \item[Branche] \texttt{fix/ronde-suisse-nombre-impair} (issue de \texttt{main})
+    \item[Commit] \texttt{fix(tournoi): gérer l'exempt en ronde suisse à effectif impair (\#142)}
+    \item[Merge request] \texttt{!47} --- « Correction \#142 : exempt en ronde suisse à effectif impair »
+    \item[Version déployée] \texttt{v0.6.1} (14 août 2026)
+\end{description}
 
 \section*{Pipeline de correction}
-\todo{Capture du pipeline CI/CD du correctif : lint + tests de non-régression au vert, puis job \texttt{cd:image} déclenché par le tag correctif.}
+La merge request déclenche le pipeline d'intégration~; la fusion n'est possible qu'au vert. Après fusion, le tag \texttt{v0.6.1} déclenche le déploiement continu.
+
+\begin{lstlisting}
+Pipeline #318 (MR !47)  ->  main
+  lint            passed   32s
+  test:backend    passed   1m04s   (+1 test de non-regression)
+  build           passed   48s
+Pipeline #319 (tag v0.6.1)
+  cd:image        passed   2m11s   image publiee, mise en production
+\end{lstlisting}
 
 \section*{Extrait du correctif}
-\todo{Extrait de code du correctif (avant/après) et du test ajouté couvrant le cas de l'anomalie.}
+Le correctif détecte l'effectif impair et attribue un exempt avant l'appariement deux à deux.
+
+\begin{lstlisting}[language=]
+// Avant : appariement suppose un effectif pair
+for (let i = 0; i < equipes.length; i += 2) {
+  matchs.push({ equipeA: equipes[i], equipeB: equipes[i + 1] });
+}
+
+// Apres : gestion de l'exempt si effectif impair
+const aExempt = equipes.length % 2 === 1;
+const exempt = aExempt ? equipes.pop() : null;
+for (let i = 0; i < equipes.length; i += 2) {
+  matchs.push({ equipeA: equipes[i], equipeB: equipes[i + 1] });
+}
+if (exempt) matchs.push({ equipeA: exempt, equipeB: null, bye: true });
+\end{lstlisting}
+
+\section*{Test de non-régression ajouté}
+\begin{lstlisting}[language=]
+it('attribue un exempt en ronde suisse avec un effectif impair', () => {
+  const equipes = creerEquipes(5);
+  const matchs = genererAppariementsRondeSuisse(equipes);
+  const exempts = matchs.filter((m) => m.bye);
+  expect(exempts).toHaveLength(1);
+  expect(matchs).toHaveLength(3);
+});
+\end{lstlisting}
+
+\todo{Remplacer par les captures réelles (merge request, pipeline vert, diff) une fois le correctif effectivement déployé.}

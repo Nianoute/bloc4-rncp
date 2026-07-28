@@ -3,14 +3,45 @@
 \competence{C4.2.1}{Consigner les anomalies détectées}{La description du processus de collecte et de consignation + une fiche de consignation}
 \livrable{La description du processus de collecte/consignation des anomalies et la présentation d'une fiche de consignation d'une anomalie rencontrée.}
 
+En condition opérationnelle, les anomalies proviennent de sources variées et surviennent à tout moment. Sans processus, une remontée risque d'être perdue, mal priorisée ou impossible à reproduire. La consignation vise donc à \emph{capturer} chaque anomalie, à la \emph{qualifier} et à réunir les informations permettant d'en \emph{déterminer le correctif}. Elle s'appuie sur un outil unique de suivi et sur un gabarit imposé, adaptés à la typologie du logiciel.
+
 \subsection{Processus de collecte}
-\todo{Canaux de remontée : supervision (alertes Rybbit), analyse statique \textbf{SonarQube} (qualité) et \textbf{Semgrep/Trivy} (sécurité, équivalents de Checkmarx en entreprise), retours utilisateurs / support, logs applicatifs. Processus structuré et adapté à la typologie du logiciel.}
+La collecte est structurée autour de quatre canaux complémentaires, du plus automatique au plus humain~:
+\begin{itemize}
+    \item la \textbf{supervision} (chapitre~1)~: une alerte Rybbit (indisponibilité, réponse \texttt{503} de \texttt{/health}, hausse du taux d'erreurs) signale une anomalie survenue en production~;
+    \item l'\textbf{analyse statique} intégrée à la CI~: SonarQube (qualité) et Semgrep/Trivy (sécurité) détectent en amont des défauts avant qu'ils n'atteignent la production~;
+    \item les \textbf{retours utilisateurs et support}~: un dysfonctionnement signalé par un organisateur via le canal de support (chapitre~3)~;
+    \item les \textbf{journaux applicatifs} (pino)~: exploités pour confirmer et contextualiser une anomalie soupçonnée.
+\end{itemize}
+Quel que soit le canal d'origine, toute anomalie confirmée est \textbf{consignée au même endroit}, ce qui garantit une vision unique et évite les pertes d'information.
 
 \subsection{Outil et gabarit de consignation}
-\todo{Issues GitLab avec gabarit de ticket de bogue ; champs imposés et labels de sévérité. Justifier le choix de l'outil.}
+Les anomalies sont consignées sous forme d'\textbf{issues GitLab}, au plus près du code et de la chaîne CI/CD déjà utilisés. Un \textbf{gabarit de ticket de bogue} (\texttt{.gitlab/issue\_templates/Bug.md}) impose les champs nécessaires à la reproduction, et un jeu de \textbf{labels de sévérité} priorise le traitement. La sévérité reprend l'échelle définie lors de la recette au Bloc~2 (tableau~\ref{tab:severite}), afin d'assurer la continuité entre la recette et l'exploitation.
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|p{2.6cm}|p{8.4cm}|p{3cm}|}
+        \hline
+        \textbf{Sévérité} & \textbf{Définition} & \textbf{Traitement cible} \\
+        \hline
+        Bloquant & Empêche l'usage de l'application ou provoque une perte de données & Correctif immédiat \\
+        \hline
+        Majeur & Empêche une fonctionnalité attendue, contournement possible & Correctif prioritaire \\
+        \hline
+        Mineur & Gêne limitée, sans impact sur la fonction principale & Planifié \\
+        \hline
+        Cosmétique & Défaut visuel ou de confort sans impact fonctionnel & Opportuniste \\
+        \hline
+    \end{tabular}
+    \caption{Échelle de sévérité des anomalies, commune à la recette et à l'exploitation.}
+    \label{tab:severite}
+\end{table}
 
 \subsection{Contenu d'une fiche de consignation}
-\todo{Informations permettant de reproduire le bogue : identifiant, environnement, version, étapes de reproduction, résultat attendu/obtenu, sévérité, logs et captures.}
+Une fiche n'a de valeur que si elle permet de \textbf{reproduire} le bogue, condition indispensable à sa correction. Le gabarit impose donc~: un identifiant, l'environnement et la version concernés, les étapes de reproduction, le résultat attendu et le résultat obtenu, la sévérité, ainsi que les pièces justificatives (journaux, captures). Deux rubriques d'exploitation complètent la fiche~: l'\textbf{analyse} (cause racine probable) et la \textbf{préconisation} de correction, qui orientent directement le traitement.
 
 \subsection{Exemple : consignation d'une anomalie réelle}
-\todo{Présenter une anomalie réelle du projet, son analyse (cause probable) et les préconisations de correction. Fiche complète en annexe~D.}
+L'anomalie \texttt{\#142} illustre le processus. Le \todo{[date]}, une alerte de supervision signale une hausse du taux d'erreurs \texttt{5xx}, confirmée par un signalement d'un organisateur via le support. Le diagnostic à partir des journaux montre que la génération de la ronde suivante d'une poule au format \textbf{ronde suisse comptant un nombre impair d'équipes} provoque une erreur \texttt{500}~: l'équipe restée sans adversaire n'est pas gérée, et l'appariement tente d'accéder à un adversaire indéfini. L'anomalie est consignée en sévérité \textbf{majeur} (elle empêche la poursuite d'un tournoi dans cette configuration, mais reste contournable en ajustant le nombre d'équipes). La fiche précise en \textbf{analyse} que l'algorithme d'appariement suppose un effectif pair et n'implémente pas l'exempt (\emph{bye}), et \textbf{préconise} d'attribuer un exempt à l'équipe non appariée selon la règle du format, avec un test de non-régression couvrant le cas impair. La fiche de consignation complète est fournie en \hyperref[chap:annexe-fiche-anomalie]{annexe~\ref*{chap:annexe-fiche-anomalie}}~; son traitement fait l'objet de la section suivante.
+
+\todo{Remplacer l'anomalie \#142 par une anomalie réellement rencontrée en production ou en préproduction (identifiant, date et captures réels), et compléter la fiche en annexe~D.}

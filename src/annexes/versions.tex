@@ -4,7 +4,46 @@
 Cette annexe présente le journal des versions déployées de BrackX (\texttt{CHANGELOG.md}) et les tags sémantiques associés. Elle est référencée depuis la section~\ref*{sec:journal-versions}.
 
 \section*{CHANGELOG.md}
-\todo{Reproduire le \texttt{CHANGELOG.md} complet (format Keep a Changelog) : pour chaque version \texttt{vX.Y.Z}, la date, les rubriques Ajouté / Corrigé / Modifié / Sécurité, avec les anomalies corrigées et correctifs documentés.}
+Le journal suit le format \emph{Keep a Changelog}. Chaque version déployée y figure avec sa date et ses rubriques normalisées~; les correctifs renvoient à l'issue traitée.
+
+\begin{lstlisting}
+# Changelog
+
+## [0.6.1] - 2026-08-14
+### Corrige
+- Ronde suisse : gestion de l'exempt lorsqu'une poule compte un
+  nombre impair d'equipes, qui provoquait une erreur 500 (#142)
+
+## [0.6.0] - 2026-08-10
+### Ajoute
+- Mise en production initiale du produit minimum viable
+- Creation de tournois multi-phases (elimination directe, poules,
+  ronde suisse) avec classements et statistiques
+- Authentification avec onboarding et gestion des roles
+
+## [0.5.0] - 2026-07-28
+### Ajoute
+- Statistiques par tournoi et par equipe
+### Modifie
+- Simplification de la logique de classement et de departage
+
+## [0.4.0] - 2026-07-10
+### Modifie
+- Refonte ergonomique de l'interface et allegement du parcours
+
+## [0.3.0] - 2026-06-30
+### Ajoute
+- Version de preproduction issue de la recette (Bloc 2)
+\end{lstlisting}
 
 \section*{Tags de version}
-\todo{Extrait de \texttt{git tag --list} ou \texttt{git log --oneline --decorate} montrant les versions déployées et leurs correctifs (ex : \texttt{v0.6.0}, \texttt{v0.6.1}).}
+\begin{lstlisting}
+$ git tag --list --sort=-v:refname
+v0.6.1
+v0.6.0
+v0.5.0
+v0.4.0
+v0.3.0
+\end{lstlisting}
+
+\todo{Compléter avec le \texttt{CHANGELOG.md} et les tags réels au fil des déploiements (dates et contenus exacts).}

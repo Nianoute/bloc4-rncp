@@ -3,17 +3,58 @@
 \competence{C4.1.2}{Concevoir un système de supervision et d'alerte}{La description du système de supervision}
 \livrable{La description du système de supervision : périmètre, sondes et finalité, critères de qualité/performance, surveillance de la disponibilité.}
 
+Une fois l'application en production, garantir sa disponibilité permanente suppose de détecter toute dégradation ou interruption \emph{avant} l'utilisateur, ou à défaut au plus tôt. Le système de supervision de BrackX est dimensionné pour la typologie du logiciel~: une application web conteneurisée composée d'une interface Angular, d'une API NestJS et d'une base PostgreSQL, exploitée sur un serveur unique. Il ne s'agit donc pas de déployer une infrastructure d'observabilité lourde, mais de couvrir les points essentiels — disponibilité, performance perçue, erreurs — avec un outillage léger et proportionné.
+
 \subsection{Outil et périmètre de supervision}
-\todo{Outil retenu : \textbf{Rybbit} (auto-hébergé Docker) — uptime, Core Web Vitals et web analytics réunis, adapté à la typologie « application web conteneurisée ». Périmètre : disponibilité HTTP (front + API), santé applicative et base PostgreSQL, ressources du conteneur. Justifier le périmètre.}
+L'outil retenu est \textbf{Rybbit}, une solution open-source auto-hébergée qui réunit dans un même produit la surveillance de disponibilité (\emph{uptime}), la mesure de performance côté utilisateur réel (\emph{Core Web Vitals}) et l'analyse d'audience respectueuse de la vie privée. Ce choix est adapté au projet~: là où un couple Prometheus/Grafana serait surdimensionné pour un déploiement mono-serveur, Rybbit apporte l'essentiel de la supervision en un seul conteneur, tout en fournissant les données d'usage réutilisées au chapitre~3 pour argumenter les axes d'amélioration. Le périmètre supervisé couvre~:
+\begin{itemize}
+    \item la \textbf{disponibilité} de l'interface et de l'API~;
+    \item la \textbf{santé applicative} et l'accès à la base de données~;
+    \item la \textbf{performance perçue} par l'utilisateur (temps de chargement, réactivité)~;
+    \item les \textbf{erreurs} applicatives, via les journaux.
+\end{itemize}
 
 \subsection{Sondes mises en place et leur finalité}
-\todo{Moniteur d'uptime Rybbit sur l'URL de production ; endpoint applicatif \texttt{/health} (\textbf{@nestjs/terminus} vérifiant la base via Prisma) pingé par Rybbit ; collecte des Core Web Vitals ; logs applicatifs structurés (\textbf{pino}). Expliciter la finalité de chaque sonde.}
+Quatre sondes complémentaires composent le dispositif, chacune répondant à une finalité précise~:
+\begin{itemize}
+    \item \textbf{Moniteur d'\emph{uptime} Rybbit} — interroge périodiquement l'URL de production en HTTP. \emph{Finalité~: détecter une indisponibilité et mesurer le taux de disponibilité.}
+    \item \textbf{Endpoint \texttt{/health}} (\textbf{@nestjs/terminus}) — expose l'état de santé de l'API~: il vérifie la connectivité à la base PostgreSQL via Prisma et l'usage mémoire, et répond \texttt{200} si tout est sain, \texttt{503} sinon. Le moniteur Rybbit interroge cet endpoint plutôt qu'une page statique, de sorte que la disponibilité mesurée reflète la santé réelle de l'application et de sa base. \emph{Finalité~: qualifier une panne applicative ou de base de données, au-delà du simple « le serveur répond ».}
+    \item \textbf{Collecte des Core Web Vitals} — le script Rybbit embarqué dans le frontend remonte les métriques de performance perçue (LCP, INP, CLS) mesurées chez les utilisateurs réels. \emph{Finalité~: surveiller la performance ressentie et repérer une régression.}
+    \item \textbf{Journaux applicatifs structurés} (\textbf{pino}) — l'API émet des journaux au format JSON exploitables pour le diagnostic. \emph{Finalité~: analyser les erreurs et remonter à la cause d'une anomalie.}
+\end{itemize}
+Les extraits de configuration de ces sondes sont fournis en \hyperref[chap:annexe-supervision]{annexe~\ref*{chap:annexe-supervision}}.
 
-\subsection{Indicateurs et critères de qualité/performance}
-\todo{Disponibilité (uptime \%), temps de réponse et Core Web Vitals (LCP, INP, CLS), taux d'erreurs, consommation ressources. Donner les seuils cibles adaptés au projet.}
+\subsection{Indicateurs et critères de qualité et de performance}
+Les critères de qualité et de performance suivis sont adaptés à une application web et assortis de seuils cibles, rappelés au tableau~\ref{tab:supervision}. Le dépassement d'un seuil constitue le signal d'une dégradation à traiter.
+
+\begin{table}[htbp]
+    \centering
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{|p{4cm}|p{3.5cm}|p{6.5cm}|}
+        \hline
+        \textbf{Indicateur} & \textbf{Cible} & \textbf{Ce qu'il mesure} \\
+        \hline
+        Disponibilité (\emph{uptime}) & $\geq 99{,}5\,\%$ & Part du temps où l'application répond correctement \\
+        \hline
+        Temps de réponse API & $< 500$~ms & Latence des endpoints principaux \\
+        \hline
+        LCP (chargement) & $< 2{,}5$~s & Temps d'affichage du contenu principal \\
+        \hline
+        INP (réactivité) & $< 200$~ms & Délai de réponse aux interactions \\
+        \hline
+        CLS (stabilité visuelle) & $< 0{,}1$ & Décalage visuel de la mise en page \\
+        \hline
+        Taux d'erreurs & $< 1\,\%$ & Part des requêtes en erreur serveur (5xx) \\
+        \hline
+    \end{tabular}
+    \caption{Critères de qualité et de performance supervisés et seuils cibles.}
+    \label{tab:supervision}
+\end{table}
 
 \subsection{Modalités de signalement}
-\todo{Alerte Rybbit (e-mail / webhook) déclenchée sur indisponibilité ou dépassement de seuil ; destinataire et délai de réaction. Renvoyer vers les captures en annexe~C.}
+La supervision n'a de valeur que si elle déclenche une réaction. Rybbit est configuré pour émettre une \textbf{alerte} dès qu'un moniteur passe en échec — indisponibilité de l'URL de production ou réponse \texttt{503} de l'endpoint \texttt{/health} — ou lorsqu'un seuil de performance est dépassé de façon persistante. L'alerte est acheminée par e-mail (et par \emph{webhook} pour une intégration ultérieure à un canal d'équipe), afin que l'incident soit connu sans surveillance active du tableau de bord. Un exemple d'alerte reçue figure en \hyperref[chap:annexe-supervision]{annexe~\ref*{chap:annexe-supervision}}.
 
 \subsection{Garantie de disponibilité}
-\todo{Comment l'ensemble sonde + alerte garantit une disponibilité permanente et permet de réagir avant impact utilisateur.}
+L'ensemble forme une boucle de disponibilité~: les sondes détectent une défaillance en quelques minutes, l'alerte notifie immédiatement, et la remise en état s'appuie sur la chaîne CI/CD héritée du Bloc~2 pour livrer un correctif (chapitre~2). La supervision de la santé applicative via \texttt{/health}, plutôt que d'une simple page, évite les faux négatifs où le serveur répond alors que la base est injoignable. Ce dispositif, léger mais ciblé, assure une surveillance continue de la disponibilité du logiciel et fournit les indicateurs nécessaires à son amélioration.
+
+\todo{Une fois Rybbit branché sur la production~: confirmer les seuils réels retenus, relever les premières valeurs mesurées (uptime, Core Web Vitals) et insérer les captures du tableau de bord et d'une alerte en annexe~C.}

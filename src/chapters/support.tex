@@ -3,11 +3,15 @@
 \competence{C4.3.3}{Collaborer avec les équipes de support}{Un exemple de problème résolu en collaboration avec le support client}
 \livrable{Un exemple de problème résolu en collaboration avec le support : contexte du retour client, résolution apportée, contribution des parties prenantes.}
 
+En exploitation, une partie des anomalies et des incompréhensions remonte par les utilisateurs eux-mêmes. Leur traitement mobilise plusieurs acteurs~: le \textbf{support}, qui reçoit et qualifie la demande et communique avec le client~; le \textbf{développeur}, qui apporte l'expertise technique et le correctif~; le \textbf{commanditaire} (Paul-Lucas Estrada), qui arbitre lorsque la réponse touche aux règles métier. L'exemple ci-dessous illustre cette collaboration sur un problème complexe.
+
 \subsection{Contexte du retour client}
-\todo{Décrire un retour client réel (remonté via le support / le commanditaire) et le problème à résoudre.}
+Un organisateur signale au support qu'à l'issue d'une phase de poules, une équipe qu'il s'attendait à voir qualifiée ne l'est pas, au profit d'une autre à égalité de points. Il soupçonne un dysfonctionnement du classement. Le support qualifie la demande~: il ne s'agit pas d'une panne (aucune erreur, l'application fonctionne), mais d'un résultat inattendu, ce qui oriente vers une analyse métier plutôt que vers un correctif d'urgence.
 
 \subsection{Résolution apportée}
-\todo{Expertise technique fournie pour diagnostiquer et résoudre le problème complexe ; étapes de la résolution.}
+Le support transmet le cas reproduit (identifiant du tournoi, classement obtenu) au développeur. L'analyse technique montre que le classement s'est comporté \textbf{conformément à sa spécification}~: en cas d'égalité de points, la cascade de critères de départage a tranché sur la différence de scores, critère prioritaire sur la confrontation directe dans la configuration du tournoi. Le résultat était donc correct, mais l'ordre des critères, non visible pour l'organisateur, rendait la décision opaque. La résolution combine trois apports~: une \textbf{explication} argumentée fournie au client via le support, une \textbf{clarification de la documentation} sur l'ordre des critères de départage, et une \textbf{petite amélioration} — rendre visible dans l'interface le critère ayant départagé chaque égalité — planifiée comme évolution (chapitre~3.1). Le commanditaire valide l'ordre des critères retenu comme règle métier de référence.
 
 \subsection{Contribution des parties prenantes}
-\todo{Rôle respectif du support (qualification, communication client), du développeur (correctif) et du commanditaire (validation). Fil de la demande en annexe~G.}
+La résolution résulte de la complémentarité des rôles~: le \textbf{support} a filtré, reproduit et reformulé un retour flou en un cas exploitable, puis assuré la communication avec le client~; le \textbf{développeur} a fourni l'expertise technique établissant que le comportement était correct et a proposé l'amélioration de transparence~; le \textbf{commanditaire} a tranché sur la règle métier. Ce problème, sans être un bogue, illustre qu'une part du maintien consiste à \emph{expliquer} et à \emph{rendre lisible} le logiciel autant qu'à le corriger. Le fil de l'échange est reproduit en \hyperref[chap:annexe-support]{annexe~\ref*{chap:annexe-support}}.
+
+\todo{Remplacer par un échange de support réellement survenu (retour client, diagnostic, résolution) et reporter le fil en annexe~G.}
